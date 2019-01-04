@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using RD_Colonization.Code;
 using System;
 using MonoGame.Extended;
+using System.Diagnostics;
+using GeonBit.UI;
 
 namespace RD_Colonization
 {
@@ -11,18 +13,20 @@ namespace RD_Colonization
     {
 
         SpriteBatch spriteBatch;
-        private SpriteFont font;
 
 
-        public GameScreen(Game game) : base(game)
+        public GameScreen(Game game, GraphicsDeviceManager graphics) : base(game)
         {
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
         }
 
         public override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-
+            spriteBatch = new SpriteBatch(GraphicsDevice);            
         }
 
         public override void Update(GameTime gameTime)
@@ -33,7 +37,7 @@ namespace RD_Colonization
         public override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Green);
-            spriteBatch.Begin();
+            spriteBatch.Begin();            
             spriteBatch.End();
             base.Draw(gameTime);
 

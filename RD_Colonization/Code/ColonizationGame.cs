@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GeonBit.UI;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
@@ -11,12 +12,11 @@ namespace RD_Colonization
 {
     public class ColonizationGame : Game
     {
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics { get; }
 
         public ColonizationGame()
         {
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
             IsFixedTimeStep = true;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000.0f / 60);
 
@@ -25,16 +25,30 @@ namespace RD_Colonization
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
             graphics.SynchronizeWithVerticalRetrace = false;
+            
 
             Window.AllowUserResizing = false;
             Window.Title = "RD's Colonization";
 
             ScreenGameComponent screenGameComponent = new ScreenGameComponent(this);
-            screenGameComponent.Register(new MainMenuScreen(this));
-            screenGameComponent.Register(new GameScreen(this));
+            screenGameComponent.Register(new MainMenuScreen(this, graphics));
+            screenGameComponent.Register(new GameScreen(this, graphics));
             Components.Add(screenGameComponent);
 
         }
+
+        protected override void Initialize()
+        {
+            UserInterface.Initialize(Content,BuiltinThemes.hd);
+
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            base.LoadContent();
+        }
+
 
         protected override void Update(GameTime gameTime)
         {
