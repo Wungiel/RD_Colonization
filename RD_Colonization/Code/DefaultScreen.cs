@@ -25,6 +25,8 @@ namespace RD_Colonization.Code
         public abstract void LoadContent();
         public abstract void Initialize();
         public abstract void Draw();
+        public abstract void LoadScreen();
+        public abstract void UnloadScreen();
 
         public virtual void Update(GameTime gameTime)
         {

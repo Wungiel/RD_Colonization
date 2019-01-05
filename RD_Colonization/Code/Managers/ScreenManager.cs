@@ -35,7 +35,11 @@ namespace RD_Colonization.Code.Managers
 
         public static void setScreen(String key)
         {
+            if (activeScreen != null)
+                activeScreen.UnloadScreen();
             ScreenList.TryGetValue(key, out activeScreen);
+            activeScreen.LoadScreen();
         }
+        
     }
 }

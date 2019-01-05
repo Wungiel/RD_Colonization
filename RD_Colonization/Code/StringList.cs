@@ -8,7 +8,9 @@ namespace RD_Colonization.Code
 {
     class StringList
     {
-        public static readonly String mainMenu = "mainMenu";
-        public static readonly String game = "game";
+        public static readonly String mainMenuScreenString = "mainMenu";
+        public static readonly String gameScreenString = "game";
+        public static readonly String newGameString = "New Game";
+        public static readonly String exitString = "Quit";
     }
 }

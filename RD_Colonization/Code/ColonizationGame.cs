@@ -38,10 +38,10 @@ namespace RD_Colonization
         protected override void Initialize()
         {                   
             UserInterface.Initialize(Content, BuiltinThemes.hd);
-            ScreenManager.registerScreen(mainMenu, new MainMenuScreen(this));
-            ScreenManager.registerScreen(game, new GameScreen(this));
+            ScreenManager.registerScreen(mainMenuScreenString, new MainMenuScreen(this));
+            ScreenManager.registerScreen(gameScreenString, new GameScreen(this));
             ScreenManager.initialize();
-            ScreenManager.setScreen(mainMenu);
+            ScreenManager.setScreen(mainMenuScreenString);
             base.Initialize();
         }
 

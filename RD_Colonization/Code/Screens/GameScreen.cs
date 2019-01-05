@@ -24,9 +24,18 @@ namespace RD_Colonization
         {
         }
 
+        public override void LoadScreen()
+        {
+        }
+
+        public override void UnloadScreen()
+        {
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            UserInterface.Active.Update(gameTime);
         }
 
         public override void Draw()
@@ -34,6 +43,7 @@ namespace RD_Colonization
             GraphicsDevice.Clear(Color.Green);
             spriteBatch.Begin();            
             spriteBatch.End();
+            UserInterface.Active.Draw(spriteBatch);
         }
 
     }
