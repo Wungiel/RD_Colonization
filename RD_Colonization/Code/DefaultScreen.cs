@@ -8,47 +8,28 @@ using System;
 
 namespace RD_Colonization.Code
 {
-    public abstract class DefaultScreen : Screen
+    public abstract class DefaultScreen
     {
 
-        SpriteBatch spriteBatch;
+        protected ColonizationGame Game { get; }
+        protected ContentManager Content => Game.Content;
+        protected GraphicsDevice GraphicsDevice => Game.GraphicsDevice;
+        protected GameServiceContainer Services => Game.Services;
+        protected SpriteBatch spriteBatch => Game.spriteBatch;
 
-        protected DefaultScreen(Game game)
+        protected DefaultScreen(ColonizationGame game)
         {
             Game = game;
         }
 
-        public Game Game { get; }
-        public ContentManager Content => Game.Content;
-        public GraphicsDevice GraphicsDevice => Game.GraphicsDevice;
-        public GameServiceContainer Services => Game.Services;
-        private bool runGame = false;
+        public abstract void LoadContent();
+        public abstract void Initialize();
+        public abstract void Draw();
 
-        public override void LoadContent()
+        public virtual void Update(GameTime gameTime)
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            runGame = true;
-        }
-
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
             UserInterface.Active.Update(gameTime);
             InputManager.updateState(Keyboard.GetState(), Mouse.GetState());
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            if (runGame)
-            {
-                UserInterface.Active.Draw(spriteBatch);
-            }
-            base.Draw(gameTime);
-        }
+        }        
     }
 }

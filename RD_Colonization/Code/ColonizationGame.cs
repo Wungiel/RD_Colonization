@@ -1,4 +1,5 @@
 ﻿using GeonBit.UI;
+using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -6,13 +7,16 @@ using MonoGame.Extended;
 using MonoGame.Extended.Screens;
 using MonoGame.Extended.ViewportAdapters;
 using RD_Colonization.Code;
+using RD_Colonization.Code.Managers;
 using System;
+using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization
 {
     public class ColonizationGame : Game
     {
         public GraphicsDeviceManager graphics { get; }
+        public SpriteBatch spriteBatch;
 
         public ColonizationGame()
         {
@@ -28,41 +32,42 @@ namespace RD_Colonization
             
 
             Window.AllowUserResizing = false;
-            Window.Title = "RD's Colonization";
-
-            ScreenGameComponent screenGameComponent = new ScreenGameComponent(this);
-            screenGameComponent.Register(new MainMenuScreen(this, graphics));
-            screenGameComponent.Register(new GameScreen(this, graphics));
-            Components.Add(screenGameComponent);
-
+            Window.Title = "RD's Colonization";          
         }
 
         protected override void Initialize()
-        {
-            UserInterface.Initialize(Content,BuiltinThemes.hd);
-
+        {                   
+            UserInterface.Initialize(Content, BuiltinThemes.hd);
+            ScreenManager.registerScreen(mainMenu, new MainMenuScreen(this));
+            ScreenManager.registerScreen(game, new GameScreen(this));
+            ScreenManager.initialize();
+            ScreenManager.setScreen(mainMenu);
             base.Initialize();
         }
 
         protected override void LoadContent()
-        {
+        {          
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            ScreenManager.loadContent();
             base.LoadContent();
         }
 
 
         protected override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
             var keyboardState = Keyboard.GetState();
 
             if (keyboardState.IsKeyDown(Keys.Escape))
                 Exit();
+            ScreenManager.activeScreen.Update(gameTime);
 
-            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
+            ScreenManager.activeScreen.Draw();
         }
     }
 }

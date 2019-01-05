@@ -12,21 +12,16 @@ namespace RD_Colonization
     public class GameScreen : DefaultScreen
     {
 
-        SpriteBatch spriteBatch;
+        public GameScreen(ColonizationGame game) : base(game)
+        {
+        }
 
-
-        public GameScreen(Game game, GraphicsDeviceManager graphics) : base(game)
+        public override void LoadContent()
         {
         }
 
         public override void Initialize()
         {
-            base.Initialize();
-        }
-
-        public override void LoadContent()
-        {
-            spriteBatch = new SpriteBatch(GraphicsDevice);            
         }
 
         public override void Update(GameTime gameTime)
@@ -34,13 +29,11 @@ namespace RD_Colonization
             base.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw()
         {
             GraphicsDevice.Clear(Color.Green);
             spriteBatch.Begin();            
             spriteBatch.End();
-            base.Draw(gameTime);
-
         }
 
     }
