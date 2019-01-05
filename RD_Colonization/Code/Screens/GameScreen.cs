@@ -6,6 +6,9 @@ using System;
 using MonoGame.Extended;
 using System.Diagnostics;
 using GeonBit.UI;
+using GeonBit.UI.Entities;
+using RD_Colonization.Code.Managers;
+using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization
 {
@@ -24,6 +27,7 @@ namespace RD_Colonization
         {
         }
 
+
         public override void LoadScreen()
         {
         }
@@ -31,6 +35,7 @@ namespace RD_Colonization
         public override void UnloadScreen()
         {
         }
+
 
         public override void Update(GameTime gameTime)
         {

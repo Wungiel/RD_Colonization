@@ -8,6 +8,7 @@ using MonoGame.Extended.Screens;
 using MonoGame.Extended.ViewportAdapters;
 using RD_Colonization.Code;
 using RD_Colonization.Code.Managers;
+using RD_Colonization.Code.Screens;
 using System;
 using static RD_Colonization.Code.StringList;
 
@@ -29,7 +30,7 @@ namespace RD_Colonization
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
             graphics.SynchronizeWithVerticalRetrace = false;
-            
+            graphics.ApplyChanges();
 
             Window.AllowUserResizing = false;
             Window.Title = "RD's Colonization";          
@@ -39,6 +40,7 @@ namespace RD_Colonization
         {                   
             UserInterface.Initialize(Content, BuiltinThemes.hd);
             ScreenManager.registerScreen(mainMenuScreenString, new MainMenuScreen(this));
+            ScreenManager.registerScreen(gameSetUpScreenString, new GameSetUpScreen(this));
             ScreenManager.registerScreen(gameScreenString, new GameScreen(this));
             ScreenManager.initialize();
             ScreenManager.setScreen(mainMenuScreenString);

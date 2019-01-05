@@ -24,12 +24,23 @@ namespace RD_Colonization.Code
 
         public override void Initialize()
         {
+            PrepareGUI();
+        }
+
+        private void PrepareGUI()
+        {
             mainPanel = new Panel(new Vector2(300, 400), PanelSkin.Default, Anchor.Center, new Vector2(10, 10));
             UserInterface.Active.AddEntity(mainPanel);
             Button newGame = new Button(newGameString);
             newGame.OnClick += (Entity entity) =>
             {
-                ScreenManager.setScreen(gameScreenString);
+                ScreenManager.setScreen(gameSetUpScreenString);
+            };
+            Button options = new Button(optionsString);
+            Button about = new Button(aboutString);
+            about.OnClick += (Entity entity) =>
+            {
+                GeonBit.UI.Utils.MessageBox.ShowMsgBox("About", "Made by Robert Dulemba. \nUsed frameworks: Monogame, GeonBit.UI");
             };
             Button exit = new Button(exitString);
             exit.OnClick += (Entity entity) =>
@@ -37,14 +48,16 @@ namespace RD_Colonization.Code
                 Game.Exit();
             };
             mainPanel.AddChild(newGame);
+            mainPanel.AddChild(options);
+            mainPanel.AddChild(about);
             mainPanel.AddChild(exit);
         }
-
 
         public override void LoadContent()
         {
             background = this.Content.Load<Texture2D>("Images\\MainMenuArt");
         }
+
 
         public override void LoadScreen()
         {
@@ -55,7 +68,6 @@ namespace RD_Colonization.Code
         {
             mainPanel.Visible = false;
         }
-
 
         public override void Update(GameTime gameTime)
         {

@@ -43,10 +43,12 @@
   <ItemGroup>
     <Compile Include="Code\Components\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />
+    <Compile Include="Code\Managers\CivilizationManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />
     <Compile Include="Code\Screens\GameScreen.cs" />
     <Compile Include="Code\DefaultScreen.cs" />
     <Compile Include="Code\Managers\InputManager.cs" />
+    <Compile Include="Code\Screens\GameSetUpScreen.cs" />
     <Compile Include="Code\Screens\MainMenuScreen.cs" />
     <Compile Include="Code\StringList.cs" />
     <Compile Include="Code\Systems\MapDrawer.cs" />
