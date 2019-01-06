@@ -25,6 +25,7 @@ namespace RD_Colonization.Code
         public override void Initialize()
         {
             PrepareGUI();
+            mainPanel.Visible = false;
         }
 
         private void PrepareGUI()
@@ -72,7 +73,6 @@ namespace RD_Colonization.Code
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            UserInterface.Active.Update(gameTime);
         }
 
         public override void Draw()
