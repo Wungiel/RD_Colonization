@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RD_Colonization.Code.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace RD_Colonization.Code
 {
     class MapDrawer
     {
+
+        private MapData mapData = null;
     }
 }
