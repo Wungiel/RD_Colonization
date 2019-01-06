@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Code\Components\CivilizationData.cs" />
     <Compile Include="Code\Components\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />
     <Compile Include="Code\Managers\CivilizationManager.cs" />

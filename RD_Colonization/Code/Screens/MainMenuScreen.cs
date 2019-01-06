@@ -56,7 +56,7 @@ namespace RD_Colonization.Code
 
         public override void LoadContent()
         {
-            background = this.Content.Load<Texture2D>("Images\\MainMenuArt");
+            background = Content.Load<Texture2D>("Images\\MainMenuArt");
         }
 
 
