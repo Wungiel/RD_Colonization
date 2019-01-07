@@ -2,21 +2,15 @@
 using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.ViewportAdapters;
-using RD_Colonization.Code;
 using RD_Colonization.Code.Managers;
-using System;
-using System.Diagnostics;
 using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code
 {
     public class MainMenuScreen : DefaultScreen
     {
-        
         private Texture2D background;
-        Panel mainPanel;
+        private Panel mainPanel;
 
         public MainMenuScreen(ColonizationGame game) : base(game)
         {
@@ -58,7 +52,6 @@ namespace RD_Colonization.Code
         {
             background = Content.Load<Texture2D>("Images\\MainMenuArt");
         }
-
 
         public override void LoadScreen()
         {

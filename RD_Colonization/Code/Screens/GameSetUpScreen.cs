@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GeonBit.UI;
-using GeonBit.UI.Utils;
+﻿using GeonBit.UI;
 using GeonBit.UI.Entities;
+using GeonBit.UI.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using RD_Colonization.Code.Managers;
+using System;
+using System.Collections.Generic;
 using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Screens
 {
-    class GameSetUpScreen : DefaultScreen
+    internal class GameSetUpScreen : DefaultScreen
     {
         private Texture2D portraits;
-        List<Entity> rootEntities = new List<Entity>();
-        List<int> sizes = new List<int> { 30, 40, 50, 60 };
-        Dictionary<string, List<Entity>> pairsOfElements = new Dictionary<string, List<Entity>>();
+        private List<Entity> rootEntities = new List<Entity>();
+        private List<int> sizes = new List<int> { 30, 40, 50, 60 };
+        private Dictionary<string, List<Entity>> pairsOfElements = new Dictionary<string, List<Entity>>();
         private string civilizationKey = "Random";
         private string sizeKey = "Random";
 
@@ -53,12 +48,12 @@ namespace RD_Colonization.Code.Screens
             Button startGameButton = new Button("Start", ButtonSkin.Default, Anchor.BottomRight, new Vector2(200, 50));
             startGameButton.OnClick += (Entity entity) =>
             {
-                MessageBox.ShowMsgBox("Start game", String.Format("Your current settings are: \nCivilization{1}\nSize: {1}",civilizationKey, sizeKey), new MessageBox.MsgBoxOption[] {
-                                new MessageBox.MsgBoxOption("Cancel", () => 
+                MessageBox.ShowMsgBox("Start game", String.Format("Your current settings are: \nCivilization: {0}\nSize: {1}", civilizationKey, sizeKey), new MessageBox.MsgBoxOption[] {
+                                new MessageBox.MsgBoxOption("Cancel", () =>
                                 {
                                     return true;
                                 }),
-                                new MessageBox.MsgBoxOption("Confirm", () => 
+                                new MessageBox.MsgBoxOption("Confirm", () =>
                                 {
                                     ScreenManager.setScreen(gameScreenString);
                                     return true; })
@@ -85,7 +80,7 @@ namespace RD_Colonization.Code.Screens
                             e.Visible = false;
                     civilizationKey = "Random";
                 };
-                 listPanel.AddChild(randomCivilization);
+                listPanel.AddChild(randomCivilization);
                 foreach (String s in CivilizationManager.getNames())
                 {
                     RadioButton r = new RadioButton(s);
@@ -148,7 +143,7 @@ namespace RD_Colonization.Code.Screens
         }
 
         public override void LoadScreen()
-        {                    
+        {
             foreach (Entity e in rootEntities)
             {
                 e.Visible = true;
@@ -175,6 +170,5 @@ namespace RD_Colonization.Code.Screens
             spriteBatch.End();
             UserInterface.Active.Draw(spriteBatch);
         }
-
     }
 }

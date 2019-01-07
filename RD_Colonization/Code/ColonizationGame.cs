@@ -1,11 +1,7 @@
 ﻿using GeonBit.UI;
-using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended;
-using MonoGame.Extended.Screens;
-using MonoGame.Extended.ViewportAdapters;
 using RD_Colonization.Code;
 using RD_Colonization.Code.Managers;
 using RD_Colonization.Code.Screens;
@@ -25,7 +21,6 @@ namespace RD_Colonization
             IsFixedTimeStep = true;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000.0f / 60);
 
-
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
@@ -33,11 +28,11 @@ namespace RD_Colonization
             graphics.ApplyChanges();
 
             Window.AllowUserResizing = false;
-            Window.Title = "RD's Colonization";          
+            Window.Title = "RD's Colonization";
         }
 
         protected override void Initialize()
-        {                   
+        {
             UserInterface.Initialize(Content, BuiltinThemes.hd);
             ScreenManager.registerScreen(mainMenuScreenString, new MainMenuScreen(this));
             ScreenManager.registerScreen(gameSetUpScreenString, new GameSetUpScreen(this));
@@ -48,12 +43,11 @@ namespace RD_Colonization
         }
 
         protected override void LoadContent()
-        {          
+        {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ScreenManager.loadContent();
             base.LoadContent();
         }
-
 
         protected override void Update(GameTime gameTime)
         {
@@ -63,7 +57,6 @@ namespace RD_Colonization
             if (keyboardState.IsKeyDown(Keys.Escape))
                 Exit();
             ScreenManager.activeScreen.Update(gameTime);
-
         }
 
         protected override void Draw(GameTime gameTime)

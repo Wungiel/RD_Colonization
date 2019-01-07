@@ -1,9 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RD_Colonization.Code.Managers
 {
@@ -19,7 +15,7 @@ namespace RD_Colonization.Code.Managers
 
         internal static void initialize()
         {
-            foreach(KeyValuePair<string,DefaultScreen> item in ScreenList)
+            foreach (KeyValuePair<string, DefaultScreen> item in ScreenList)
             {
                 item.Value.Initialize();
             }
@@ -40,6 +36,5 @@ namespace RD_Colonization.Code.Managers
             ScreenList.TryGetValue(key, out activeScreen);
             activeScreen.LoadScreen();
         }
-        
     }
 }
