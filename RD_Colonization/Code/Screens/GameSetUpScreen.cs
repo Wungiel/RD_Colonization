@@ -18,6 +18,8 @@ namespace RD_Colonization.Code.Screens
         private Dictionary<string, List<Entity>> pairsOfElements = new Dictionary<string, List<Entity>>();
         private string civilizationKey = "Random";
         private string sizeKey = "Random";
+        private RadioButton randomCivilization, randomSize;
+        private TabData countryTab, sizeMapTab;
 
         public GameSetUpScreen(ColonizationGame game) : base(game)
         {
@@ -65,14 +67,14 @@ namespace RD_Colonization.Code.Screens
             tabs.BackgroundSkin = PanelSkin.Default;
             tabs.Padding = new Vector2(10, 10);
 
-            TabData countryTab = tabs.AddTab("Country");
+            countryTab = tabs.AddTab("Country");
             {
                 Panel listPanel = new Panel(new Vector2(300, tabs.Size.Y), anchor: Anchor.AutoInline);
                 Panel descriptionPanel = new Panel(new Vector2(400, tabs.Size.Y), anchor: Anchor.AutoInline);
                 countryTab.panel.AddChild(listPanel);
                 listPanel.AddChild(new Header("List:"));
                 listPanel.AddChild(new HorizontalLine());
-                RadioButton randomCivilization = new RadioButton("Random", isChecked: true);
+                randomCivilization = new RadioButton("Random", isChecked: true);
                 randomCivilization.OnClick += (Entity entity) =>
                 {
                     foreach (KeyValuePair<string, List<Entity>> item in pairsOfElements)
@@ -113,9 +115,9 @@ namespace RD_Colonization.Code.Screens
                 }
             }
 
-            TabData sizeMapTab = tabs.AddTab("Map");
+            sizeMapTab = tabs.AddTab("Map");
             {
-                RadioButton randomSize = new RadioButton("Random", isChecked: true);
+                randomSize = new RadioButton("Random", isChecked: true);
                 randomSize.OnClick += (Entity entity) =>
                 {
                     sizeKey = "Random";
@@ -148,6 +150,15 @@ namespace RD_Colonization.Code.Screens
             {
                 e.Visible = true;
             }
+            randomCivilization.Checked = true;
+            randomSize.Checked = true;
+
+            foreach (KeyValuePair<string, List<Entity>> item in pairsOfElements)
+                foreach (Entity e in item.Value)
+                    e.Visible = false;
+
+            civilizationKey = "Random";
+            sizeKey = "Random";
         }
 
         public override void UnloadScreen()

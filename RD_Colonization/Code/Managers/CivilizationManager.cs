@@ -1,7 +1,7 @@
 ﻿using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RD_Colonization.Code.Components;
+using RD_Colonization.Code.Data;
 using System;
 using System.Collections.Generic;
 

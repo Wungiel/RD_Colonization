@@ -1,4 +1,4 @@
-﻿using RD_Colonization.Code.Components;
+﻿using RD_Colonization.Code.Data;
 
 namespace RD_Colonization.Code
 {

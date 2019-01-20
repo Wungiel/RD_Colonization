@@ -1,10 +1,10 @@
 ﻿#if OPENGL
-	#define SV_POSITION POSITION
-	#define VS_SHADERMODEL vs_3_0
-	#define PS_SHADERMODEL ps_3_0
+#define SV_POSITION POSITION
+#define VS_SHADERMODEL vs_3_0
+#define PS_SHADERMODEL ps_3_0
 #else
-	#define VS_SHADERMODEL vs_4_0_level_9_1
-	#define PS_SHADERMODEL ps_4_0_level_9_1
+#define VS_SHADERMODEL vs_4_0_level_9_1
+#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
 Texture2D SpriteTexture;
@@ -24,9 +24,9 @@ struct VertexShaderOutput
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
 	float4 color = tex2D(SpriteTextureSampler,input.TextureCoordinates) * input.Color;
-    color.r = 1 * color.a * input.Color.r;
-    color.g = 1 * color.a * input.Color.g;
-    color.b = 1 * color.a * input.Color.b;
+	color.r = 1 * color.a * input.Color.r;
+	color.g = 1 * color.a * input.Color.g;
+	color.b = 1 * color.a * input.Color.b;
 	return color;
 }
 

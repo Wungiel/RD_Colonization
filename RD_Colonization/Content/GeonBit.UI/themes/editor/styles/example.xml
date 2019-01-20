@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!--
 This file shows an example of how to make a stylesheet file.
 To create a style for specific entity and state, create an XML with the format below with the following name:
 <entity-type>-<state>.xml

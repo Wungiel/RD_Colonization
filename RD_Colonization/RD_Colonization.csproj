@@ -41,10 +41,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Code\Components\CivilizationData.cs" />
-    <Compile Include="Code\Components\MapData.cs" />
+    <Compile Include="Code\Data\CivilizationData.cs" />
+    <Compile Include="Code\Data\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />
     <Compile Include="Code\Managers\CivilizationManager.cs" />
+    <Compile Include="Code\Systems\MapGenerator.cs" />
+    <Compile Include="Code\Managers\MapManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />
     <Compile Include="Code\Screens\GameScreen.cs" />
     <Compile Include="Code\DefaultScreen.cs" />
@@ -677,7 +679,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Code\Data\" />
+    <Folder Include="Code\Components\" />
     <Folder Include="Code\Entities\" />
     <Folder Include="Code\Interfaces\" />
   </ItemGroup>

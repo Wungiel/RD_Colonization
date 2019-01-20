@@ -1,4 +1,4 @@
-﻿namespace RD_Colonization.Code.Components
+﻿namespace RD_Colonization.Code.Data
 {
     internal class CivilizationData
     {
