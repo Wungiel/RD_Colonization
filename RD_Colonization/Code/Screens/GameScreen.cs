@@ -21,7 +21,7 @@ namespace RD_Colonization
         private Camera2D camera;
         private MapDrawer mapDrawer;
         private Panel mainPanel, escapePanel;
-        private bool isEscapeMenuActive = false;
+        private bool isEscapeMenuActive = false;        
         private const float movementSpeed = 300;
 
         public GameScreen(ColonizationGame game) : base(game)
@@ -116,13 +116,20 @@ namespace RD_Colonization
                 if (InputManager.isSinglePress())
                 {
                     Vector2 mousePosition = camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
-                    foreach(KeyValuePair<Rectangle, Tile> k in MapManager.mapDictionary)
+                    Rectangle tempRectangle = new Rectangle(((int)mousePosition.X / 64) * 64, ((int)mousePosition.Y / 64) * 64, 64, 64);
+                    if (MapManager.mapDictionary.ContainsKey(tempRectangle))
+                    {
+                        Tile value;
+                        MapManager.mapDictionary.TryGetValue(tempRectangle, out value);
+                        value.type = MapManager.getTileType(grassString);
+                    }
+                    /*foreach(KeyValuePair<Rectangle, Tile> k in MapManager.mapDictionary)
                     {
                         if (k.Key.Contains(mousePosition))
                         {
                             Debug.WriteLine(k.Value.type.name);
                         }
-                    }
+                    }*/
                 }
             }
         }
