@@ -2,28 +2,54 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using RD_Colonization.Code.Data;
+using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Managers
 {
     static class MapManager
     {
-        
-        private static Dictionary<Rectangle, MapData> mapDictionary = null;
+
+        public static Dictionary<Rectangle, Tile> mapDictionary = new Dictionary<Rectangle, Tile>();
+        private static Dictionary<String, TileType> typesDictionary = new Dictionary<String, TileType>();
+
+        static MapManager()
+        {
+            typesDictionary.Add(grassString, new TileType(grassString, 1, true, true));
+            typesDictionary.Add(waterString, new TileType(waterString, 1, true, true));
+            typesDictionary.Add(mountainString, new TileType(mountainString, 1, true, false));
+        }
 
         public static void generateMap(int size)
         {
-            MapData mapData = new MapGenerator().generate(size);
-            mapDictionary = createDictionary(mapData);
+            Tile[,] mapData = new MapGenerator().generate(size);
+            createDictionary(mapData);
         }
 
         public static void loadMap(MapData loadedData)
         {
-            mapDictionary = createDictionary(loadedData);
+            createDictionary(loadedData);
         }
 
-        private static Dictionary<Rectangle, MapData> createDictionary(MapData mapData)
+        public static TileType getTileType(String key)
+        {
+            TileType temp = null;
+            typesDictionary.TryGetValue(key, out temp);
+            return temp;
+        }
+
+        private static void createDictionary(MapData loadedData)
         {
             throw new NotImplementedException();
         }
+
+        private static void createDictionary(Tile[,] mapData)
+        {
+            foreach(Tile t in mapData)
+            {
+                Rectangle keyRectangle = new Rectangle(t.position.X * 64, t.position.Y * 64, 64, 64);
+                mapDictionary.Add(keyRectangle, t);
+            }
+        }
+
     }
 }

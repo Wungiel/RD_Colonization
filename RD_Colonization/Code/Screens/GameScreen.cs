@@ -18,6 +18,7 @@ namespace RD_Colonization
         private MapDrawer mapDrawer;
         private Panel mainPanel, escapePanel;
         private bool isEscapeMenuActive = false;
+        private const float movementSpeed = 200;
 
         public GameScreen(ColonizationGame game) : base(game)
         {
@@ -40,8 +41,8 @@ namespace RD_Colonization
 
         private void PrepareGUI()
         {
-            mainPanel = new Panel(new Vector2(200, 550), PanelSkin.Default, Anchor.TopLeft, new Vector2(10, 10));
-            UserInterface.Active.AddEntity(mainPanel);
+            mainPanel = new Panel(new Vector2(300, 100), PanelSkin.Default, Anchor.BottomLeft, new Vector2(10, 10));
+            //UserInterface.Active.AddEntity(mainPanel);
 
             setEscapePanel();
             UserInterface.Active.AddEntity(escapePanel);
@@ -82,6 +83,8 @@ namespace RD_Colonization
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (InputManager.isSinglePress(Keys.Escape))
             {
                 escapePanel.Visible = !escapePanel.Visible;
@@ -89,7 +92,14 @@ namespace RD_Colonization
             }
             if (!isEscapeMenuActive)
             {
-
+                if (InputManager.IsKeyDown(Keys.Up))
+                    camera.Move(new Vector2(0, -movementSpeed) * delta);
+                if (InputManager.IsKeyDown(Keys.Down))
+                    camera.Move(new Vector2(0, movementSpeed) * delta);
+                if (InputManager.IsKeyDown(Keys.Left))
+                    camera.Move(new Vector2(-movementSpeed, 0) * delta);
+                if (InputManager.IsKeyDown(Keys.Right))
+                    camera.Move(new Vector2(movementSpeed, 0) * delta);
             }
         }
 

@@ -1,14 +1,17 @@
-﻿using RD_Colonization.Code.Data;
+﻿using Microsoft.Xna.Framework;
+using RD_Colonization.Code.Data;
 using System;
 using System.Diagnostics;
+using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Managers
 {
     internal class MapGenerator
     {
-        public MapData generate(int size)
+        public Tile[,] generate(int size)
         {
             double[,] temp = new double[size, size];
+            Tile[,] tileTemp = new Tile[size, size];
 
             for (double i = 0; i < size; i++)
             {
@@ -18,13 +21,24 @@ namespace RD_Colonization.Code.Managers
                 }
             }
 
-
-
             temp = normalizeArray(temp);
 
+            for (int i = 0; i < temp.GetLength(0); i++)
+            {
+                for (int y = 0; y < temp.GetLength(0); y++)
+                {
+                    string tileKey = null;
+                    if (temp[i, y] > 0.7)
+                        tileKey = mountainString;
+                    else if (temp[i, y] > 0.4)
+                        tileKey = grassString;
+                    else
+                        tileKey = waterString;
+                    tileTemp[i, y] = new Tile(MapManager.getTileType(tileKey), new Point(i, y));
+                }
+            }
 
-
-            return null;
+            return tileTemp;
         }
 
         private double[,] normalizeArray(double[,] temp)
