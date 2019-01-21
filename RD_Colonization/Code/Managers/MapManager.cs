@@ -1,14 +1,29 @@
-﻿using RD_Colonization.Code.Data;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using RD_Colonization.Code.Data;
 
 namespace RD_Colonization.Code.Managers
 {
-    internal static class MapManager
+    static class MapManager
     {
-        private static MapData mapData = null;
+        
+        private static Dictionary<Rectangle, MapData> mapDictionary = null;
 
         public static void generateMap(int size)
         {
-            mapData = new MapGenerator.generate(size);
+            MapData mapData = new MapGenerator().generate(size);
+            mapDictionary = createDictionary(mapData);
+        }
+
+        public static void loadMap(MapData loadedData)
+        {
+            mapDictionary = createDictionary(loadedData);
+        }
+
+        private static Dictionary<Rectangle, MapData> createDictionary(MapData mapData)
+        {
+            throw new NotImplementedException();
         }
     }
 }

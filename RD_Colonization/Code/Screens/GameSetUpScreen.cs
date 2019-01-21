@@ -42,31 +42,51 @@ namespace RD_Colonization.Code.Screens
 
         private void PrepareGUI()
         {
-            Button backButton = new Button("Back", ButtonSkin.Default, Anchor.BottomLeft, new Vector2(200, 50));
-            backButton.OnClick += (Entity entity) =>
-            {
-                ScreenManager.setScreen(mainMenuScreenString);
-            };
-            Button startGameButton = new Button("Start", ButtonSkin.Default, Anchor.BottomRight, new Vector2(200, 50));
-            startGameButton.OnClick += (Entity entity) =>
-            {
-                MessageBox.ShowMsgBox("Start game", String.Format("Your current settings are: \nCivilization: {0}\nSize: {1}", civilizationKey, sizeKey), new MessageBox.MsgBoxOption[] {
-                                new MessageBox.MsgBoxOption("Cancel", () =>
-                                {
-                                    return true;
-                                }),
-                                new MessageBox.MsgBoxOption("Confirm", () =>
-                                {
-                                    ScreenManager.setScreen(gameScreenString);
-                                    return true; })
-                                });
-            };
+            Button backButton, startGameButton;
+            setBackStartButtons(out backButton, out startGameButton);
 
             Panel mainPanel = new Panel(new Vector2(800, 450), PanelSkin.None, Anchor.TopCenter, new Vector2(10, 10));
             PanelTabs tabs = new PanelTabs();
             tabs.BackgroundSkin = PanelSkin.Default;
             tabs.Padding = new Vector2(10, 10);
 
+            setCountryTab(tabs);
+            setMapSizeTab(tabs);
+
+            UserInterface.Active.AddEntity(mainPanel);
+            mainPanel.AddChild(tabs);
+            UserInterface.Active.AddEntity(backButton);
+            UserInterface.Active.AddEntity(startGameButton);
+
+            rootEntities.Add(backButton);
+            rootEntities.Add(startGameButton);
+            rootEntities.Add(mainPanel);
+        }
+
+        private void setMapSizeTab(PanelTabs tabs)
+        {
+            sizeMapTab = tabs.AddTab("Map");
+            {
+                randomSize = new RadioButton("Random", isChecked: true);
+                randomSize.OnClick += (Entity entity) =>
+                {
+                    sizeKey = "Random";
+                };
+                sizeMapTab.panel.AddChild(randomSize);
+                foreach (int i in sizes)
+                {
+                    RadioButton r = new RadioButton(String.Format("{0}x{0}", i));
+                    r.OnClick += (Entity entity) =>
+                    {
+                        sizeKey = i.ToString();
+                    };
+                    sizeMapTab.panel.AddChild(r);
+                }
+            }
+        }
+
+        private void setCountryTab(PanelTabs tabs)
+        {
             countryTab = tabs.AddTab("Country");
             {
                 Panel listPanel = new Panel(new Vector2(300, tabs.Size.Y), anchor: Anchor.AutoInline);
@@ -114,34 +134,32 @@ namespace RD_Colonization.Code.Screens
                     pairsOfElements.Add(s, new List<Entity> { i, p });
                 }
             }
+        }
 
-            sizeMapTab = tabs.AddTab("Map");
+        private void setBackStartButtons(out Button backButton, out Button startGameButton)
+        {
+            backButton = new Button("Back", ButtonSkin.Default, Anchor.BottomLeft, new Vector2(200, 50));
+            backButton.OnClick += (Entity entity) =>
             {
-                randomSize = new RadioButton("Random", isChecked: true);
-                randomSize.OnClick += (Entity entity) =>
-                {
-                    sizeKey = "Random";
-                };
-                sizeMapTab.panel.AddChild(randomSize);
-                foreach (int i in sizes)
-                {
-                    RadioButton r = new RadioButton(String.Format("{0}x{0}", i));
-                    r.OnClick += (Entity entity) =>
-                    {
-                        sizeKey = i.ToString();
-                    };
-                    sizeMapTab.panel.AddChild(r);
-                }
-            }
-
-            UserInterface.Active.AddEntity(mainPanel);
-            mainPanel.AddChild(tabs);
-            UserInterface.Active.AddEntity(backButton);
-            UserInterface.Active.AddEntity(startGameButton);
-
-            rootEntities.Add(backButton);
-            rootEntities.Add(startGameButton);
-            rootEntities.Add(mainPanel);
+                ScreenManager.setScreen(mainMenuScreenString);
+            };
+            startGameButton = new Button("Start", ButtonSkin.Default, Anchor.BottomRight, new Vector2(200, 50));
+            startGameButton.OnClick += (Entity entity) =>
+            {
+                MessageBox.ShowMsgBox("Start game", String.Format("Your current settings are: \nCivilization: {0}\nSize: {1}", civilizationKey, sizeKey), new MessageBox.MsgBoxOption[] {
+                                new MessageBox.MsgBoxOption("Cancel", () =>
+                                {
+                                    return true;
+                                }),
+                                new MessageBox.MsgBoxOption("Confirm", () =>
+                                {
+                                    if (sizeKey.Equals("Random"))
+                                        sizeKey = "30";
+                                    MapManager.generateMap(Int32.Parse(sizeKey));
+                                    ScreenManager.setScreen(gameScreenString);
+                                    return true; })
+                                });
+            };
         }
 
         public override void LoadScreen()

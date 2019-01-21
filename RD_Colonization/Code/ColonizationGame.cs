@@ -6,6 +6,7 @@ using RD_Colonization.Code;
 using RD_Colonization.Code.Managers;
 using RD_Colonization.Code.Screens;
 using System;
+using System.Diagnostics;
 using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization
@@ -52,11 +53,12 @@ namespace RD_Colonization
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            var keyboardState = Keyboard.GetState();
-
-            if (keyboardState.IsKeyDown(Keys.Escape))
-                Exit();
             ScreenManager.activeScreen.Update(gameTime);
+            if (InputManager.isSinglePress(Keys.Space))
+            {
+                Debug.Write("X");
+                graphics.ToggleFullScreen();
+            }
         }
 
         protected override void Draw(GameTime gameTime)

@@ -1,24 +1,53 @@
 ﻿using RD_Colonization.Code.Data;
+using System;
+using System.Diagnostics;
 
 namespace RD_Colonization.Code.Managers
 {
-    internal class MapGenerator : MapData
+    internal class MapGenerator
     {
-        private int size;
-
-        public MapGenerator(int size)
+        public MapData generate(int size)
         {
-            this.size = size;
+            double[,] temp = new double[size, size];
+
+            for (double i = 0; i < size; i++)
+            {
+                for (double y =0; y < size; y++)
+                {
+                    temp[(int)i, (int)y] = (Perlin.OctavePerlin(i / size, y / size, 0, 3, 1));
+                }
+            }
+
+
+
+            temp = normalizeArray(temp);
+
+
+
+            return null;
         }
 
-        internal class generate : MapData
+        private double[,] normalizeArray(double[,] temp)
         {
-            private int size;
-
-            public generate(int size)
+            double min = temp[0, 0];
+            double max = temp[0, 0];
+            foreach (double i in temp)
             {
-                this.size = size;
+                if (i > max)
+                    max = i;
+                else if (i < min)
+                    min = i;
             }
+
+            for (int i = 0; i < temp.GetLength(0); i++)
+            {
+                for (int y = 0; y < temp.GetLength(0); y++)
+                {
+                    temp[i, y] = (temp[i, y] - min) / (max - min);
+                }
+            }
+
+            return temp;
         }
     }
 }

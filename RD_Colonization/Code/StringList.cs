@@ -12,5 +12,8 @@ namespace RD_Colonization.Code
         public static readonly String exitString = "Quit";
         public static readonly String optionsString = "Options";
         public static readonly String aboutString = "About";
+
+        public static readonly String saveGameString = "Save game";
+        public static readonly String loadGameString = "Load game";
     }
 }

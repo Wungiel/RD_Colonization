@@ -13,6 +13,8 @@ namespace RD_Colonization.Code
         protected GraphicsDevice GraphicsDevice => Game.GraphicsDevice;
         protected GameServiceContainer Services => Game.Services;
         protected SpriteBatch spriteBatch => Game.spriteBatch;
+        protected GameWindow Window => Game.Window;
+        protected GraphicsDeviceManager graphics => Game.graphics;
 
         protected DefaultScreen(ColonizationGame game)
         {
