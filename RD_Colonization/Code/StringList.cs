@@ -15,6 +15,7 @@ namespace RD_Colonization.Code
 
         public static readonly String saveGameString = "Save game";
         public static readonly String loadGameString = "Load game";
+        public static readonly String mainMenuString = "Main menu";
 
 
         public static readonly String grassString = "grass";

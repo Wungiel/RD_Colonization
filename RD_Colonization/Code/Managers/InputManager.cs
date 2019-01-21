@@ -31,5 +31,14 @@ namespace RD_Colonization.Code
             oldStateMouse = newStateMouse;
             newStateMouse = mouseState;
         }
+
+        internal static int isMouseWheel()
+        {
+            if (newStateMouse.ScrollWheelValue < oldStateMouse.ScrollWheelValue)
+                return 1;
+            else if (newStateMouse.ScrollWheelValue > oldStateMouse.ScrollWheelValue)
+                return -1;
+            else return 0;
+        }
     }
 }

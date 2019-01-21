@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace RD_Colonization.Code
 {
 	// Source - https://gist.github.com/Flafla2/1a0b9ebef678bbce3215
-	public class Perlin
+	public static class Perlin
 	{
 
 		public static double OctavePerlin(double x, double y, double z, int octaves, double persistence)

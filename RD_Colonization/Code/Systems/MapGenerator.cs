@@ -13,11 +13,15 @@ namespace RD_Colonization.Code.Managers
             double[,] temp = new double[size, size];
             Tile[,] tileTemp = new Tile[size, size];
 
+            Random random = new Random(Guid.NewGuid().GetHashCode());
+            Double persistence = random.NextDouble() * 5;
+            int octaves = random.Next(1, 4);
+
             for (double i = 0; i < size; i++)
             {
                 for (double y =0; y < size; y++)
                 {
-                    temp[(int)i, (int)y] = (Perlin.OctavePerlin(i / size, y / size, 0, 3, 1));
+                    temp[(int)i, (int)y] = (Perlin.OctavePerlin(i / size, y / size, 0, octaves, persistence));
                 }
             }
 

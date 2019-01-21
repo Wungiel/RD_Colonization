@@ -9,7 +9,7 @@ namespace RD_Colonization.Code.Managers
     static class MapManager
     {
 
-        public static Dictionary<Rectangle, Tile> mapDictionary = new Dictionary<Rectangle, Tile>();
+        public static Dictionary<Rectangle, Tile> mapDictionary = null;
         private static Dictionary<String, TileType> typesDictionary = new Dictionary<String, TileType>();
 
         static MapManager()
@@ -21,12 +21,14 @@ namespace RD_Colonization.Code.Managers
 
         public static void generateMap(int size)
         {
+            mapDictionary = new Dictionary<Rectangle, Tile>();
             Tile[,] mapData = new MapGenerator().generate(size);
             createDictionary(mapData);
         }
 
         public static void loadMap(MapData loadedData)
         {
+            mapDictionary = new Dictionary<Rectangle, Tile>();
             createDictionary(loadedData);
         }
 

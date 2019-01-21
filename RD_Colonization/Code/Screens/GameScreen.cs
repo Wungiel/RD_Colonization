@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using GeonBit.UI;
 using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
@@ -7,6 +9,8 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
 using RD_Colonization.Code;
+using RD_Colonization.Code.Data;
+using RD_Colonization.Code.Managers;
 using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization
@@ -18,7 +22,7 @@ namespace RD_Colonization
         private MapDrawer mapDrawer;
         private Panel mainPanel, escapePanel;
         private bool isEscapeMenuActive = false;
-        private const float movementSpeed = 200;
+        private const float movementSpeed = 300;
 
         public GameScreen(ColonizationGame game) : base(game)
         {
@@ -50,7 +54,7 @@ namespace RD_Colonization
 
         private void setEscapePanel()
         {
-            escapePanel = new Panel(new Vector2(300, 300), PanelSkin.Default, Anchor.Center, new Vector2(10, 10));
+            escapePanel = new Panel(new Vector2(300, 400), PanelSkin.Default, Anchor.Center, new Vector2(10, 10));
             escapePanel.Visible = false;
             Button saveGame = new Button(saveGameString);
             saveGame.OnClick += (Entity entity) =>
@@ -60,6 +64,11 @@ namespace RD_Colonization
             loadGame.OnClick += (Entity entity) =>
             {
             };
+            Button mainMenu = new Button(mainMenuString);
+            mainMenu.OnClick += (Entity entity) =>
+            {
+                ScreenManager.setScreen(mainMenuScreenString);
+            };
             Button exit = new Button(exitString);
             exit.OnClick += (Entity entity) =>
             {
@@ -67,6 +76,7 @@ namespace RD_Colonization
             };
             escapePanel.AddChild(saveGame);
             escapePanel.AddChild(loadGame);
+            escapePanel.AddChild(mainMenu);
             escapePanel.AddChild(exit);
         }
 
@@ -78,6 +88,8 @@ namespace RD_Colonization
         public override void UnloadScreen()
         {
             mainPanel.Visible = false;
+            escapePanel.Visible = false;
+            isEscapeMenuActive = false;
         }
 
         public override void Update(GameTime gameTime)
@@ -100,6 +112,18 @@ namespace RD_Colonization
                     camera.Move(new Vector2(-movementSpeed, 0) * delta);
                 if (InputManager.IsKeyDown(Keys.Right))
                     camera.Move(new Vector2(movementSpeed, 0) * delta);
+
+                if (InputManager.isSinglePress())
+                {
+                    Vector2 mousePosition = camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+                    foreach(KeyValuePair<Rectangle, Tile> k in MapManager.mapDictionary)
+                    {
+                        if (k.Key.Contains(mousePosition))
+                        {
+                            Debug.WriteLine(k.Value.type.name);
+                        }
+                    }
+                }
             }
         }
 
