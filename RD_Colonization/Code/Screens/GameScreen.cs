@@ -54,15 +54,12 @@ namespace RD_Colonization
 
         private void setEscapePanel()
         {
-            escapePanel = new Panel(new Vector2(300, 400), PanelSkin.Default, Anchor.Center, new Vector2(10, 10));
+            escapePanel = new Panel(new Vector2(300, 300), PanelSkin.Default, Anchor.Center, new Vector2(10, 10));
             escapePanel.Visible = false;
             Button saveGame = new Button(saveGameString);
             saveGame.OnClick += (Entity entity) =>
             {
-            };
-            Button loadGame = new Button(loadGameString);
-            loadGame.OnClick += (Entity entity) =>
-            {
+                DatabaseManager.saveData();
             };
             Button mainMenu = new Button(mainMenuString);
             mainMenu.OnClick += (Entity entity) =>
@@ -75,7 +72,6 @@ namespace RD_Colonization
                 Game.Exit();
             };
             escapePanel.AddChild(saveGame);
-            escapePanel.AddChild(loadGame);
             escapePanel.AddChild(mainMenu);
             escapePanel.AddChild(exit);
         }

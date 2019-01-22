@@ -36,6 +36,8 @@ namespace RD_Colonization.Code
             Button loadGame = new Button(loadGameString);
             loadGame.OnClick += (Entity entity) =>
             {
+                if (MapManager.loadMap(DatabaseManager.loadData()))
+                    ScreenManager.setScreen(gameScreenString);
             };
 
             Button options = new Button(optionsString);

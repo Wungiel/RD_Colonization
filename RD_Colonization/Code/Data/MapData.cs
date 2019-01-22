@@ -4,12 +4,13 @@ namespace RD_Colonization.Code.Data
 {
     internal class MapData
     {
-        public float[,] tileArray;
-        public static LinkedList<Tile> tiles;
+        public string tileData;
+        public int size;
 
-        public MapData(float[,] temp)
+        public MapData(int size, string tileData)
         {
-            this.tileArray = temp;
+            this.size = size;
+            this.tileData = tileData;
         }
     }
 }

@@ -45,6 +45,35 @@ namespace RD_Colonization.Code.Managers
             return tileTemp;
         }
 
+        internal Tile[,] generate(MapData loadedData, int size)
+        {
+            Tile[,] tileTemp = new Tile[size, size];
+            Char[] tempChars = loadedData.tileData.ToCharArray();
+
+            for (int i = 0; i < size; i++)
+            {
+                for (int y = 0; y < size; y++)
+                {
+                    string tileKey = null;
+                    Char c = tempChars[i * size + y];
+                    if (c == '0')
+                    {
+                        tileKey = waterString;
+                    }
+                    else if (c == '1')
+                    {
+                        tileKey = grassString;
+                    }
+                    else
+                    {
+                        tileKey = mountainString;
+                    }
+                    tileTemp[i, y] = new Tile(MapManager.getTileType(tileKey), new Point(i, y));
+                }
+            }
+            return tileTemp;
+        }
+
         private double[,] normalizeArray(double[,] temp)
         {
             double min = temp[0, 0];
