@@ -31,8 +31,9 @@ namespace RD_Colonization
 
         public override void LoadContent()
         {
-            Texture2D tileset = Content.Load<Texture2D>("Images\\TileSet");
-            mapDrawer.setTileset(tileset);
+            Texture2D mapTileset = Content.Load<Texture2D>("Images\\TileSet");
+            Texture2D unitTileset = Content.Load<Texture2D>("Images\\UnitSet");
+            mapDrawer.setTileset(mapTileset, unitTileset);
         }
 
         public override void Initialize()
@@ -109,23 +110,19 @@ namespace RD_Colonization
                 if (InputManager.IsKeyDown(Keys.Right))
                     camera.Move(new Vector2(movementSpeed, 0) * delta);
 
-                if (InputManager.isSinglePress())
+                if (InputManager.isSingleLeftPress())
                 {
                     Vector2 mousePosition = camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
-                    Rectangle tempRectangle = new Rectangle(((int)mousePosition.X / 64) * 64, ((int)mousePosition.Y / 64) * 64, 64, 64);
-                    if (MapManager.mapDictionary.ContainsKey(tempRectangle))
+                    if (mousePosition.X > 0 && mousePosition.Y > 0)
                     {
-                        Tile value;
-                        MapManager.mapDictionary.TryGetValue(tempRectangle, out value);
-                        value.type = MapManager.getTileType(grassString);
-                    }
-                    /*foreach(KeyValuePair<Rectangle, Tile> k in MapManager.mapDictionary)
-                    {
-                        if (k.Key.Contains(mousePosition))
+                        Rectangle tempRectangle = new Rectangle(((int)mousePosition.X / 64) * 64, ((int)mousePosition.Y / 64) * 64, 64, 64);
+                        if (MapManager.mapDictionary.ContainsKey(tempRectangle))
                         {
-                            Debug.WriteLine(k.Value.type.name);
+                            Tile value;
+                            MapManager.mapDictionary.TryGetValue(tempRectangle, out value);
+                            Debug.WriteLine(value.type);
                         }
-                    }*/
+                    }
                 }
             }
         }

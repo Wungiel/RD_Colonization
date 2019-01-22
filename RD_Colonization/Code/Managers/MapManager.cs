@@ -11,13 +11,13 @@ namespace RD_Colonization.Code.Managers
 
         public static Dictionary<Rectangle, Tile> mapDictionary = null;
         public static int mapSize = 0;
-        private static Dictionary<String, TileType> typesDictionary = new Dictionary<String, TileType>();
+        private static Dictionary<String, TileData> typesDictionary = new Dictionary<String, TileData>();
 
         static MapManager()
         {
-            typesDictionary.Add(grassString, new TileType(grassString, 1, true, true));
-            typesDictionary.Add(waterString, new TileType(waterString, 1, true, true));
-            typesDictionary.Add(mountainString, new TileType(mountainString, 1, true, false));
+            typesDictionary.Add(grassString, new TileData(grassString, 1, true, true));
+            typesDictionary.Add(waterString, new TileData(waterString, 1, true, true));
+            typesDictionary.Add(mountainString, new TileData(mountainString, 1, true, false));
         }
 
         public static void generateMap(int size)
@@ -42,9 +42,9 @@ namespace RD_Colonization.Code.Managers
                 return false;
         }
 
-        public static TileType getTileType(String key)
+        public static TileData getTileType(String key)
         {
-            TileType temp = null;
+            TileData temp = null;
             typesDictionary.TryGetValue(key, out temp);
             return temp;
         }

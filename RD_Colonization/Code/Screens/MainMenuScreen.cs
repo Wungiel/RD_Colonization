@@ -37,12 +37,19 @@ namespace RD_Colonization.Code
             loadGame.OnClick += (Entity entity) =>
             {
                 if (MapManager.loadMap(DatabaseManager.loadData()))
+                {
+                    UnitManager.setUpGameStart();
                     ScreenManager.setScreen(gameScreenString);
+                }
+                else
+                    GeonBit.UI.Utils.MessageBox.ShowMsgBox("Error", "No games saved");
             };
 
-            Button options = new Button(optionsString);
-            options.OnClick += (Entity entity) =>
+            Button removeSaves = new Button(removeSavesString);
+            removeSaves.OnClick += (Entity entity) =>
             {
+                DatabaseManager.removeData();
+                GeonBit.UI.Utils.MessageBox.ShowMsgBox("Done", "Saves removed");
             };
 
             Button about = new Button(aboutString);
@@ -59,7 +66,7 @@ namespace RD_Colonization.Code
 
             mainPanel.AddChild(newGame);
             mainPanel.AddChild(loadGame);
-            mainPanel.AddChild(options);
+            mainPanel.AddChild(removeSaves);
             mainPanel.AddChild(about);
             mainPanel.AddChild(exit);
         }

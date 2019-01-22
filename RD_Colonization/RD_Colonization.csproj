@@ -45,10 +45,13 @@
     <Compile Include="Code\Data\CivilizationData.cs" />
     <Compile Include="Code\Data\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />
-    <Compile Include="Code\Data\Tile.cs" />
-    <Compile Include="Code\Data\TileType.cs" />
+    <Compile Include="Code\Data\UnitData.cs" />
+    <Compile Include="Code\Entities\Tile.cs" />
+    <Compile Include="Code\Data\TileData.cs" />
+    <Compile Include="Code\Entities\Unit.cs" />
     <Compile Include="Code\Managers\CivilizationManager.cs" />
     <Compile Include="Code\Managers\DatabaseManager.cs" />
+    <Compile Include="Code\Managers\UnitManager.cs" />
     <Compile Include="Code\Perlin.cs" />
     <Compile Include="Code\Systems\MapGenerator.cs" />
     <Compile Include="Code\Managers\MapManager.cs" />
@@ -690,7 +693,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Code\Components\" />
-    <Folder Include="Code\Entities\" />
     <Folder Include="Code\Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -10,7 +10,7 @@ namespace RD_Colonization.Code
 
         public static readonly String newGameString = "New Game";
         public static readonly String exitString = "Quit";
-        public static readonly String optionsString = "Options";
+        public static readonly String removeSavesString = "Remove saves";
         public static readonly String aboutString = "About";
 
         public static readonly String saveGameString = "Save game";
@@ -21,5 +21,10 @@ namespace RD_Colonization.Code
         public static readonly String grassString = "grass";
         public static readonly String mountainString = "mountain";
         public static readonly String waterString = "water";
+
+        public static readonly String civilianString = "civilian";
+        public static readonly String soldierString = "soldier";
+        public static readonly String shipString = "ship";
+        public static readonly String cityString = "city";
     }
 }

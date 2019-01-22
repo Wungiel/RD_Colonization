@@ -156,6 +156,7 @@ namespace RD_Colonization.Code.Screens
                                     if (sizeKey.Equals("Random"))
                                         sizeKey = "30";
                                     MapManager.generateMap(Int32.Parse(sizeKey));
+                                    UnitManager.setUpGameStart();
                                     ScreenManager.setScreen(gameScreenString);
                                     return true; })
                                 });

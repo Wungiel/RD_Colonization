@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace RD_Colonization.Code.Data
 {
-    class TileType
+    class TileData
     {
         public string name;
         public int movementCost;
         public bool land;
         public bool walkable;
         
-        public TileType(string name, int movementCost, bool land, bool walkable)
+        public TileData(string name, int movementCost, bool land, bool walkable)
         {
             this.name = name;
             if (movementCost < 1)

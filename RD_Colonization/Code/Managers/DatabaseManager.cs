@@ -21,6 +21,8 @@ namespace RD_Colonization.Code.Managers
         private static string querySaveString =
             "INSERT INTO GameData.Map(MapSize, MapData) "
                 + "VALUES  (@MapSize, @MapData)";
+        private static string deleteSavesString =
+            "DELETE from GameData.Map ";
 
         static DatabaseManager()
         {
@@ -84,5 +86,21 @@ namespace RD_Colonization.Code.Managers
             }
 
         }
+
+
+        internal static void removeData()
+        {
+            using (SqlConnection connection =
+            new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(deleteSavesString, connection);
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+
+                }
+            }
+        }
+
     }
 }

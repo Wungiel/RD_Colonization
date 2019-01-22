@@ -9,11 +9,11 @@ namespace RD_Colonization.Code.Data
 {
     class Tile
     {
-        public TileType type;
+        public TileData type;
         public Point position;
         public Tile[] neighbours = new Tile[8];
 
-        public Tile(TileType type, Point position)
+        public Tile(TileData type, Point position)
         {
             this.type = type;
             this.position = position;
