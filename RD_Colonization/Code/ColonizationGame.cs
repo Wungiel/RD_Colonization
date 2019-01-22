@@ -54,11 +54,10 @@ namespace RD_Colonization
         {
             base.Update(gameTime);
             ScreenManager.activeScreen.Update(gameTime);
-            if (InputManager.isSinglePress(Keys.Space))
-            {
-                Debug.Write("X");
-                graphics.ToggleFullScreen();
-            }
+            //if (InputManager.isSinglePress(Keys.Space))
+            //{
+            //    graphics.ToggleFullScreen();
+            //}
         }
 
         protected override void Draw(GameTime gameTime)

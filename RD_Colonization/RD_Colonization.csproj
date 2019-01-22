@@ -47,6 +47,7 @@
     <Compile Include="Code\Data\Tile.cs" />
     <Compile Include="Code\Data\TileType.cs" />
     <Compile Include="Code\Managers\CivilizationManager.cs" />
+    <Compile Include="Code\Managers\DatabaseManager.cs" />
     <Compile Include="Code\Perlin.cs" />
     <Compile Include="Code\Systems\MapGenerator.cs" />
     <Compile Include="Code\Managers\MapManager.cs" />
