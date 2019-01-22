@@ -1,12 +1,10 @@
 ﻿using GeonBit.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using RD_Colonization.Code;
 using RD_Colonization.Code.Managers;
 using RD_Colonization.Code.Screens;
 using System;
-using System.Diagnostics;
 using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization

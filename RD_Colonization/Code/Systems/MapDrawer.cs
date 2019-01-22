@@ -10,14 +10,14 @@ using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code
 {
-    internal class MapDrawer
+    public class MapDrawer
     {
-        Texture2D mapTileset;
-        Texture2D unitTileset;
-        Dictionary<String, Rectangle> tileGraphics = new Dictionary<String, Rectangle>();
-        Dictionary<String, Rectangle> unitGraphics = new Dictionary<String, Rectangle>();
+        private Texture2D mapTileset;
+        private Texture2D unitTileset;
+        private Dictionary<String, Rectangle> tileGraphics = new Dictionary<String, Rectangle>();
+        private Dictionary<String, Rectangle> unitGraphics = new Dictionary<String, Rectangle>();
 
-        internal void setTileset(Texture2D mapTileset, Texture2D unitTileset)
+        public void setTileset(Texture2D mapTileset, Texture2D unitTileset)
         {
             this.mapTileset = mapTileset;
             this.unitTileset = unitTileset;
@@ -30,13 +30,12 @@ namespace RD_Colonization.Code
             unitGraphics.Add(soldierString, new Rectangle(64, 0, 64, 64));
             unitGraphics.Add(cityString, new Rectangle(128, 0, 64, 64));
             unitGraphics.Add(shipString, new Rectangle(192, 0, 64, 64));
-
         }
 
-        internal void Draw(SpriteBatch spriteBatch, Camera2D camera)
+        public void Draw(SpriteBatch spriteBatch, Camera2D camera)
         {
             Matrix transformMatrix = camera.GetViewMatrix();
-            Rectangle sourceRectangle; 
+            Rectangle sourceRectangle;
 
             spriteBatch.Begin(transformMatrix: transformMatrix);
             foreach (KeyValuePair<Rectangle,Tile> pair in MapManager.mapDictionary)

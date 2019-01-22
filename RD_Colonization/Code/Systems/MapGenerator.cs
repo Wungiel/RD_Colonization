@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using RD_Colonization.Code.Data;
 using System;
-using System.Diagnostics;
 using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Managers
 {
-    internal class MapGenerator
+    public class MapGenerator
     {
         public Tile[,] generate(int size)
         {
@@ -19,7 +18,7 @@ namespace RD_Colonization.Code.Managers
 
             for (double i = 0; i < size; i++)
             {
-                for (double y =0; y < size; y++)
+                for (double y = 0; y < size; y++)
                 {
                     temp[(int)i, (int)y] = (Perlin.OctavePerlin(i / size, y / size, 0, octaves, persistence));
                 }
@@ -45,7 +44,7 @@ namespace RD_Colonization.Code.Managers
             return tileTemp;
         }
 
-        internal Tile[,] generate(MapData loadedData, int size)
+        public Tile[,] generate(MapData loadedData, int size)
         {
             Tile[,] tileTemp = new Tile[size, size];
             Char[] tempChars = loadedData.tileData.ToCharArray();

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace RD_Colonization.Code.Managers
 {
-    internal static class CivilizationManager
+    public static class CivilizationManager
     {
         private static Dictionary<string, CivilizationData> civilizations = new Dictionary<string, CivilizationData>();
         private static Texture2D portraitsTexture;

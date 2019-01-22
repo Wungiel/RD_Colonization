@@ -2,34 +2,34 @@
 
 namespace RD_Colonization.Code
 {
-    internal static class InputManager
+    public static class InputManager
     {
         private static KeyboardState oldStateKeyboard;
         private static KeyboardState newStateKeyboard;
         private static MouseState oldStateMouse;
         private static MouseState newStateMouse;
 
-        internal static bool isSinglePress(Keys key)
+        public static bool isSinglePress(Keys key)
         {
             return newStateKeyboard.IsKeyDown(key) && oldStateKeyboard.IsKeyUp(key);
         }
 
-        internal static bool isSingleLeftPress()
+        public static bool isSingleLeftPress()
         {
             return newStateMouse.LeftButton == ButtonState.Pressed && oldStateMouse.LeftButton == ButtonState.Released;
         }
 
-        internal static bool isSingleRighttPress()
+        public static bool isSingleRighttPress()
         {
             return newStateMouse.RightButton == ButtonState.Pressed && oldStateMouse.RightButton == ButtonState.Released;
         }
 
-        internal static bool IsKeyDown(Keys key)
+        public static bool IsKeyDown(Keys key)
         {
             return newStateKeyboard.IsKeyDown(key);
         }
 
-        internal static void updateState(KeyboardState keyboardState, MouseState mouseState)
+        public static void updateState(KeyboardState keyboardState, MouseState mouseState)
         {
             oldStateKeyboard = newStateKeyboard;
             newStateKeyboard = keyboardState;
@@ -37,7 +37,7 @@ namespace RD_Colonization.Code
             newStateMouse = mouseState;
         }
 
-        internal static int isMouseWheel()
+        public static int isMouseWheel()
         {
             if (newStateMouse.ScrollWheelValue < oldStateMouse.ScrollWheelValue)
                 return 1;

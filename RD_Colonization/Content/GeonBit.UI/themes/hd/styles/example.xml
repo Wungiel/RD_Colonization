@@ -33,7 +33,7 @@ Note:
     <ShadowColor>00000000</ShadowColor>
     <!-- Shadow offset -->
     <ShadowOffset>0 0</ShadowOffset>
-    <!-- Internal padding for child elements -->
+    <!-- public padding for child elements -->
     <Padding>10 10</Padding>
 	<!-- Space in pixels to leave before this entity, when using auto anchors -->
     <SpaceBefore>0 0</SpaceBefore>

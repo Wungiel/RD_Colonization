@@ -49,6 +49,7 @@
     <Compile Include="Code\Entities\Tile.cs" />
     <Compile Include="Code\Data\TileData.cs" />
     <Compile Include="Code\Entities\Unit.cs" />
+    <Compile Include="Code\Managers\CityManager.cs" />
     <Compile Include="Code\Managers\CivilizationManager.cs" />
     <Compile Include="Code\Managers\DatabaseManager.cs" />
     <Compile Include="Code\Managers\UnitManager.cs" />

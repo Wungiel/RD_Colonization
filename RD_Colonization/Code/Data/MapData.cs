@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace RD_Colonization.Code.Data
+﻿namespace RD_Colonization.Code.Data
 {
-    internal class MapData
+    public class MapData
     {
         public string tileData;
         public int size;

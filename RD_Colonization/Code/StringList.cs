@@ -2,7 +2,7 @@
 
 namespace RD_Colonization.Code
 {
-    internal class StringList
+    public class StringList
     {
         public static readonly String mainMenuScreenString = "mainMenu";
         public static readonly String gameScreenString = "game";
@@ -16,7 +16,6 @@ namespace RD_Colonization.Code
         public static readonly String saveGameString = "Save game";
         public static readonly String loadGameString = "Load game";
         public static readonly String mainMenuString = "Main menu";
-
 
         public static readonly String grassString = "grass";
         public static readonly String mountainString = "mountain";

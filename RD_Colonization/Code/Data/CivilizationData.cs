@@ -1,6 +1,6 @@
 ﻿namespace RD_Colonization.Code.Data
 {
-    internal class CivilizationData
+    public class CivilizationData
     {
         public readonly string civilizationName;
         public readonly string civilizationLeader;

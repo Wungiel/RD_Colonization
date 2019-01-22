@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using GeonBit.UI;
+﻿using GeonBit.UI;
 using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
-using MonoGame.Extended.ViewportAdapters;
 using RD_Colonization.Code;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Managers;
+using System.Diagnostics;
 using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization
 {
     public class GameScreen : DefaultScreen
     {
-
         private Camera2D camera;
         private MapDrawer mapDrawer;
         private Panel mainPanel, escapePanel;
-        private bool isEscapeMenuActive = false;        
+        private bool isEscapeMenuActive = false;
         private const float movementSpeed = 300;
 
         public GameScreen(ColonizationGame game) : base(game)
@@ -41,7 +37,6 @@ namespace RD_Colonization
             camera = new Camera2D(GraphicsDevice);
             PrepareGUI();
             mainPanel.Visible = false;
-
         }
 
         private void PrepareGUI()
@@ -97,7 +92,7 @@ namespace RD_Colonization
             if (InputManager.isSinglePress(Keys.Escape))
             {
                 escapePanel.Visible = !escapePanel.Visible;
-                isEscapeMenuActive = !isEscapeMenuActive;   
+                isEscapeMenuActive = !isEscapeMenuActive;
             }
             if (!isEscapeMenuActive)
             {
@@ -120,7 +115,7 @@ namespace RD_Colonization
                         {
                             Tile value;
                             MapManager.mapDictionary.TryGetValue(tempRectangle, out value);
-                            Debug.WriteLine(value.type);
+                            Debug.WriteLine(value.type.name);
                         }
                     }
                 }

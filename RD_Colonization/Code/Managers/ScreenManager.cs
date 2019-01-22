@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RD_Colonization.Code.Managers
 {
-    internal static class ScreenManager
+    public static class ScreenManager
     {
         private static Dictionary<String, DefaultScreen> ScreenList = new Dictionary<String, DefaultScreen>();
         public static DefaultScreen activeScreen = null;
@@ -13,7 +13,7 @@ namespace RD_Colonization.Code.Managers
             ScreenList.Add(key, screen);
         }
 
-        internal static void initialize()
+        public static void initialize()
         {
             foreach (KeyValuePair<string, DefaultScreen> item in ScreenList)
             {
@@ -21,7 +21,7 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
-        internal static void loadContent()
+        public static void loadContent()
         {
             foreach (KeyValuePair<string, DefaultScreen> item in ScreenList)
             {

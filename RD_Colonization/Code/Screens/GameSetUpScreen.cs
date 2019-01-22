@@ -10,7 +10,7 @@ using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Screens
 {
-    internal class GameSetUpScreen : DefaultScreen
+    public class GameSetUpScreen : DefaultScreen
     {
         private Texture2D portraits;
         private List<Entity> rootEntities = new List<Entity>();
