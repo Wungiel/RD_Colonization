@@ -17,6 +17,7 @@ namespace RD_Colonization.Code
         private Texture2D unitTileset;
         private Dictionary<String, Rectangle> tileGraphics = new Dictionary<String, Rectangle>();
         private Dictionary<String, Rectangle> unitGraphics = new Dictionary<String, Rectangle>();
+        private Dictionary<String, Rectangle> cityGraphics = new Dictionary<String, Rectangle>();
         int blink = 0;
 
         public void setTileset(Texture2D mapTileset, Texture2D unitTileset)
@@ -29,9 +30,10 @@ namespace RD_Colonization.Code
             tileGraphics.Add(waterString, new Rectangle(0, 0, 64, 64));
 
             unitGraphics.Add(civilianString, new Rectangle(0, 0, 64, 64));
-            unitGraphics.Add(soldierString, new Rectangle(64, 0, 64, 64));
-            unitGraphics.Add(cityString, new Rectangle(128, 0, 64, 64));
+            unitGraphics.Add(soldierString, new Rectangle(64, 0, 64, 64));            
             unitGraphics.Add(shipString, new Rectangle(192, 0, 64, 64));
+
+            cityGraphics.Add(cityString, new Rectangle(128, 0, 64, 64));
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera2D camera)
@@ -50,12 +52,19 @@ namespace RD_Colonization.Code
                 drawUnits(spriteBatch, pair);
                 drawPaths(spriteBatch, pair.Value);
             }
+
+            foreach (KeyValuePair<Rectangle, City> pair in CityManager.citytDictionary)
+            {
+                drawCity(spriteBatch, pair);
+            }
+
             blink++;
             if (blink == 45)
                 blink = 0;
             spriteBatch.End();
         }
-        
+
+
         private void drawMap(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Tile> pair)
         {
             Rectangle sourceRectangle;
@@ -90,5 +99,11 @@ namespace RD_Colonization.Code
             }
         }
 
+        private void drawCity(SpriteBatch spriteBatch, KeyValuePair<Rectangle, City> pair)
+        {
+            Rectangle sourceRectangle;
+            cityGraphics.TryGetValue(cityString, out sourceRectangle);
+            spriteBatch.Draw(unitTileset, pair.Key, sourceRectangle, Color.White);
+        }
     }
 }

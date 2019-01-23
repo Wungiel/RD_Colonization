@@ -1,4 +1,6 @@
-﻿using RD_Colonization.Code.Data;
+﻿using Microsoft.Xna.Framework;
+using RD_Colonization.Code.Data;
+using static RD_Colonization.Code.RectangleHelper;
 
 namespace RD_Colonization.Code.Entities
 {
@@ -11,6 +13,11 @@ namespace RD_Colonization.Code.Entities
         {
             this.type = type;
             this.position = position;
+        }
+
+        public Rectangle getPosition()
+        {
+            return createRectangle(position.position);
         }
     }
 }

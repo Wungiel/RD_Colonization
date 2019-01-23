@@ -114,6 +114,15 @@ namespace RD_Colonization
                     centreOnPosition(UnitManager.currentUnit.position);
                 }
 
+                if (InputManager.isSinglePress(Keys.B))
+                {
+                    if (UnitManager.currentUnit.type.canBuild)
+                    {
+                        CityManager.spawnCity(UnitManager.currentUnit);
+                        UnitManager.destroyUnit(UnitManager.currentUnit);
+                    }
+                }
+
                 if (InputManager.isSingleLeftPress())
                 {
                     Vector2 mousePosition = camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));

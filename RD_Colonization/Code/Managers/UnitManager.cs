@@ -118,12 +118,19 @@ namespace RD_Colonization.Code.Managers
             return tmpPath;
         }
 
-        internal static void changeCurrentUnit(Rectangle tempRectangle)
+        public static void destroyUnit(Unit unit)
+        {
+            if (unit == currentUnit)
+                currentUnit = null;
+            unitDictionary.Remove(unit.getPosition());
+        }
+
+        public static void changeCurrentUnit(Rectangle tempRectangle)
         {
             UnitManager.unitDictionary.TryGetValue(tempRectangle, out UnitManager.currentUnit);
         }
 
-        internal static void changeCurrentUnit()
+        public static void changeCurrentUnit()
         {
             var units = unitDictionary
                 .Select(kv => kv.Value).ToList();
