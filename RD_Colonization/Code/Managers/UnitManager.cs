@@ -43,6 +43,8 @@ namespace RD_Colonization.Code.Managers
             spawnUnit(tmpGrass, civilianString);
             spawnUnit(tmpWater, shipString);
             unitDictionary.TryGetValue(createRectangle(tmpGrass), out currentUnit);
+
+            TurnManager.turnEvent += moveUnits;
         }
 
         private static void spawnUnit(Tile tile, String key)
@@ -116,6 +118,22 @@ namespace RD_Colonization.Code.Managers
             }
 
             return tmpPath;
+        }
+
+        private static void moveUnits()
+        {
+            foreach(KeyValuePair<Unit, List<Tile>> kvp in movementDictionary)
+            {
+                Unit tmpUnit = kvp.Key;
+                List<Tile> tmpTiles = kvp.Value;
+                if (tmpTiles.Count > 1)
+                {
+                    unitDictionary.Remove(createRectangle(tmpUnit.position));
+                    tmpUnit.position = tmpTiles[1];
+                    tmpTiles.RemoveAt(0);
+                    unitDictionary.Add(createRectangle(tmpUnit.position), tmpUnit);
+                }
+            }
         }
 
         public static void destroyUnit(Unit unit)
