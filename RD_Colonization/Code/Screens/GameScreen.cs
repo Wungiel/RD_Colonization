@@ -22,6 +22,7 @@ namespace RD_Colonization
         private Panel escapePanel;
         private bool isEscapeMenuActive = false;
         private const float movementSpeed = 300;
+        private Paragraph turnCounter, cashCounter;
 
         public GameScreen(ColonizationGame game) : base(game)
         {
@@ -48,13 +49,11 @@ namespace RD_Colonization
             Panel mainPanel = new Panel(new Vector2(500, 100), PanelSkin.Default, Anchor.BottomLeft, new Vector2(10, 10));
 
             Button nextTurn = new Button(nextTurnString, size: new Vector2(170,80),anchor: Anchor.CenterLeft);
-            Paragraph turnCounter = new Paragraph(String.Format("Turn: {0}", 0), anchor: Anchor.Center);
-            Paragraph cashCounter = new Paragraph(String.Format("Cash: {0}", 0), anchor: Anchor.CenterRight);
+            turnCounter = new Paragraph(String.Format("Turn: {0}", 0), anchor: Anchor.Center);
+            cashCounter = new Paragraph(String.Format("Cash: {0}", 0), anchor: Anchor.CenterRight);
             nextTurn.OnClick += (Entity entity) =>
             {
-                TurnManager.increaseTurn();
-                turnCounter.Text = String.Format("Turn: {0}", TurnManager.turnNumber);
-                cashCounter.Text = String.Format("Cash: {0}", CivilizationManager.cash);
+                changeTurn();
             };
             mainPanel.AddChild(nextTurn);
             mainPanel.AddChild(turnCounter);
@@ -66,6 +65,13 @@ namespace RD_Colonization
             UserInterface.Active.AddEntity(escapePanel);
 
             rootEntities.Add(mainPanel);
+        }
+
+        private void changeTurn()
+        {
+            TurnManager.increaseTurn();
+            turnCounter.Text = String.Format("Turn: {0}", TurnManager.turnNumber);
+            cashCounter.Text = String.Format("Cash: {0}", CivilizationManager.cash);
         }
 
         private void setEscapePanel()
@@ -146,6 +152,12 @@ namespace RD_Colonization
                         UnitManager.destroyUnit(UnitManager.currentUnit);
                     }
                 }
+
+                if (InputManager.isSinglePress(Keys.Space))
+                {
+                    changeTurn();
+                }
+
 
                 bool mouseOverGUI = false;
                 foreach (Entity e in rootEntities)
