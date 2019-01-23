@@ -7,6 +7,7 @@ using MonoGame.Extended;
 using RD_Colonization.Code;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Managers;
+using System;
 using System.Diagnostics;
 using static RD_Colonization.Code.StringList;
 
@@ -55,6 +56,7 @@ namespace RD_Colonization
             Button saveGame = new Button(saveGameString);
             saveGame.OnClick += (Entity entity) =>
             {
+                DatabaseManager.removeData();
                 DatabaseManager.saveData();
             };
             Button mainMenu = new Button(mainMenuString);
@@ -74,7 +76,8 @@ namespace RD_Colonization
 
         public override void LoadScreen()
         {
-            mainPanel.Visible = true;
+            //mainPanel.Visible = true;
+            centreOnPosition(UnitManager.currentUnit.position);
         }
 
         public override void UnloadScreen()
@@ -98,12 +101,18 @@ namespace RD_Colonization
             {
                 if (InputManager.IsKeyDown(Keys.Up))
                     camera.Move(new Vector2(0, -movementSpeed) * delta);
-                if (InputManager.IsKeyDown(Keys.Down))
+                else if (InputManager.IsKeyDown(Keys.Down))
                     camera.Move(new Vector2(0, movementSpeed) * delta);
                 if (InputManager.IsKeyDown(Keys.Left))
                     camera.Move(new Vector2(-movementSpeed, 0) * delta);
-                if (InputManager.IsKeyDown(Keys.Right))
+                else if (InputManager.IsKeyDown(Keys.Right))
                     camera.Move(new Vector2(movementSpeed, 0) * delta);
+
+                if (InputManager.isSinglePress(Keys.N))
+                {
+                    UnitManager.changeCurrentUnit();
+                    centreOnPosition(UnitManager.currentUnit.position);
+                }
 
                 if (InputManager.isSingleLeftPress())
                 {
@@ -111,13 +120,15 @@ namespace RD_Colonization
                     if (mousePosition.X > 0 && mousePosition.Y > 0)
                     {
                         Rectangle tempRectangle = new Rectangle(((int)mousePosition.X / 64) * 64, ((int)mousePosition.Y / 64) * 64, 64, 64);
-                        if (MapManager.mapDictionary.ContainsKey(tempRectangle))
+                        if (UnitManager.unitDictionary.ContainsKey(tempRectangle))
                         {
-                            Tile value;
-                            MapManager.mapDictionary.TryGetValue(tempRectangle, out value);
-                            Debug.WriteLine(value.type.name);
+                            UnitManager.changeCurrentUnit(tempRectangle);
                         }
                     }
+                }
+                if (InputManager.isSingleRightPress())
+                {
+                    UnitManager.currentUnit = null;
                 }
             }
         }
@@ -128,5 +139,11 @@ namespace RD_Colonization
             mapDrawer.Draw(spriteBatch, camera);
             UserInterface.Active.Draw(spriteBatch);
         }
+
+        private void centreOnPosition(Tile tile)
+        {
+            camera.Position = new Vector2((tile.position.X * 64)-400, (tile.position.Y) * 64-300);
+        }
+
     }
 }

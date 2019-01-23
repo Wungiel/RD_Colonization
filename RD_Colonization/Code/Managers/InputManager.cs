@@ -19,7 +19,7 @@ namespace RD_Colonization.Code
             return newStateMouse.LeftButton == ButtonState.Pressed && oldStateMouse.LeftButton == ButtonState.Released;
         }
 
-        public static bool isSingleRighttPress()
+        public static bool isSingleRightPress()
         {
             return newStateMouse.RightButton == ButtonState.Pressed && oldStateMouse.RightButton == ButtonState.Released;
         }

@@ -48,12 +48,14 @@
     <Compile Include="Code\Data\UnitData.cs" />
     <Compile Include="Code\Entities\Tile.cs" />
     <Compile Include="Code\Data\TileData.cs" />
+    <Compile Include="Code\Entities\City.cs" />
     <Compile Include="Code\Entities\Unit.cs" />
     <Compile Include="Code\Managers\CityManager.cs" />
     <Compile Include="Code\Managers\CivilizationManager.cs" />
     <Compile Include="Code\Managers\DatabaseManager.cs" />
     <Compile Include="Code\Managers\UnitManager.cs" />
     <Compile Include="Code\Perlin.cs" />
+    <Compile Include="Code\RectangleHelper.cs" />
     <Compile Include="Code\Systems\MapGenerator.cs" />
     <Compile Include="Code\Managers\MapManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />

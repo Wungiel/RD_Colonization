@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Entities;
 using RD_Colonization.Code.Managers;
+using System;
+using System.Collections.Generic;
 using static RD_Colonization.Code.StringList;
+using static RD_Colonization.Code.RectangleHelper;
 
 namespace RD_Colonization.Code
 {
@@ -16,6 +17,7 @@ namespace RD_Colonization.Code
         private Texture2D unitTileset;
         private Dictionary<String, Rectangle> tileGraphics = new Dictionary<String, Rectangle>();
         private Dictionary<String, Rectangle> unitGraphics = new Dictionary<String, Rectangle>();
+        int blink = 0;
 
         public void setTileset(Texture2D mapTileset, Texture2D unitTileset)
         {
@@ -34,23 +36,59 @@ namespace RD_Colonization.Code
 
         public void Draw(SpriteBatch spriteBatch, Camera2D camera)
         {
+            
             Matrix transformMatrix = camera.GetViewMatrix();
-            Rectangle sourceRectangle;
 
             spriteBatch.Begin(transformMatrix: transformMatrix);
-            foreach (KeyValuePair<Rectangle,Tile> pair in MapManager.mapDictionary)
+            foreach (KeyValuePair<Rectangle, Tile> pair in MapManager.mapDictionary)
             {
-                tileGraphics.TryGetValue(pair.Value.type.name, out sourceRectangle);
-                spriteBatch.Draw(mapTileset, pair.Key, sourceRectangle, Color.White);
+                drawMap(spriteBatch, pair);
             }
 
             foreach (KeyValuePair<Rectangle, Unit> pair in UnitManager.unitDictionary)
             {
-                tileGraphics.TryGetValue(pair.Value.type.name, out sourceRectangle);
-                spriteBatch.Draw(mapTileset, pair.Key, sourceRectangle, Color.White);
+                drawUnits(spriteBatch, pair);
+                drawPaths(spriteBatch, pair.Value);
             }
-
+            blink++;
+            if (blink == 45)
+                blink = 0;
             spriteBatch.End();
         }
+        
+        private void drawMap(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Tile> pair)
+        {
+            Rectangle sourceRectangle;
+            tileGraphics.TryGetValue(pair.Value.type.name, out sourceRectangle);
+            spriteBatch.Draw(mapTileset, pair.Key, sourceRectangle, Color.White);
+        }
+
+        private void drawUnits(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Unit> pair)
+        {
+            Rectangle sourceRectangle;
+            if (pair.Value != UnitManager.currentUnit)
+            {
+                unitGraphics.TryGetValue(pair.Value.type.name, out sourceRectangle);
+                spriteBatch.Draw(unitTileset, pair.Key, sourceRectangle, Color.White);
+            }
+            else
+            {
+                if (blink > 15)
+                {
+                    unitGraphics.TryGetValue(pair.Value.type.name, out sourceRectangle);
+                    spriteBatch.Draw(unitTileset, pair.Key, sourceRectangle, Color.White);
+                }
+            }
+        }
+
+        private void drawPaths(SpriteBatch spriteBatch, Unit value)
+        {
+            List<Tile> tiles = UnitManager.getPathTiles(value);
+            foreach (Tile t in tiles)
+            {
+                spriteBatch.DrawRectangle(createRectangle(t), Color.Red);
+            }
+        }
+
     }
 }

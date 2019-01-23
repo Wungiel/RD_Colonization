@@ -12,7 +12,7 @@ namespace RD_Colonization.Code.Managers
             double[,] temp = new double[size, size];
             Tile[,] tileTemp = new Tile[size, size];
 
-            Random random = new Random(Guid.NewGuid().GetHashCode());
+            Random random = new Random();
             Double persistence = random.NextDouble() * 5;
             int octaves = random.Next(1, 4);
 
