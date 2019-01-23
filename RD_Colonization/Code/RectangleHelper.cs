@@ -20,5 +20,10 @@ namespace RD_Colonization.Code
         {
             return new Rectangle(((int)vector2.X / 64) * 64, ((int)vector2.Y / 64) * 64, 64, 64);
         }
+
+        public static Rectangle createRectangle(Point point)
+        {
+            return new Rectangle((int)point.X * 64, (int)point.Y * 64, 64, 64);
+        }
     }
 }

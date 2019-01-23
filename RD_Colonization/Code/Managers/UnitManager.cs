@@ -69,15 +69,53 @@ namespace RD_Colonization.Code.Managers
         }
 
 
-        public static bool checkPathfinding()
+        public static bool checkPathfinding(Rectangle destiny)
         {
-            findPath();
-            return true;
+            Tile tmpTile = null;
+            List<Tile> oldPath = null;
+            movementDictionary.TryGetValue(currentUnit, out oldPath);
+            movementDictionary.Remove(currentUnit);
+
+            MapManager.mapDictionary.TryGetValue(destiny, out tmpTile);
+            List<Tile> newPath = findPath(tmpTile);
+            if (newPath.Count == 0)
+            {
+                Debug.WriteLine("False");
+                movementDictionary.Add(currentUnit, oldPath);
+                return false;
+            }
+            else
+            {
+                Debug.WriteLine("True");
+                movementDictionary.Add(currentUnit, newPath);
+                return true;
+            }            
         }
 
-        private static void findPath()
+        private static List<Tile> findPath(Tile tmpTile)
         {
-            throw new NotImplementedException();
+            Tile nextTile = null;
+            Vector2 distance = currentUnit.position.position.ToVector2() - tmpTile.position.ToVector2();
+            int x = currentUnit.position.position.X;
+            int y = currentUnit.position.position.Y;
+            List<Tile> tmpPath = new List<Tile>();
+            for (int i = 0; i <= distance.X; i++)
+            {                
+                Rectangle tmpRectangle = createRectangle(new Point(x, y));                
+                MapManager.mapDictionary.TryGetValue(tmpRectangle, out nextTile);
+                tmpPath.Add(nextTile);
+                x--;
+            }
+
+            for (int i = 0; i <= distance.Y; i++)
+            {                
+                Rectangle tmpRectangle = createRectangle(new Point(x, y));
+                MapManager.mapDictionary.TryGetValue(tmpRectangle, out nextTile);               
+                tmpPath.Add(nextTile);
+                y--;
+            }
+
+            return tmpPath;
         }
 
         internal static void changeCurrentUnit(Rectangle tempRectangle)
