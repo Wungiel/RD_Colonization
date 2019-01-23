@@ -22,6 +22,7 @@ namespace RD_Colonization.Code.Managers
             typesDictionary.Add(civilianString, new UnitData(civilianString, true, true));
             typesDictionary.Add(soldierString, new UnitData(soldierString, true, false));
             typesDictionary.Add(shipString, new UnitData(shipString, false, false));
+            TurnManager.turnEvent += moveUnits;
         }
 
         public static void setUpGameStart()
@@ -37,21 +38,16 @@ namespace RD_Colonization.Code.Managers
             Tile tmpGrass = grassTiles[new Random().Next(grassTiles.Count() - 1)];
             Tile tmpWater = waterTiles[new Random().Next(waterTiles.Count() - 1)];
 
-            Debug.WriteLine(tmpGrass.position);
-            Debug.WriteLine(tmpWater.position);
-
             spawnUnit(tmpGrass, civilianString);
             spawnUnit(tmpWater, shipString);
             unitDictionary.TryGetValue(createRectangle(tmpGrass), out currentUnit);
-
-            TurnManager.turnEvent += moveUnits;
+            
         }
 
         private static void spawnUnit(Tile tile, String key)
         {
             Unit tmpUnit = new Unit(getUnitType(key), tile);
             List<Tile> tmpList = new List<Tile>();
-            tmpList.Add(tile);
             unitDictionary.Add(createRectangle(tile), tmpUnit);
             movementDictionary.Add(tmpUnit, tmpList);
         }
@@ -80,59 +76,144 @@ namespace RD_Colonization.Code.Managers
 
             MapManager.mapDictionary.TryGetValue(destiny, out tmpTile);
             List<Tile> newPath = findPath(tmpTile);
-            if (newPath.Count == 0)
+            if (newPath == null)
             {
-                Debug.WriteLine("False");
                 movementDictionary.Add(currentUnit, oldPath);
                 return false;
             }
             else
             {
-                Debug.WriteLine("True");
                 movementDictionary.Add(currentUnit, newPath);
                 return true;
-            }            
+            }   
         }
 
-        private static List<Tile> findPath(Tile tmpTile)
+        private static List<Tile> findPath(Tile destinyTile)
         {
-            Tile nextTile = null;
-            Vector2 distance = currentUnit.position.position.ToVector2() - tmpTile.position.ToVector2();
-            int x = currentUnit.position.position.X;
-            int y = currentUnit.position.position.Y;
-            List<Tile> tmpPath = new List<Tile>();
-            for (int i = 0; i <= distance.X; i++)
-            {                
-                Rectangle tmpRectangle = createRectangle(new Point(x, y));                
-                MapManager.mapDictionary.TryGetValue(tmpRectangle, out nextTile);
-                tmpPath.Add(nextTile);
-                x--;
-            }
+            List<Tile> closedSet = new List<Tile>();
+            List<Tile> openset = new List<Tile>();
+            Dictionary<Tile, float> g_score = new Dictionary<Tile, float>(); //Distance from starting point
+            Dictionary<Tile, float> h_score = new Dictionary<Tile, float>(); //Distance from destination
+            Dictionary<Tile, float> f_score = new Dictionary<Tile, float>(); //H+G
+            Dictionary<Tile, Tile> came_from = new Dictionary<Tile, Tile>(); //Skąd się przyszło
+            Tile currentTile = null;
 
-            for (int i = 0; i <= distance.Y; i++)
-            {                
-                Rectangle tmpRectangle = createRectangle(new Point(x, y));
-                MapManager.mapDictionary.TryGetValue(tmpRectangle, out nextTile);               
-                tmpPath.Add(nextTile);
-                y--;
-            }
+            openset.Add(currentUnit.position);
+            g_score[currentUnit.position] = 0;
 
-            return tmpPath;
+            while (openset.Count != 0)
+            {                
+                currentTile = getShortestOverallDistance(openset, destinyTile, g_score);
+                if (currentTile == destinyTile)
+                    return reconstructPath(came_from, destinyTile);
+                openset.Remove(currentTile);
+                closedSet.Add(currentTile);
+                foreach (Tile t in currentTile.neighbours)
+                {
+                    if (closedSet.Contains(t))
+                        continue;
+                    if (!t.type.walkable)
+                    {
+                        closedSet.Add(t);
+                        continue;
+                    }
+                    if ((t.type.land && !currentUnit.type.land) || (!t.type.land && currentUnit.type.land))
+                    {
+                        closedSet.Add(t);
+                        continue;
+                    }
+                    float temp_g = g_score[currentTile] + 1;                    
+                    if (!openset.Contains(t))
+                    {
+                        came_from[t] = currentTile;
+                        openset.Add(t);
+                        h_score[t] = calculateDistance(t, destinyTile);
+                        g_score[t] = temp_g;
+                    } else if (temp_g < g_score[t])
+                    {
+                        came_from[t] = currentTile;
+                        g_score[t] = temp_g;
+                        f_score[t] = g_score[t] + h_score[t];
+                    }
+                }             
+            }
+            return null;
+        }
+
+        private static List<Tile> reconstructPath(Dictionary<Tile, Tile> cameFrom, Tile currentNode)
+        {
+            List<Tile> tmpList = new List<Tile>();
+            Tile tmpTile = null;
+            while (cameFrom.TryGetValue(currentNode, out tmpTile))
+            {
+                tmpList.Add(currentNode);
+                currentNode = tmpTile;
+            }
+            tmpList.Reverse();
+            return tmpList;
+        }
+
+        private static Tile getShortestOverallDistance(List<Tile> openset, Tile destinyTile, Dictionary<Tile, float> g_score)
+        {
+            Tile closestTile = openset[0];
+            float min = calculateDistance(openset[0], destinyTile)+ g_score[closestTile];
+            foreach (Tile t in openset)
+            {
+                float tmp = calculateDistance(t, destinyTile) + g_score[t];
+                if (tmp < min)
+                {
+                    min = tmp;
+                    closestTile = t;
+                }
+            }
+            return closestTile;
+
+        }
+
+        private static Tile getShortestDistance(List<Tile> openset, Tile destinyTile)
+        {
+            Tile closestTile = openset[0];
+            float min = calculateDistance(openset[0], destinyTile);
+            foreach(Tile t in openset)
+            {
+                float tmp = calculateDistance(t, destinyTile);
+                if (tmp < min){
+                    min = tmp;
+                    closestTile = t;
+                }
+            }
+            return closestTile;
+        }
+
+
+        //Euclidean distance - units can move diagonally
+        private static float calculateDistance(Tile start, Tile end)
+        {
+            Point startPoint = start.position;
+            Point endPoint = end.position;
+
+            double tmp = Math.Pow((startPoint.X-endPoint.X),2) + Math.Pow((startPoint.Y - endPoint.Y), 2);
+            tmp = Math.Sqrt(tmp);
+            return (float)tmp;
         }
 
         private static void moveUnits()
         {
-            foreach(KeyValuePair<Unit, List<Tile>> kvp in movementDictionary)
+            foreach (KeyValuePair<Unit, List<Tile>> kvp in movementDictionary)
             {
-                Unit tmpUnit = kvp.Key;
-                List<Tile> tmpTiles = kvp.Value;
-                if (tmpTiles.Count > 1)
+                if (unitDictionary.ContainsValue(kvp.Key))
                 {
-                    unitDictionary.Remove(createRectangle(tmpUnit.position));
-                    tmpUnit.position = tmpTiles[1];
-                    tmpTiles.RemoveAt(0);
-                    unitDictionary.Add(createRectangle(tmpUnit.position), tmpUnit);
+                    Unit tmpUnit = kvp.Key;
+                    List<Tile> tmpTiles = kvp.Value;
+                    if (tmpTiles.Count > 0)
+                    {
+                        unitDictionary.Remove(createRectangle(tmpUnit.position));
+                        tmpUnit.position = tmpTiles[0];
+                        tmpTiles.RemoveAt(0);
+                        unitDictionary.Add(createRectangle(tmpUnit.position), tmpUnit);
+                    }
                 }
+                else movementDictionary.Remove(kvp.Key);
             }
         }
 

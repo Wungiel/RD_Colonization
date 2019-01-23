@@ -15,7 +15,7 @@ namespace RD_Colonization.Code.Managers
         static MapManager()
         {
             typesDictionary.Add(grassString, new TileData(grassString, 1, true, true));
-            typesDictionary.Add(waterString, new TileData(waterString, 1, true, true));
+            typesDictionary.Add(waterString, new TileData(waterString, 1, false, true));
             typesDictionary.Add(mountainString, new TileData(mountainString, 1, true, false));
         }
 
