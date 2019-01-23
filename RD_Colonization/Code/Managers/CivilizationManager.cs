@@ -11,12 +11,14 @@ namespace RD_Colonization.Code.Managers
     {
         private static Dictionary<string, CivilizationData> civilizations = new Dictionary<string, CivilizationData>();
         private static Texture2D portraitsTexture;
+        public static int cash { get; private set; }
 
         static CivilizationManager()
         {
             civilizations.Add("Germany", new CivilizationData("Germany", "Johan", 0));
             civilizations.Add("Sumeria", new CivilizationData("Sumeria", "Gilgamesh", 1));
             civilizations.Add("Pars", new CivilizationData("Pars", "Hilmes", 2));
+            cash = 0;
         }
 
         public static void initialize(Texture2D portraits)
@@ -51,5 +53,11 @@ namespace RD_Colonization.Code.Managers
             }
             return tmp;
         }
+
+        public static void addCash(int cashToAdd)
+        {
+            cash += cashToAdd;
+        }
+
     }
 }

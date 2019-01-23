@@ -10,7 +10,9 @@ namespace RD_Colonization.Code.Managers
 
         public static void spawnCity(Unit unit)
         {
-            citytDictionary.Add(unit.getPosition(), new City(unit.position));
+            City tmpCity = new City(unit.position);
+            citytDictionary.Add(unit.getPosition(), tmpCity);
+            TurnManager.turnEvent += tmpCity.generateCash;
         }
     }
 }

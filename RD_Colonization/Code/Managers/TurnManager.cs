@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace RD_Colonization.Code.Managers
 {
-    class TurnManager
+    public static class TurnManager
     {
-        //EventHandler turnChanged = new EventHandler(this);
 
-        public void subscribe()
+        public static int turnNumber { get; private set; }
+        public delegate void turnChanged();
+        public static turnChanged turnEvent;
+        
+
+        public static void increaseTurn()
         {
-
+            turnNumber++;
+            if (turnEvent != null)
+                turnEvent();
         }
     }
 }

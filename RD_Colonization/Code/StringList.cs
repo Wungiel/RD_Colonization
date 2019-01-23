@@ -25,5 +25,7 @@ namespace RD_Colonization.Code
         public static readonly String soldierString = "soldier";
         public static readonly String shipString = "ship";
         public static readonly String cityString = "city";
+
+        public static readonly String nextTurnString = "Turn";
     }
 }

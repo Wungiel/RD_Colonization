@@ -8,6 +8,7 @@ using RD_Colonization.Code;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Managers;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using static RD_Colonization.Code.StringList;
 
@@ -17,7 +18,8 @@ namespace RD_Colonization
     {
         private Camera2D camera;
         private MapDrawer mapDrawer;
-        private Panel mainPanel, escapePanel;
+        private List<Entity> rootEntities = new List<Entity>();
+        private Panel escapePanel;
         private bool isEscapeMenuActive = false;
         private const float movementSpeed = 300;
 
@@ -37,16 +39,33 @@ namespace RD_Colonization
         {
             camera = new Camera2D(GraphicsDevice);
             PrepareGUI();
-            mainPanel.Visible = false;
+            foreach(Entity e in rootEntities)
+                e.Visible = false;
         }
 
         private void PrepareGUI()
         {
-            mainPanel = new Panel(new Vector2(300, 100), PanelSkin.Default, Anchor.BottomLeft, new Vector2(10, 10));
-            //UserInterface.Active.AddEntity(mainPanel);
+            Panel mainPanel = new Panel(new Vector2(500, 100), PanelSkin.Default, Anchor.BottomLeft, new Vector2(10, 10));
+
+            Button nextTurn = new Button(nextTurnString, size: new Vector2(170,80),anchor: Anchor.CenterLeft);
+            Paragraph turnCounter = new Paragraph(String.Format("Turn: {0}", 0), anchor: Anchor.Center);
+            Paragraph cashCounter = new Paragraph(String.Format("Cash: {0}", 0), anchor: Anchor.CenterRight);
+            nextTurn.OnClick += (Entity entity) =>
+            {
+                TurnManager.increaseTurn();
+                turnCounter.Text = String.Format("Turn: {0}", TurnManager.turnNumber);
+                cashCounter.Text = String.Format("Cash: {0}", CivilizationManager.cash);
+            };
+            mainPanel.AddChild(nextTurn);
+            mainPanel.AddChild(turnCounter);
+            mainPanel.AddChild(cashCounter);
+
 
             setEscapePanel();
+            UserInterface.Active.AddEntity(mainPanel);
             UserInterface.Active.AddEntity(escapePanel);
+
+            rootEntities.Add(mainPanel);
         }
 
         private void setEscapePanel()
@@ -76,13 +95,17 @@ namespace RD_Colonization
 
         public override void LoadScreen()
         {
-            //mainPanel.Visible = true;
+            foreach (Entity e in rootEntities)
+                e.Visible = true;
+
             centreOnPosition(UnitManager.currentUnit.position);
         }
 
         public override void UnloadScreen()
         {
-            mainPanel.Visible = false;
+            foreach (Entity e in rootEntities)
+                e.Visible = false;
+
             escapePanel.Visible = false;
             isEscapeMenuActive = false;
         }
@@ -97,6 +120,7 @@ namespace RD_Colonization
                 escapePanel.Visible = !escapePanel.Visible;
                 isEscapeMenuActive = !isEscapeMenuActive;
             }
+
             if (!isEscapeMenuActive)
             {
                 if (InputManager.IsKeyDown(Keys.Up))
@@ -123,7 +147,12 @@ namespace RD_Colonization
                     }
                 }
 
-                if (InputManager.isSingleLeftPress())
+                bool mouseOverGUI = false;
+                foreach (Entity e in rootEntities)
+                    if (e.IsMouseOver)
+                        mouseOverGUI = true;
+
+                    if (InputManager.isSingleLeftPress() && !mouseOverGUI)
                 {
                     Vector2 mousePosition = camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
                     if (mousePosition.X > 0 && mousePosition.Y > 0)
@@ -156,6 +185,6 @@ namespace RD_Colonization
         {
             camera.Position = new Vector2((tile.position.X * 64)-400, (tile.position.Y) * 64-300);
         }
-
+        
     }
 }
