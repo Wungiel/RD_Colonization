@@ -50,12 +50,11 @@ namespace RD_Colonization
 
         protected override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
-            ScreenManager.activeScreen.Update(gameTime);
-            //if (InputManager.isSinglePress(Keys.Space))
-            //{
-            //    graphics.ToggleFullScreen();
-            //}
+            if (IsActive)
+            {
+                base.Update(gameTime);
+                ScreenManager.activeScreen.Update(gameTime);
+            }
         }
 
         protected override void Draw(GameTime gameTime)
