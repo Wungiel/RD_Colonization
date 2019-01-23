@@ -123,7 +123,7 @@ namespace RD_Colonization
                         if (UnitManager.unitDictionary.ContainsKey(tempRectangle))
                         {
                             UnitManager.changeCurrentUnit(tempRectangle);
-                        } else if (MapManager.mapDictionary.ContainsKey(tempRectangle))
+                        } else if (MapManager.mapDictionary.ContainsKey(tempRectangle) && UnitManager.currentUnit!=null)
                         {
                             UnitManager.checkPathfinding(tempRectangle);
                         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace RD_Colonization.Code.Data
 {
@@ -6,7 +7,7 @@ namespace RD_Colonization.Code.Data
     {
         public TileData type;
         public Point position;
-        public Tile[] neighbours = new Tile[8];
+        public List<Tile> neighbours = new List<Tile>();
 
         public Tile(TileData type, Point position)
         {
@@ -14,7 +15,7 @@ namespace RD_Colonization.Code.Data
             this.position = position;
         }
 
-        public void setNeigbhours(Tile[] neighbours)
+        public void setNeigbhours(List<Tile> neighbours)
         {
             this.neighbours = neighbours;
         }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using RD_Colonization.Code.Data;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Managers
@@ -26,9 +28,9 @@ namespace RD_Colonization.Code.Managers
 
             temp = normalizeArray(temp);
 
-            for (int i = 0; i < temp.GetLength(0); i++)
+            for (int i = 0; i < size; i++)
             {
-                for (int y = 0; y < temp.GetLength(0); y++)
+                for (int y = 0; y < size; y++)
                 {
                     string tileKey = null;
                     if (temp[i, y] > 0.7)
@@ -38,6 +40,19 @@ namespace RD_Colonization.Code.Managers
                     else
                         tileKey = waterString;
                     tileTemp[i, y] = new Tile(MapManager.getTileType(tileKey), new Point(i, y));
+                }
+            }
+
+            List<int> availableValuesX = new List<int>();
+            List<int> availableValuesY = new List<int>();
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    prepareAvailableValues(size, availableValuesX, availableValuesY, i, j);
+                    addNeighbours(availableValuesX, availableValuesY, i, j, tileTemp);
+                    availableValuesX.Clear();
+                    availableValuesY.Clear();
                 }
             }
 
@@ -51,10 +66,10 @@ namespace RD_Colonization.Code.Managers
 
             for (int i = 0; i < size; i++)
             {
-                for (int y = 0; y < size; y++)
+                for (int j = 0; j < size; j++)
                 {
                     string tileKey = null;
-                    Char c = tempChars[i * size + y];
+                    Char c = tempChars[i * size + j];
                     if (c == '0')
                     {
                         tileKey = waterString;
@@ -67,7 +82,7 @@ namespace RD_Colonization.Code.Managers
                     {
                         tileKey = mountainString;
                     }
-                    tileTemp[i, y] = new Tile(MapManager.getTileType(tileKey), new Point(i, y));
+                    tileTemp[i, j] = new Tile(MapManager.getTileType(tileKey), new Point(i, j));
                 }
             }
             return tileTemp;
@@ -87,13 +102,47 @@ namespace RD_Colonization.Code.Managers
 
             for (int i = 0; i < temp.GetLength(0); i++)
             {
-                for (int y = 0; y < temp.GetLength(0); y++)
+                for (int j = 0; j < temp.GetLength(0); j++)
                 {
-                    temp[i, y] = (temp[i, y] - min) / (max - min);
+                    temp[i, j] = (temp[i, j] - min) / (max - min);
                 }
             }
 
             return temp;
         }
+
+        private static void prepareAvailableValues(int size, List<int> availableValuesX, List<int> availableValuesY, int i, int y)
+        {
+            availableValuesX.Add(0);
+            availableValuesY.Add(0);
+
+            if (i != 0)
+                availableValuesX.Add(-1);
+            if (i != size - 1)
+                availableValuesX.Add(1);
+
+            if (y != 0)
+                availableValuesY.Add(-1);
+            if (y != size - 1)
+                availableValuesY.Add(1);
+        }
+
+        private void addNeighbours(List<int> availableValuesX, List<int> availableValuesY, int i, int j, Tile[,] tileTemp)
+        {
+            List<Tile> tmpTiles = new List<Tile>();
+            foreach (int x in availableValuesX)
+            {
+                foreach(int y in availableValuesY)
+                {
+                    if ((x != 0) || (y != 0))
+                    {
+                        tmpTiles.Add(tileTemp[i + x, y + j]);
+                    }
+                }
+            }
+            tileTemp[i, j].setNeigbhours(tmpTiles);
+        }
+
+
     }
 }
