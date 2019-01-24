@@ -213,7 +213,6 @@ namespace RD_Colonization.Code.Managers
                         unitDictionary.Add(createRectangle(tmpUnit.position), tmpUnit);
                     }
                 }
-                else movementDictionary.Remove(kvp.Key);
             }
         }
 
@@ -222,6 +221,7 @@ namespace RD_Colonization.Code.Managers
             if (unit == currentUnit)
                 currentUnit = null;
             unitDictionary.Remove(unit.getPosition());
+            movementDictionary.Remove(unit);
         }
 
         public static void changeCurrentUnit(Rectangle tempRectangle)

@@ -85,6 +85,20 @@ namespace RD_Colonization.Code.Managers
                     tileTemp[i, j] = new Tile(MapManager.getTileType(tileKey), new Point(i, j));
                 }
             }
+
+            List<int> availableValuesX = new List<int>();
+            List<int> availableValuesY = new List<int>();
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    prepareAvailableValues(size, availableValuesX, availableValuesY, i, j);
+                    addNeighbours(availableValuesX, availableValuesY, i, j, tileTemp);
+                    availableValuesX.Clear();
+                    availableValuesY.Clear();
+                }
+            }
+
             return tileTemp;
         }
 
