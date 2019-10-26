@@ -2,7 +2,7 @@
 
 namespace RD_Colonization.Code
 {
-    public class StringList
+    public static class StringList
     {
         public static readonly String mainMenuScreenString = "mainMenu";
         public static readonly String gameScreenString = "game";

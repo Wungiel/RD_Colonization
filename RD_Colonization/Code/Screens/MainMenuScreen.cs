@@ -30,26 +30,7 @@ namespace RD_Colonization.Code
             Button newGame = new Button(newGameString);
             newGame.OnClick += (Entity entity) =>
             {
-                ScreenManager.setScreen(gameSetUpScreenString);
-            };
-
-            Button loadGame = new Button(loadGameString);
-            loadGame.OnClick += (Entity entity) =>
-            {
-                if (MapManager.loadMap(DatabaseManager.loadData()))
-                {
-                    UnitManager.setUpGameStart();
-                    ScreenManager.setScreen(gameScreenString);
-                }
-                else
-                    GeonBit.UI.Utils.MessageBox.ShowMsgBox("Error", "No games saved");
-            };
-
-            Button removeSaves = new Button(removeSavesString);
-            removeSaves.OnClick += (Entity entity) =>
-            {
-                DatabaseManager.removeData();
-                GeonBit.UI.Utils.MessageBox.ShowMsgBox("Done", "Saves removed");
+                ScreenManager.Instance.SetScreen(gameSetUpScreenString);
             };
 
             Button about = new Button(aboutString);
@@ -65,8 +46,6 @@ namespace RD_Colonization.Code
             };
 
             mainPanel.AddChild(newGame);
-            mainPanel.AddChild(loadGame);
-            mainPanel.AddChild(removeSaves);
             mainPanel.AddChild(about);
             mainPanel.AddChild(exit);
         }
@@ -94,10 +73,10 @@ namespace RD_Colonization.Code
         public override void Draw()
         {
             GraphicsDevice.Clear(Color.Red);
-            spriteBatch.Begin();
-            spriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
-            spriteBatch.End();
-            UserInterface.Active.Draw(spriteBatch);
+            SpriteBatch.Begin();
+            SpriteBatch.Draw(background, new Rectangle(0, 0, background.Width, background.Height), Color.White);
+            SpriteBatch.End();
+            UserInterface.Active.Draw(SpriteBatch);
         }
     }
 }

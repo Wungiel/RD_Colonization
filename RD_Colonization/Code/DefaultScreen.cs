@@ -12,9 +12,9 @@ namespace RD_Colonization.Code
         protected ContentManager Content => Game.Content;
         protected GraphicsDevice GraphicsDevice => Game.GraphicsDevice;
         protected GameServiceContainer Services => Game.Services;
-        protected SpriteBatch spriteBatch => Game.spriteBatch;
+        protected SpriteBatch SpriteBatch => Game.spriteBatch;
         protected GameWindow Window => Game.Window;
-        protected GraphicsDeviceManager graphics => Game.graphics;
+        protected GraphicsDeviceManager Graphics => Game.Graphics;
 
         protected DefaultScreen(ColonizationGame game)
         {
@@ -34,7 +34,7 @@ namespace RD_Colonization.Code
         public virtual void Update(GameTime gameTime)
         {
             UserInterface.Active.Update(gameTime);
-            InputManager.updateState(Keyboard.GetState(), Mouse.GetState());
+            InputManager.Instance.UpdateState(Keyboard.GetState(), Mouse.GetState());
         }
     }
 }

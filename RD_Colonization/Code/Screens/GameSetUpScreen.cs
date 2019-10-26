@@ -32,7 +32,7 @@ namespace RD_Colonization.Code.Screens
         public override void LoadContent()
         {
             portraits = Content.Load<Texture2D>("Images\\Portraits");
-            CivilizationManager.initialize(portraits);
+            CivilizationManager.Instance.Initialize(portraits);
             PrepareGUI();
             foreach (Entity e in rootEntities)
             {
@@ -43,15 +43,15 @@ namespace RD_Colonization.Code.Screens
         private void PrepareGUI()
         {
             Button backButton, startGameButton;
-            setBackStartButtons(out backButton, out startGameButton);
+            SetBackStartButtons(out backButton, out startGameButton);
 
             Panel mainPanel = new Panel(new Vector2(800, 450), PanelSkin.None, Anchor.TopCenter, new Vector2(10, 10));
             PanelTabs tabs = new PanelTabs();
             tabs.BackgroundSkin = PanelSkin.Default;
             tabs.Padding = new Vector2(10, 10);
 
-            setCountryTab(tabs);
-            setMapSizeTab(tabs);
+            SetCountryTab(tabs);
+            SetMapSizeTab(tabs);
 
             UserInterface.Active.AddEntity(mainPanel);
             mainPanel.AddChild(tabs);
@@ -63,7 +63,7 @@ namespace RD_Colonization.Code.Screens
             rootEntities.Add(mainPanel);
         }
 
-        private void setMapSizeTab(PanelTabs tabs)
+        private void SetMapSizeTab(PanelTabs tabs)
         {
             sizeMapTab = tabs.AddTab("Map");
             {
@@ -76,7 +76,7 @@ namespace RD_Colonization.Code.Screens
                 foreach (int i in sizes)
                 {
                     RadioButton r = new RadioButton(String.Format("{0}x{0}", i));
-                    r.OnClick += (Entity entity) =>
+                    r.OnClick += (Entity _) =>
                     {
                         sizeKey = i.ToString();
                     };
@@ -85,7 +85,7 @@ namespace RD_Colonization.Code.Screens
             }
         }
 
-        private void setCountryTab(PanelTabs tabs)
+        private void SetCountryTab(PanelTabs tabs)
         {
             countryTab = tabs.AddTab("Country");
             {
@@ -95,7 +95,7 @@ namespace RD_Colonization.Code.Screens
                 listPanel.AddChild(new Header("List:"));
                 listPanel.AddChild(new HorizontalLine());
                 randomCivilization = new RadioButton("Random", isChecked: true);
-                randomCivilization.OnClick += (Entity entity) =>
+                randomCivilization.OnClick += (Entity _) =>
                 {
                     foreach (KeyValuePair<string, List<Entity>> item in pairsOfElements)
                         foreach (Entity e in item.Value)
@@ -103,7 +103,7 @@ namespace RD_Colonization.Code.Screens
                     civilizationKey = "Random";
                 };
                 listPanel.AddChild(randomCivilization);
-                foreach (String s in CivilizationManager.getNames())
+                foreach (String s in CivilizationManager.Instance.GetNames())
                 {
                     RadioButton r = new RadioButton(s);
                     r.Identifier = s;
@@ -111,7 +111,10 @@ namespace RD_Colonization.Code.Screens
                     {
                         foreach (KeyValuePair<string, List<Entity>> item in pairsOfElements)
                             foreach (Entity e in item.Value)
+                            {
                                 e.Visible = false;
+                            }
+
                         List<Entity> tmp = null;
                         pairsOfElements.TryGetValue(s, out tmp);
                         tmp[0].Visible = true;
@@ -123,10 +126,10 @@ namespace RD_Colonization.Code.Screens
                 countryTab.panel.AddChild(descriptionPanel);
                 descriptionPanel.AddChild(new Header("Description"));
                 descriptionPanel.AddChild(new HorizontalLine());
-                foreach (String s in CivilizationManager.getNames())
+                foreach (String s in CivilizationManager.Instance.GetNames())
                 {
-                    Image i = CivilizationManager.getPortrait(s);
-                    Paragraph p = new Paragraph(CivilizationManager.getInformations(s));
+                    Image i = CivilizationManager.Instance.GetPortrait(s);
+                    Paragraph p = new Paragraph(CivilizationManager.Instance.GetInformations(s));
                     descriptionPanel.AddChild(i);
                     descriptionPanel.AddChild(p);
                     i.Visible = false;
@@ -136,12 +139,12 @@ namespace RD_Colonization.Code.Screens
             }
         }
 
-        private void setBackStartButtons(out Button backButton, out Button startGameButton)
+        private void SetBackStartButtons(out Button backButton, out Button startGameButton)
         {
             backButton = new Button("Back", ButtonSkin.Default, Anchor.BottomLeft, new Vector2(200, 50));
             backButton.OnClick += (Entity entity) =>
             {
-                ScreenManager.setScreen(mainMenuScreenString);
+                ScreenManager.Instance.SetScreen(mainMenuScreenString);
             };
             startGameButton = new Button("Start", ButtonSkin.Default, Anchor.BottomRight, new Vector2(200, 50));
             startGameButton.OnClick += (Entity entity) =>
@@ -155,9 +158,9 @@ namespace RD_Colonization.Code.Screens
                                 {
                                     if (sizeKey.Equals("Random"))
                                         sizeKey = "30";
-                                    MapManager.generateMap(Int32.Parse(sizeKey));
-                                    UnitManager.setUpGameStart();
-                                    ScreenManager.setScreen(gameScreenString);
+                                    MapManager.Instance.GenerateMap(Int32.Parse(sizeKey));
+                                    UnitManager.Instance.SetUpGameStart();
+                                    ScreenManager.Instance.SetScreen(gameScreenString);
                                     return true; })
                                 });
             };
@@ -196,9 +199,9 @@ namespace RD_Colonization.Code.Screens
         public override void Draw()
         {
             GraphicsDevice.Clear(Color.SaddleBrown);
-            spriteBatch.Begin();
-            spriteBatch.End();
-            UserInterface.Active.Draw(spriteBatch);
+            SpriteBatch.Begin();
+            SpriteBatch.End();
+            UserInterface.Active.Draw(SpriteBatch);
         }
     }
 }

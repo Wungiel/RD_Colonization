@@ -20,7 +20,7 @@ namespace RD_Colonization.Code
         private Dictionary<String, Rectangle> cityGraphics = new Dictionary<String, Rectangle>();
         int blink = 0;
 
-        public void setTileset(Texture2D mapTileset, Texture2D unitTileset)
+        public void SetTileset(Texture2D mapTileset, Texture2D unitTileset)
         {
             this.mapTileset = mapTileset;
             this.unitTileset = unitTileset;
@@ -42,20 +42,20 @@ namespace RD_Colonization.Code
             Matrix transformMatrix = camera.GetViewMatrix();
 
             spriteBatch.Begin(transformMatrix: transformMatrix);
-            foreach (KeyValuePair<Rectangle, Tile> pair in MapManager.mapDictionary)
+            foreach (KeyValuePair<Rectangle, Tile> pair in MapManager.Instance.mapDictionary)
             {
-                drawMap(spriteBatch, pair);
+                DrawMap(spriteBatch, pair);
             }
 
-            foreach (KeyValuePair<Rectangle, Unit> pair in UnitManager.unitDictionary)
+            foreach (KeyValuePair<Rectangle, Unit> pair in UnitManager.Instance.unitDictionary)
             {
-                drawUnits(spriteBatch, pair);
-                drawPaths(spriteBatch, pair.Value);
+                DrawUnits(spriteBatch, pair);
+                DrawPaths(spriteBatch, pair.Value);
             }
 
-            foreach (KeyValuePair<Rectangle, City> pair in CityManager.citytDictionary)
+            foreach (KeyValuePair<Rectangle, City> pair in CityManager.Instance.citytDictionary)
             {
-                drawCity(spriteBatch, pair);
+                DrawCity(spriteBatch, pair);
             }
 
             blink++;
@@ -65,17 +65,17 @@ namespace RD_Colonization.Code
         }
 
 
-        private void drawMap(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Tile> pair)
+        private void DrawMap(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Tile> pair)
         {
             Rectangle sourceRectangle;
             tileGraphics.TryGetValue(pair.Value.type.name, out sourceRectangle);
             spriteBatch.Draw(mapTileset, pair.Key, sourceRectangle, Color.White);
         }
 
-        private void drawUnits(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Unit> pair)
+        private void DrawUnits(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Unit> pair)
         {
             Rectangle sourceRectangle;
-            if (pair.Value != UnitManager.currentUnit)
+            if (pair.Value != UnitManager.Instance.currentUnit)
             {
                 unitGraphics.TryGetValue(pair.Value.type.name, out sourceRectangle);
                 spriteBatch.Draw(unitTileset, pair.Key, sourceRectangle, Color.White);
@@ -90,16 +90,16 @@ namespace RD_Colonization.Code
             }
         }
 
-        private void drawPaths(SpriteBatch spriteBatch, Unit value)
+        private void DrawPaths(SpriteBatch spriteBatch, Unit value)
         {
-            List<Tile> tiles = UnitManager.getPathTiles(value);
+            List<Tile> tiles = UnitManager.Instance.GetPathTiles(value);
             foreach (Tile t in tiles)
             {
-                spriteBatch.DrawRectangle(createRectangle(t), Color.Red);
+                spriteBatch.DrawCircle(CreateCircle(t), 12, Color.Red);
             }
         }
 
-        private void drawCity(SpriteBatch spriteBatch, KeyValuePair<Rectangle, City> pair)
+        private void DrawCity(SpriteBatch spriteBatch, KeyValuePair<Rectangle, City> pair)
         {
             Rectangle sourceRectangle;
             cityGraphics.TryGetValue(cityString, out sourceRectangle);

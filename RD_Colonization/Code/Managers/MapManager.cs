@@ -6,49 +6,49 @@ using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Managers
 {
-    public static class MapManager
+    public class MapManager : BaseManager<MapManager>
     {
-        public static Dictionary<Rectangle, Tile> mapDictionary = null;
-        public static int mapSize = 0;
-        private static readonly Dictionary<String, TileData> typesDictionary = new Dictionary<String, TileData>();
+        public Dictionary<Rectangle, Tile> mapDictionary = null;
+        public int mapSize = 0;
+        private readonly Dictionary<String, TileData> typesDictionary = new Dictionary<String, TileData>();
 
-        static MapManager()
+        public MapManager()
         {
             typesDictionary.Add(grassString, new TileData(grassString, 1, true, true));
             typesDictionary.Add(waterString, new TileData(waterString, 1, false, true));
             typesDictionary.Add(mountainString, new TileData(mountainString, 1, true, false));
         }
 
-        public static void generateMap(int size)
+        public void GenerateMap(int size)
         {
             mapSize = size;
             mapDictionary = new Dictionary<Rectangle, Tile>();
-            Tile[,] mapData = new MapGenerator().generate(size);
-            createDictionary(mapData);
+            Tile[,] mapData = new MapGenerator().Generate(size);
+            CreateDictionary(mapData);
         }
 
-        public static bool loadMap(MapData loadedData)
+        public bool LoadMap(MapData loadedData)
         {
             if (loadedData != null)
             {
                 mapSize = loadedData.size;
                 mapDictionary = new Dictionary<Rectangle, Tile>();
-                Tile[,] mapData = new MapGenerator().generate(loadedData, mapSize);
-                createDictionary(mapData);
+                Tile[,] mapData = new MapGenerator().Generate(loadedData, mapSize);
+                CreateDictionary(mapData);
                 return true;
             }
             else
                 return false;
         }
 
-        public static TileData getTileType(String key)
+        public TileData GetTileType(String key)
         {
             TileData temp = null;
             typesDictionary.TryGetValue(key, out temp);
             return temp;
         }
 
-        private static void createDictionary(Tile[,] mapData)
+        private void CreateDictionary(Tile[,] mapData)
         {
             foreach (Tile t in mapData)
             {

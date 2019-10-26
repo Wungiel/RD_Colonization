@@ -15,9 +15,9 @@ namespace RD_Colonization.Code.Entities
             this.position = position;
         }
 
-        public Rectangle getPosition()
+        public Rectangle GetPosition()
         {
-            return createRectangle(position.position);
+            return CreateRectangle(position.position);
         }
     }
 }

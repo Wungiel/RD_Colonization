@@ -11,7 +11,7 @@ namespace RD_Colonization
 {
     public class ColonizationGame : Game
     {
-        public GraphicsDeviceManager graphics { get; }
+        public GraphicsDeviceManager Graphics { get; }
         public SpriteBatch spriteBatch;
 
         public ColonizationGame()
@@ -20,11 +20,13 @@ namespace RD_Colonization
             IsFixedTimeStep = true;
             TargetElapsedTime = TimeSpan.FromMilliseconds(1000.0f / 60);
 
-            graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferHeight = 600;
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.SynchronizeWithVerticalRetrace = false;
-            graphics.ApplyChanges();
+            Graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferHeight = 600,
+                PreferredBackBufferWidth = 800,
+                SynchronizeWithVerticalRetrace = false
+            };
+            Graphics.ApplyChanges();
 
             Window.AllowUserResizing = false;
             Window.Title = "RD's Colonization";
@@ -33,18 +35,19 @@ namespace RD_Colonization
         protected override void Initialize()
         {
             UserInterface.Initialize(Content, BuiltinThemes.hd);
-            ScreenManager.registerScreen(mainMenuScreenString, new MainMenuScreen(this));
-            ScreenManager.registerScreen(gameSetUpScreenString, new GameSetUpScreen(this));
-            ScreenManager.registerScreen(gameScreenString, new GameScreen(this));
-            ScreenManager.initialize();
-            ScreenManager.setScreen(mainMenuScreenString);
+            ScreenManager manager = ScreenManager.Instance;
+            manager.RegisterScreen(mainMenuScreenString, new MainMenuScreen(this));
+            manager.RegisterScreen(gameSetUpScreenString, new GameSetUpScreen(this));
+            manager.RegisterScreen(gameScreenString, new GameScreen(this));
+            manager.Initialize();
+            manager.SetScreen(mainMenuScreenString);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            ScreenManager.loadContent();
+            ScreenManager.Instance.LoadContent();
             base.LoadContent();
         }
 
@@ -53,14 +56,14 @@ namespace RD_Colonization
             if (IsActive)
             {
                 base.Update(gameTime);
-                ScreenManager.activeScreen.Update(gameTime);
+                ScreenManager.Instance.activeScreen.Update(gameTime);
             }
         }
 
         protected override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            ScreenManager.activeScreen.Draw();
+            ScreenManager.Instance.activeScreen.Draw();
         }
     }
 }

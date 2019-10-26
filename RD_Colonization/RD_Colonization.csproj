@@ -42,6 +42,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Code\BaseManager.cs" />
     <Compile Include="Code\Data\CivilizationData.cs" />
     <Compile Include="Code\Data\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />
@@ -52,7 +53,6 @@
     <Compile Include="Code\Entities\Unit.cs" />
     <Compile Include="Code\Managers\CityManager.cs" />
     <Compile Include="Code\Managers\CivilizationManager.cs" />
-    <Compile Include="Code\Managers\DatabaseManager.cs" />
     <Compile Include="Code\Managers\TurnManager.cs" />
     <Compile Include="Code\Managers\UnitManager.cs" />
     <Compile Include="Code\Perlin.cs" />

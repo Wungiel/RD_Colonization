@@ -13,7 +13,7 @@ namespace RD_Colonization.Code.Entities
             this.position = position;
         }
 
-        public void generateCash()
+        public void GenerateCash()
         {
             int cash = 0;
             foreach(Tile n in position.neighbours)
@@ -21,7 +21,7 @@ namespace RD_Colonization.Code.Entities
                 if (n.type.name == grassString)
                     cash++;
             }
-            CivilizationManager.addCash(cash);
+            CivilizationManager.Instance.AddCash(cash);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace RD_Colonization.Code.Managers
 {
     public class MapGenerator
     {
-        public Tile[,] generate(int size)
+        public Tile[,] Generate(int size)
         {
             double[,] temp = new double[size, size];
             Tile[,] tileTemp = new Tile[size, size];
@@ -26,7 +26,7 @@ namespace RD_Colonization.Code.Managers
                 }
             }
 
-            temp = normalizeArray(temp);
+            temp = NormalizeArray(temp);
 
             for (int i = 0; i < size; i++)
             {
@@ -39,7 +39,7 @@ namespace RD_Colonization.Code.Managers
                         tileKey = grassString;
                     else
                         tileKey = waterString;
-                    tileTemp[i, y] = new Tile(MapManager.getTileType(tileKey), new Point(i, y));
+                    tileTemp[i, y] = new Tile(MapManager.Instance.GetTileType(tileKey), new Point(i, y));
                 }
             }
 
@@ -49,8 +49,8 @@ namespace RD_Colonization.Code.Managers
             {
                 for (int j = 0; j < size; j++)
                 {
-                    prepareAvailableValues(size, availableValuesX, availableValuesY, i, j);
-                    addNeighbours(availableValuesX, availableValuesY, i, j, tileTemp);
+                    PrepareAvailableValues(size, availableValuesX, availableValuesY, i, j);
+                    AddNeighbours(availableValuesX, availableValuesY, i, j, tileTemp);
                     availableValuesX.Clear();
                     availableValuesY.Clear();
                 }
@@ -59,7 +59,7 @@ namespace RD_Colonization.Code.Managers
             return tileTemp;
         }
 
-        public Tile[,] generate(MapData loadedData, int size)
+        public Tile[,] Generate(MapData loadedData, int size)
         {
             Tile[,] tileTemp = new Tile[size, size];
             Char[] tempChars = loadedData.tileData.ToCharArray();
@@ -69,7 +69,7 @@ namespace RD_Colonization.Code.Managers
                 for (int j = 0; j < size; j++)
                 {
                     string tileKey = null;
-                    Char c = tempChars[i * size + j];
+                    Char c = tempChars[(i * size) + j];
                     if (c == '0')
                     {
                         tileKey = waterString;
@@ -82,7 +82,7 @@ namespace RD_Colonization.Code.Managers
                     {
                         tileKey = mountainString;
                     }
-                    tileTemp[i, j] = new Tile(MapManager.getTileType(tileKey), new Point(i, j));
+                    tileTemp[i, j] = new Tile(MapManager.Instance.GetTileType(tileKey), new Point(i, j));
                 }
             }
 
@@ -92,8 +92,8 @@ namespace RD_Colonization.Code.Managers
             {
                 for (int j = 0; j < size; j++)
                 {
-                    prepareAvailableValues(size, availableValuesX, availableValuesY, i, j);
-                    addNeighbours(availableValuesX, availableValuesY, i, j, tileTemp);
+                    PrepareAvailableValues(size, availableValuesX, availableValuesY, i, j);
+                    AddNeighbours(availableValuesX, availableValuesY, i, j, tileTemp);
                     availableValuesX.Clear();
                     availableValuesY.Clear();
                 }
@@ -102,7 +102,7 @@ namespace RD_Colonization.Code.Managers
             return tileTemp;
         }
 
-        private double[,] normalizeArray(double[,] temp)
+        private double[,] NormalizeArray(double[,] temp)
         {
             double min = temp[0, 0];
             double max = temp[0, 0];
@@ -125,7 +125,7 @@ namespace RD_Colonization.Code.Managers
             return temp;
         }
 
-        private static void prepareAvailableValues(int size, List<int> availableValuesX, List<int> availableValuesY, int i, int y)
+        private static void PrepareAvailableValues(int size, List<int> availableValuesX, List<int> availableValuesY, int i, int y)
         {
             availableValuesX.Add(0);
             availableValuesY.Add(0);
@@ -141,7 +141,7 @@ namespace RD_Colonization.Code.Managers
                 availableValuesY.Add(1);
         }
 
-        private void addNeighbours(List<int> availableValuesX, List<int> availableValuesY, int i, int j, Tile[,] tileTemp)
+        private void AddNeighbours(List<int> availableValuesX, List<int> availableValuesY, int i, int j, Tile[,] tileTemp)
         {
             List<Tile> tmpTiles = new List<Tile>();
             foreach (int x in availableValuesX)
@@ -154,7 +154,7 @@ namespace RD_Colonization.Code.Managers
                     }
                 }
             }
-            tileTemp[i, j].setNeigbhours(tmpTiles);
+            tileTemp[i, j].SetNeigbhours(tmpTiles);
         }
 
 

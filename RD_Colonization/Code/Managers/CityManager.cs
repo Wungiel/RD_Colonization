@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace RD_Colonization.Code.Managers
 {
-    public static class CityManager
+    public class CityManager : BaseManager<CityManager>
     {
-        public static Dictionary<Rectangle, City> citytDictionary = new Dictionary<Rectangle, City>();
+        public Dictionary<Rectangle, City> citytDictionary = new Dictionary<Rectangle, City>();
 
-        public static void spawnCity(Unit unit)
+        public void SpawnCity(Unit unit)
         {
             City tmpCity = new City(unit.position);
-            citytDictionary.Add(unit.getPosition(), tmpCity);
-            TurnManager.turnEvent += tmpCity.generateCash;
+            citytDictionary.Add(unit.GetPosition(), tmpCity);
+            TurnManager.Instance.turnEvent += tmpCity.GenerateCash;
         }
     }
 }

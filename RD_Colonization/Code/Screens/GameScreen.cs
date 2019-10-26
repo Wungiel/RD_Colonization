@@ -33,7 +33,7 @@ namespace RD_Colonization
         {
             Texture2D mapTileset = Content.Load<Texture2D>("Images\\TileSet");
             Texture2D unitTileset = Content.Load<Texture2D>("Images\\UnitSet");
-            mapDrawer.setTileset(mapTileset, unitTileset);
+            mapDrawer.SetTileset(mapTileset, unitTileset);
         }
 
         public override void Initialize()
@@ -51,50 +51,47 @@ namespace RD_Colonization
             Button nextTurn = new Button(nextTurnString, size: new Vector2(170,80),anchor: Anchor.CenterLeft);
             turnCounter = new Paragraph(String.Format("Turn: {0}", 0), anchor: Anchor.Center);
             cashCounter = new Paragraph(String.Format("Cash: {0}", 0), anchor: Anchor.CenterRight);
-            nextTurn.OnClick += (Entity entity) =>
+            nextTurn.OnClick += (Entity _) =>
             {
-                changeTurn();
+                ChangeTurn();
             };
             mainPanel.AddChild(nextTurn);
             mainPanel.AddChild(turnCounter);
             mainPanel.AddChild(cashCounter);
 
-
-            setEscapePanel();
+            SetEscapePanel();
             UserInterface.Active.AddEntity(mainPanel);
             UserInterface.Active.AddEntity(escapePanel);
 
             rootEntities.Add(mainPanel);
         }
 
-        private void changeTurn()
+        private void ChangeTurn()
         {
-            TurnManager.increaseTurn();
-            turnCounter.Text = String.Format("Turn: {0}", TurnManager.turnNumber);
-            cashCounter.Text = String.Format("Cash: {0}", CivilizationManager.cash);
+            TurnManager.Instance.IncreaseTurn();
+            turnCounter.Text = String.Format("Turn: {0}", TurnManager.Instance.TurnNumber);
+            cashCounter.Text = String.Format("Cash: {0}", CivilizationManager.Cash);
         }
 
-        private void setEscapePanel()
+        private void SetEscapePanel()
         {
-            escapePanel = new Panel(new Vector2(300, 300), PanelSkin.Default, Anchor.Center, new Vector2(10, 10));
-            escapePanel.Visible = false;
-            Button saveGame = new Button(saveGameString);
-            saveGame.OnClick += (Entity entity) =>
+            escapePanel = new Panel(new Vector2(300, 300), PanelSkin.Default, Anchor.Center, new Vector2(10, 10))
             {
-                DatabaseManager.removeData();
-                DatabaseManager.saveData();
+                Visible = false
             };
+
             Button mainMenu = new Button(mainMenuString);
             mainMenu.OnClick += (Entity entity) =>
             {
-                ScreenManager.setScreen(mainMenuScreenString);
+                ScreenManager.Instance.SetScreen(mainMenuScreenString);
             };
+
             Button exit = new Button(exitString);
-            exit.OnClick += (Entity entity) =>
+            exit.OnClick += (Entity _) =>
             {
                 Game.Exit();
             };
-            escapePanel.AddChild(saveGame);
+
             escapePanel.AddChild(mainMenu);
             escapePanel.AddChild(exit);
         }
@@ -104,7 +101,7 @@ namespace RD_Colonization
             foreach (Entity e in rootEntities)
                 e.Visible = true;
 
-            centreOnPosition(UnitManager.currentUnit.position);
+            CentreOnPosition(UnitManager.Instance.currentUnit.position);
         }
 
         public override void UnloadScreen()
@@ -121,7 +118,7 @@ namespace RD_Colonization
             base.Update(gameTime);
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (InputManager.isSinglePress(Keys.Escape))
+            if (InputManager.Instance.IsSinglePress(Keys.Escape))
             {
                 escapePanel.Visible = !escapePanel.Visible;
                 isEscapeMenuActive = !isEscapeMenuActive;
@@ -129,59 +126,62 @@ namespace RD_Colonization
 
             if (!isEscapeMenuActive)
             {
-                if (InputManager.IsKeyDown(Keys.Up))
+                if (InputManager.Instance.IsKeyDown(Keys.Up))
                     camera.Move(new Vector2(0, -movementSpeed) * delta);
-                else if (InputManager.IsKeyDown(Keys.Down))
+                else if (InputManager.Instance.IsKeyDown(Keys.Down))
                     camera.Move(new Vector2(0, movementSpeed) * delta);
-                if (InputManager.IsKeyDown(Keys.Left))
+                if (InputManager.Instance.IsKeyDown(Keys.Left))
                     camera.Move(new Vector2(-movementSpeed, 0) * delta);
-                else if (InputManager.IsKeyDown(Keys.Right))
+                else if (InputManager.Instance.IsKeyDown(Keys.Right))
                     camera.Move(new Vector2(movementSpeed, 0) * delta);
 
-                if (InputManager.isSinglePress(Keys.N))
+                if (InputManager.Instance.IsSinglePress(Keys.N))
                 {
-                    UnitManager.changeCurrentUnit();
-                    centreOnPosition(UnitManager.currentUnit.position);
+                    UnitManager.Instance.ChangeCurrentUnit();
+                    CentreOnPosition(UnitManager.Instance.currentUnit.position);
                 }
 
-                if (InputManager.isSinglePress(Keys.B))
+                if (InputManager.Instance.IsSinglePress(Keys.B))
                 {
-                    if (UnitManager.currentUnit.type.canBuild)
+                    if (UnitManager.Instance.currentUnit.type.canBuild)
                     {
-                        CityManager.spawnCity(UnitManager.currentUnit);
-                        UnitManager.destroyUnit(UnitManager.currentUnit);
+                        CityManager.Instance.SpawnCity(UnitManager.Instance.currentUnit);
+                        UnitManager.Instance.DestroyUnit(UnitManager.Instance.currentUnit);
                     }
                 }
 
-                if (InputManager.isSinglePress(Keys.Space))
+                if (InputManager.Instance.IsSinglePress(Keys.Space))
                 {
-                    changeTurn();
+                    ChangeTurn();
                 }
-
 
                 bool mouseOverGUI = false;
                 foreach (Entity e in rootEntities)
+                {
                     if (e.IsMouseOver)
+                    {
                         mouseOverGUI = true;
+                    }
+                }
 
-                    if (InputManager.isSingleLeftPress() && !mouseOverGUI)
+                if (InputManager.Instance.IsSingleLeftPress() && !mouseOverGUI)
                 {
                     Vector2 mousePosition = camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
                     if (mousePosition.X > 0 && mousePosition.Y > 0)
                     {
                         Rectangle tempRectangle = new Rectangle(((int)mousePosition.X / 64) * 64, ((int)mousePosition.Y / 64) * 64, 64, 64);
-                        if (UnitManager.unitDictionary.ContainsKey(tempRectangle))
+                        if (UnitManager.Instance.unitDictionary.ContainsKey(tempRectangle))
                         {
-                            UnitManager.changeCurrentUnit(tempRectangle);
-                        } else if (MapManager.mapDictionary.ContainsKey(tempRectangle) && UnitManager.currentUnit!=null)
+                            UnitManager.Instance.ChangeCurrentUnit(tempRectangle);
+                        } else if (MapManager.Instance.mapDictionary.ContainsKey(tempRectangle) && UnitManager.Instance.currentUnit !=null)
                         {
-                            UnitManager.checkPathfinding(tempRectangle);
+                            UnitManager.Instance.CheckPathfinding(tempRectangle);
                         }
                     }
                 }
-                if (InputManager.isSingleRightPress())
+                if (InputManager.Instance.IsSingleRightPress())
                 {
-                    UnitManager.currentUnit = null;
+                    UnitManager.Instance.currentUnit = null;
                 }
             }
         }
@@ -189,14 +189,13 @@ namespace RD_Colonization
         public override void Draw()
         {
             GraphicsDevice.Clear(Color.Green);
-            mapDrawer.Draw(spriteBatch, camera);
-            UserInterface.Active.Draw(spriteBatch);
+            mapDrawer.Draw(SpriteBatch, camera);
+            UserInterface.Active.Draw(SpriteBatch);
         }
 
-        private void centreOnPosition(Tile tile)
+        private void CentreOnPosition(Tile tile)
         {
-            camera.Position = new Vector2((tile.position.X * 64)-400, (tile.position.Y) * 64-300);
+            camera.Position = new Vector2((tile.position.X * 64)-400, ((tile.position.Y) * 64) - 300);
         }
-        
     }
 }

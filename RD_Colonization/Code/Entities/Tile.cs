@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoGame.Extended;
+using System;
 using System.Collections.Generic;
 
 namespace RD_Colonization.Code.Data
@@ -15,9 +17,24 @@ namespace RD_Colonization.Code.Data
             this.position = position;
         }
 
-        public void setNeigbhours(List<Tile> neighbours)
+        public void SetNeigbhours(List<Tile> neighbours)
         {
             this.neighbours = neighbours;
+        }
+
+        public Point GetPosition()
+        {
+            return new Point(position.X * 64, position.Y * 64);
+        }
+
+        public Point GetSize()
+        {
+            return new Point(64, 64);
+        }
+
+        public Point2 GetCenter()
+        {
+            return new Point2(position.X * 64 + 32, position.Y * 64 + 32);
         }
     }
 }

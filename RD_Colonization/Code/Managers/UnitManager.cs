@@ -10,56 +10,56 @@ using static RD_Colonization.Code.RectangleHelper;
 
 namespace RD_Colonization.Code.Managers
 {
-    public static class UnitManager
+    public class UnitManager : BaseManager<UnitManager>
     {
-        public static Dictionary<Rectangle, Unit> unitDictionary;
-        public static Dictionary<Unit, List<Tile>> movementDictionary = new Dictionary<Unit, List<Tile>>();
-        private static Dictionary<String, UnitData> typesDictionary = new Dictionary<String, UnitData>();
-        public static Unit currentUnit = null;
+        public Dictionary<Rectangle, Unit> unitDictionary;
+        public Dictionary<Unit, List<Tile>> movementDictionary = new Dictionary<Unit, List<Tile>>();
+        private Dictionary<String, UnitData> typesDictionary = new Dictionary<String, UnitData>();
+        public Unit currentUnit = null;
 
-        static UnitManager()
+        public UnitManager()
         {
             typesDictionary.Add(civilianString, new UnitData(civilianString, true, true));
             typesDictionary.Add(soldierString, new UnitData(soldierString, true, false));
             typesDictionary.Add(shipString, new UnitData(shipString, false, false));
-            TurnManager.turnEvent += moveUnits;
+            TurnManager.Instance.turnEvent += MoveUnits;
         }
 
-        public static void setUpGameStart()
+        public void SetUpGameStart()
         {
             unitDictionary = new Dictionary<Rectangle, Unit>();
 
-            var grassTiles = MapManager.mapDictionary
+            var grassTiles = MapManager.Instance.mapDictionary
                 .Where(kv => kv.Value.type.name == grassString).Select(kv => kv.Value).ToList();
 
-            var waterTiles = MapManager.mapDictionary
+            var waterTiles = MapManager.Instance.mapDictionary
                 .Where(kv => kv.Value.type.name == waterString).Select(kv => kv.Value).ToList();
 
-            Tile tmpGrass = grassTiles[new Random().Next(grassTiles.Count() - 1)];
-            Tile tmpWater = waterTiles[new Random().Next(waterTiles.Count() - 1)];
+            Tile tmpGrass = grassTiles[new Random().Next(grassTiles.Count - 1)];
+            Tile tmpWater = waterTiles[new Random().Next(waterTiles.Count - 1)];
 
-            spawnUnit(tmpGrass, civilianString);
-            spawnUnit(tmpWater, shipString);
-            unitDictionary.TryGetValue(createRectangle(tmpGrass), out currentUnit);
+            SpawnUnit(tmpGrass, civilianString);
+            SpawnUnit(tmpWater, shipString);
+            unitDictionary.TryGetValue(CreateRectangle(tmpGrass), out currentUnit);
             
         }
 
-        private static void spawnUnit(Tile tile, String key)
+        private void SpawnUnit(Tile tile, String key)
         {
-            Unit tmpUnit = new Unit(getUnitType(key), tile);
+            Unit tmpUnit = new Unit(GetUnitType(key), tile);
             List<Tile> tmpList = new List<Tile>();
-            unitDictionary.Add(createRectangle(tile), tmpUnit);
+            unitDictionary.Add(CreateRectangle(tile), tmpUnit);
             movementDictionary.Add(tmpUnit, tmpList);
         }
 
-        public static UnitData getUnitType(String key)
+        public UnitData GetUnitType(String key)
         {
             UnitData temp = null;
             typesDictionary.TryGetValue(key, out temp);
             return temp;
         }
 
-        public static List<Tile> getPathTiles(Unit key)
+        public List<Tile> GetPathTiles(Unit key)
         {
             List<Tile> temp = null;
             movementDictionary.TryGetValue(key, out temp);
@@ -67,15 +67,15 @@ namespace RD_Colonization.Code.Managers
         }
 
 
-        public static bool checkPathfinding(Rectangle destiny)
+        public bool CheckPathfinding(Rectangle destiny)
         {
             Tile tmpTile = null;
             List<Tile> oldPath = null;
             movementDictionary.TryGetValue(currentUnit, out oldPath);
             movementDictionary.Remove(currentUnit);
 
-            MapManager.mapDictionary.TryGetValue(destiny, out tmpTile);
-            List<Tile> newPath = findPath(tmpTile);
+            MapManager.Instance.mapDictionary.TryGetValue(destiny, out tmpTile);
+            List<Tile> newPath = FindPath(tmpTile);
             if (newPath == null)
             {
                 movementDictionary.Add(currentUnit, oldPath);
@@ -85,10 +85,10 @@ namespace RD_Colonization.Code.Managers
             {
                 movementDictionary.Add(currentUnit, newPath);
                 return true;
-            }   
+            }
         }
 
-        private static List<Tile> findPath(Tile destinyTile)
+        private List<Tile> FindPath(Tile destinyTile)
         {
             List<Tile> closedSet = new List<Tile>();
             List<Tile> openset = new List<Tile>();
@@ -102,10 +102,10 @@ namespace RD_Colonization.Code.Managers
             g_score[currentUnit.position] = 0;
 
             while (openset.Count != 0)
-            {                
-                currentTile = getShortestOverallDistance(openset, destinyTile, g_score);
+            {
+                currentTile = GetShortestOverallDistance(openset, destinyTile, g_score);
                 if (currentTile == destinyTile)
-                    return reconstructPath(came_from, destinyTile);
+                    return ReconstructPath(came_from, destinyTile);
                 openset.Remove(currentTile);
                 closedSet.Add(currentTile);
                 foreach (Tile t in currentTile.neighbours)
@@ -117,17 +117,17 @@ namespace RD_Colonization.Code.Managers
                         closedSet.Add(t);
                         continue;
                     }
-                    if ((t.type.land && !currentUnit.type.land) || (!t.type.land && currentUnit.type.land))
+                    if (t.type.land ^ currentUnit.type.land)
                     {
                         closedSet.Add(t);
                         continue;
                     }
-                    float temp_g = g_score[currentTile] + 1;                    
+                    float temp_g = g_score[currentTile] + 1;
                     if (!openset.Contains(t))
                     {
                         came_from[t] = currentTile;
                         openset.Add(t);
-                        h_score[t] = calculateDistance(t, destinyTile);
+                        h_score[t] = CalculateDistance(t, destinyTile);
                         g_score[t] = temp_g;
                     } else if (temp_g < g_score[t])
                     {
@@ -140,7 +140,7 @@ namespace RD_Colonization.Code.Managers
             return null;
         }
 
-        private static List<Tile> reconstructPath(Dictionary<Tile, Tile> cameFrom, Tile currentNode)
+        private List<Tile> ReconstructPath(Dictionary<Tile, Tile> cameFrom, Tile currentNode)
         {
             List<Tile> tmpList = new List<Tile>();
             Tile tmpTile = null;
@@ -153,13 +153,13 @@ namespace RD_Colonization.Code.Managers
             return tmpList;
         }
 
-        private static Tile getShortestOverallDistance(List<Tile> openset, Tile destinyTile, Dictionary<Tile, float> g_score)
+        private Tile GetShortestOverallDistance(List<Tile> openset, Tile destinyTile, Dictionary<Tile, float> g_score)
         {
             Tile closestTile = openset[0];
-            float min = calculateDistance(openset[0], destinyTile)+ g_score[closestTile];
+            float min = CalculateDistance(openset[0], destinyTile)+ g_score[closestTile];
             foreach (Tile t in openset)
             {
-                float tmp = calculateDistance(t, destinyTile) + g_score[t];
+                float tmp = CalculateDistance(t, destinyTile) + g_score[t];
                 if (tmp < min)
                 {
                     min = tmp;
@@ -170,13 +170,13 @@ namespace RD_Colonization.Code.Managers
 
         }
 
-        private static Tile getShortestDistance(List<Tile> openset, Tile destinyTile)
+        private Tile GetShortestDistance(List<Tile> openset, Tile destinyTile)
         {
             Tile closestTile = openset[0];
-            float min = calculateDistance(openset[0], destinyTile);
+            float min = CalculateDistance(openset[0], destinyTile);
             foreach(Tile t in openset)
             {
-                float tmp = calculateDistance(t, destinyTile);
+                float tmp = CalculateDistance(t, destinyTile);
                 if (tmp < min){
                     min = tmp;
                     closestTile = t;
@@ -187,7 +187,7 @@ namespace RD_Colonization.Code.Managers
 
 
         //Euclidean distance - units can move diagonally
-        private static float calculateDistance(Tile start, Tile end)
+        private float CalculateDistance(Tile start, Tile end)
         {
             Point startPoint = start.position;
             Point endPoint = end.position;
@@ -197,7 +197,7 @@ namespace RD_Colonization.Code.Managers
             return (float)tmp;
         }
 
-        private static void moveUnits()
+        private void MoveUnits()
         {
             foreach (KeyValuePair<Unit, List<Tile>> kvp in movementDictionary)
             {
@@ -207,29 +207,29 @@ namespace RD_Colonization.Code.Managers
                     List<Tile> tmpTiles = kvp.Value;
                     if (tmpTiles.Count > 0)
                     {
-                        unitDictionary.Remove(createRectangle(tmpUnit.position));
+                        unitDictionary.Remove(CreateRectangle(tmpUnit.position));
                         tmpUnit.position = tmpTiles[0];
                         tmpTiles.RemoveAt(0);
-                        unitDictionary.Add(createRectangle(tmpUnit.position), tmpUnit);
+                        unitDictionary.Add(CreateRectangle(tmpUnit.position), tmpUnit);
                     }
                 }
             }
         }
 
-        public static void destroyUnit(Unit unit)
+        public void DestroyUnit(Unit unit)
         {
             if (unit == currentUnit)
                 currentUnit = null;
-            unitDictionary.Remove(unit.getPosition());
+            unitDictionary.Remove(unit.GetPosition());
             movementDictionary.Remove(unit);
         }
 
-        public static void changeCurrentUnit(Rectangle tempRectangle)
+        public void ChangeCurrentUnit(Rectangle tempRectangle)
         {
-            UnitManager.unitDictionary.TryGetValue(tempRectangle, out UnitManager.currentUnit);
+            UnitManager.Instance.unitDictionary.TryGetValue(tempRectangle, out UnitManager.Instance.currentUnit);
         }
 
-        public static void changeCurrentUnit()
+        public void ChangeCurrentUnit()
         {
             var units = unitDictionary
                 .Select(kv => kv.Value).ToList();

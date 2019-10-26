@@ -7,26 +7,26 @@ using System.Collections.Generic;
 
 namespace RD_Colonization.Code.Managers
 {
-    public static class CivilizationManager
+    public class CivilizationManager : BaseManager<CivilizationManager>
     {
         private static Dictionary<string, CivilizationData> civilizations = new Dictionary<string, CivilizationData>();
         private static Texture2D portraitsTexture;
-        public static int cash { get; private set; }
+        public static int Cash { get; private set; }
 
-        static CivilizationManager()
+        public CivilizationManager()
         {
             civilizations.Add("Germany", new CivilizationData("Germany", "Johan", 0));
             civilizations.Add("Sumeria", new CivilizationData("Sumeria", "Gilgamesh", 1));
             civilizations.Add("Pars", new CivilizationData("Pars", "Hilmes", 2));
-            cash = 0;
+            Cash = 0;
         }
 
-        public static void initialize(Texture2D portraits)
+        public void Initialize(Texture2D portraits)
         {
             portraitsTexture = portraits;
         }
 
-        public static Image getPortrait(String key)
+        public Image GetPortrait(String key)
         {
             Image tmpImage = new Image(portraitsTexture);
             CivilizationData tmp = null;
@@ -37,14 +37,14 @@ namespace RD_Colonization.Code.Managers
             return tmpImage;
         }
 
-        public static string getInformations(String key)
+        public string GetInformations(String key)
         {
             CivilizationData tmp = null;
             civilizations.TryGetValue(key, out tmp);
             return String.Format("State: {0} \nLeader: {1}", tmp.civilizationName, tmp.civilizationLeader);
         }
 
-        public static List<String> getNames()
+        public List<String> GetNames()
         {
             List<String> tmp = new List<String>();
             foreach (KeyValuePair<string, CivilizationData> item in civilizations)
@@ -54,9 +54,9 @@ namespace RD_Colonization.Code.Managers
             return tmp;
         }
 
-        public static void addCash(int cashToAdd)
+        public void AddCash(int cashToAdd)
         {
-            cash += cashToAdd;
+            Cash += cashToAdd;
         }
 
     }
