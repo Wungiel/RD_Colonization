@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using static RD_Colonization.Code.StringList;
-using static RD_Colonization.Code.RectangleHelper;
 
 namespace RD_Colonization.Code.Managers
 {
@@ -40,7 +39,7 @@ namespace RD_Colonization.Code.Managers
 
             SpawnUnit(tmpGrass, civilianString);
             SpawnUnit(tmpWater, shipString);
-            unitDictionary.TryGetValue(CreateRectangle(tmpGrass), out currentUnit);
+            unitDictionary.TryGetValue(tmpGrass.CreateRectangle(), out currentUnit);
             
         }
 
@@ -48,7 +47,7 @@ namespace RD_Colonization.Code.Managers
         {
             Unit tmpUnit = new Unit(GetUnitType(key), tile);
             List<Tile> tmpList = new List<Tile>();
-            unitDictionary.Add(CreateRectangle(tile), tmpUnit);
+            unitDictionary.Add(tile.CreateRectangle(), tmpUnit);
             movementDictionary.Add(tmpUnit, tmpList);
         }
 
@@ -98,8 +97,8 @@ namespace RD_Colonization.Code.Managers
             Dictionary<Tile, Tile> came_from = new Dictionary<Tile, Tile>(); //Skąd się przyszło
             Tile currentTile = null;
 
-            openset.Add(currentUnit.position);
-            g_score[currentUnit.position] = 0;
+            openset.Add(currentUnit.currentTile);
+            g_score[currentUnit.currentTile] = 0;
 
             while (openset.Count != 0)
             {
@@ -207,10 +206,10 @@ namespace RD_Colonization.Code.Managers
                     List<Tile> tmpTiles = kvp.Value;
                     if (tmpTiles.Count > 0)
                     {
-                        unitDictionary.Remove(CreateRectangle(tmpUnit.position));
-                        tmpUnit.position = tmpTiles[0];
+                        unitDictionary.Remove(tmpUnit.currentTile.CreateRectangle());
+                        tmpUnit.currentTile = tmpTiles[0];
                         tmpTiles.RemoveAt(0);
-                        unitDictionary.Add(CreateRectangle(tmpUnit.position), tmpUnit);
+                        unitDictionary.Add(tmpUnit.currentTile.CreateRectangle(), tmpUnit);
                     }
                 }
             }

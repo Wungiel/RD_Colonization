@@ -101,7 +101,7 @@ namespace RD_Colonization
             foreach (Entity e in rootEntities)
                 e.Visible = true;
 
-            CentreOnPosition(UnitManager.Instance.currentUnit.position);
+            CentreOnPosition(UnitManager.Instance.currentUnit.currentTile);
         }
 
         public override void UnloadScreen()
@@ -138,7 +138,7 @@ namespace RD_Colonization
                 if (InputManager.Instance.IsSinglePress(Keys.N))
                 {
                     UnitManager.Instance.ChangeCurrentUnit();
-                    CentreOnPosition(UnitManager.Instance.currentUnit.position);
+                    CentreOnPosition(UnitManager.Instance.currentUnit.currentTile);
                 }
 
                 if (InputManager.Instance.IsSinglePress(Keys.B))

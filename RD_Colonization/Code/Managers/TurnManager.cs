@@ -9,6 +9,7 @@ namespace RD_Colonization.Code.Managers
     public class TurnManager : BaseManager<TurnManager>
     {
         public int TurnNumber { get; private set; }
+        public int CurrentPlayer { get; private set; } = 0;
         public delegate void turnChanged();
         public turnChanged turnEvent;
 

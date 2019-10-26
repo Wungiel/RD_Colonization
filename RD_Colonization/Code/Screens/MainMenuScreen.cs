@@ -1,4 +1,6 @@
-﻿using GeonBit.UI;
+﻿using System.Diagnostics;
+using System.IO;
+using GeonBit.UI;
 using GeonBit.UI.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,27 +29,35 @@ namespace RD_Colonization.Code
             mainPanel = new Panel(new Vector2(300, 500), PanelSkin.Default, Anchor.Center, new Vector2(10, 10));
             UserInterface.Active.AddEntity(mainPanel);
 
-            Button newGame = new Button(newGameString);
-            newGame.OnClick += (Entity entity) =>
+            Button newGameButton = new Button(newGameString);
+            newGameButton.OnClick += (Entity entity) =>
             {
                 ScreenManager.Instance.SetScreen(gameSetUpScreenString);
             };
 
-            Button about = new Button(aboutString);
-            about.OnClick += (Entity entity) =>
+            Button testGameButton = new Button(testGameString);
+            testGameButton.OnClick += (Entity entity) =>
+            {
+                ScreenManager.Instance.SetScreen(testScreenString);
+            };
+
+            Button aboutButton = new Button(aboutString);
+            aboutButton.OnClick += (Entity entity) =>
             {
                 GeonBit.UI.Utils.MessageBox.ShowMsgBox("About", "Made by Robert Dulemba. \nUsed frameworks: Monogame, GeonBit.UI, \nPerlin Noise from https://gist.github.com/Flafla2/1a0b9ebef678bbce3215 ");
             };
 
-            Button exit = new Button(exitString);
-            exit.OnClick += (Entity entity) =>
+            Button exitButton = new Button(exitString);
+            exitButton.OnClick += (Entity entity) =>
             {
                 Game.Exit();
             };
 
-            mainPanel.AddChild(newGame);
-            mainPanel.AddChild(about);
-            mainPanel.AddChild(exit);
+            mainPanel.Size = new Vector2(mainPanel.Size.X, newGameButton.Size.Y * 5);
+            mainPanel.AddChild(newGameButton);
+            mainPanel.AddChild(testGameButton);
+            mainPanel.AddChild(aboutButton);
+            mainPanel.AddChild(exitButton);
         }
 
         public override void LoadContent()

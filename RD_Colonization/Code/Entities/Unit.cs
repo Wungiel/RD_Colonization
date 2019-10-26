@@ -1,23 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using RD_Colonization.Code.Data;
-using static RD_Colonization.Code.RectangleHelper;
 
 namespace RD_Colonization.Code.Entities
 {
     public class Unit
     {
         public UnitData type;
-        public Tile position;
+        public Tile currentTile;
 
         public Unit(UnitData type, Tile position)
         {
             this.type = type;
-            this.position = position;
+            this.currentTile = position;
         }
 
         public Rectangle GetPosition()
         {
-            return CreateRectangle(position.position);
+            return currentTile.CreateRectangle();
         }
     }
 }

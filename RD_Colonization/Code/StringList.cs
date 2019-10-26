@@ -7,10 +7,11 @@ namespace RD_Colonization.Code
         public static readonly String mainMenuScreenString = "mainMenu";
         public static readonly String gameScreenString = "game";
         public static readonly String gameSetUpScreenString = "setUp";
+        public static readonly String testScreenString = "test";
 
         public static readonly String newGameString = "New Game";
         public static readonly String exitString = "Quit";
-        public static readonly String removeSavesString = "Remove saves";
+        public static readonly String testGameString = "Test Difficulty";
         public static readonly String aboutString = "About";
 
         public static readonly String saveGameString = "Save game";
@@ -27,5 +28,9 @@ namespace RD_Colonization.Code
         public static readonly String cityString = "city";
 
         public static readonly String nextTurnString = "Turn";
+
+        public static readonly String testDataFolderString = "TestData";
+
+        public static readonly String slash = "\\";
     }
 }

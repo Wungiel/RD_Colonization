@@ -46,6 +46,7 @@
     <Compile Include="Code\Data\CivilizationData.cs" />
     <Compile Include="Code\Data\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />
+    <Compile Include="Code\Data\TestData.cs" />
     <Compile Include="Code\Data\UnitData.cs" />
     <Compile Include="Code\Entities\Tile.cs" />
     <Compile Include="Code\Data\TileData.cs" />
@@ -53,10 +54,14 @@
     <Compile Include="Code\Entities\Unit.cs" />
     <Compile Include="Code\Managers\CityManager.cs" />
     <Compile Include="Code\Managers\CivilizationManager.cs" />
+    <Compile Include="Code\Managers\PlayerManager.cs" />
+    <Compile Include="Code\Managers\JsonManager.cs" />
+    <Compile Include="Code\Managers\TestManager.cs" />
     <Compile Include="Code\Managers\TurnManager.cs" />
     <Compile Include="Code\Managers\UnitManager.cs" />
     <Compile Include="Code\Perlin.cs" />
-    <Compile Include="Code\RectangleHelper.cs" />
+    <Compile Include="Code\ExtensionMethods.cs" />
+    <Compile Include="Code\Screens\TestSetUpScreen.cs" />
     <Compile Include="Code\Systems\MapGenerator.cs" />
     <Compile Include="Code\Managers\MapManager.cs" />
     <Compile Include="Code\Managers\ScreenManager.cs" />
@@ -85,6 +90,9 @@
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

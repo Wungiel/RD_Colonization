@@ -7,7 +7,6 @@ using RD_Colonization.Code.Managers;
 using System;
 using System.Collections.Generic;
 using static RD_Colonization.Code.StringList;
-using static RD_Colonization.Code.RectangleHelper;
 
 namespace RD_Colonization.Code
 {
@@ -95,7 +94,7 @@ namespace RD_Colonization.Code
             List<Tile> tiles = UnitManager.Instance.GetPathTiles(value);
             foreach (Tile t in tiles)
             {
-                spriteBatch.DrawCircle(CreateCircle(t), 12, Color.Red);
+                spriteBatch.DrawCircle(t.CreateCircle(), 12, Color.Red);
             }
         }
 
