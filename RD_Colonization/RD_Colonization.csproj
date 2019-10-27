@@ -43,19 +43,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Code\BaseManager.cs" />
+    <Compile Include="Code\Commands\ICommand.cs" />
     <Compile Include="Code\Data\CivilizationData.cs" />
     <Compile Include="Code\Data\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />
+    <Compile Include="Code\Data\PlayerData.cs" />
     <Compile Include="Code\Data\TestData.cs" />
     <Compile Include="Code\Data\UnitData.cs" />
     <Compile Include="Code\Entities\Tile.cs" />
     <Compile Include="Code\Data\TileData.cs" />
     <Compile Include="Code\Entities\City.cs" />
     <Compile Include="Code\Entities\Unit.cs" />
+    <Compile Include="Code\Managers\ActionManager.cs" />
     <Compile Include="Code\Managers\CityManager.cs" />
     <Compile Include="Code\Managers\CivilizationManager.cs" />
     <Compile Include="Code\Managers\PlayerManager.cs" />
     <Compile Include="Code\Managers\JsonManager.cs" />
+    <Compile Include="Code\Managers\ScoreManager.cs" />
     <Compile Include="Code\Managers\TestManager.cs" />
     <Compile Include="Code\Managers\TurnManager.cs" />
     <Compile Include="Code\Managers\UnitManager.cs" />
@@ -697,10 +701,7 @@
     <None Include="Content\GeonBit.UI\themes\lowres\fonts\Regular.spritefont" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Code\Components\" />
-    <Folder Include="Code\Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

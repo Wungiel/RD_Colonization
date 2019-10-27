@@ -34,7 +34,10 @@ namespace RD_Colonization
 
         protected override void Initialize()
         {
+
+
             UserInterface.Initialize(Content, BuiltinThemes.hd);
+
             ScreenManager manager = ScreenManager.Instance;
             manager.RegisterScreen(mainMenuScreenString, new MainMenuScreen(this));
             manager.RegisterScreen(gameSetUpScreenString, new GameSetUpScreen(this));
@@ -42,6 +45,7 @@ namespace RD_Colonization
             manager.RegisterScreen(testScreenString, new TestSetUpScreen(this));
             manager.Initialize();
             manager.SetScreen(mainMenuScreenString);
+
             base.Initialize();
         }
 

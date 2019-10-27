@@ -70,7 +70,7 @@ namespace RD_Colonization
         {
             TurnManager.Instance.IncreaseTurn();
             turnCounter.Text = String.Format("Turn: {0}", TurnManager.Instance.TurnNumber);
-            cashCounter.Text = String.Format("Cash: {0}", CivilizationManager.Cash);
+            cashCounter.Text = String.Format("Cash: {0}", PlayerManager.Instance.currentPlayer.cash);
         }
 
         private void SetEscapePanel()
@@ -143,11 +143,7 @@ namespace RD_Colonization
 
                 if (InputManager.Instance.IsSinglePress(Keys.B))
                 {
-                    if (UnitManager.Instance.currentUnit.type.canBuild)
-                    {
-                        CityManager.Instance.SpawnCity(UnitManager.Instance.currentUnit);
-                        UnitManager.Instance.DestroyUnit(UnitManager.Instance.currentUnit);
-                    }
+                    ActionManager.Instance.BuildCity();
                 }
 
                 if (InputManager.Instance.IsSinglePress(Keys.Space))

@@ -10,7 +10,7 @@ namespace RD_Colonization.Code.Managers
 
         public void SpawnCity(Unit unit)
         {
-            City tmpCity = new City(unit.currentTile);
+            City tmpCity = new City(unit.playerId, unit.currentTile);
             citytDictionary.Add(unit.GetPosition(), tmpCity);
             TurnManager.Instance.turnEvent += tmpCity.GenerateCash;
         }

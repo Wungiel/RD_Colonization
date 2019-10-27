@@ -159,7 +159,7 @@ namespace RD_Colonization.Code.Screens
                                     if (sizeKey.Equals("Random"))
                                         sizeKey = "30";
                                     MapManager.Instance.GenerateMap(Int32.Parse(sizeKey));
-                                    UnitManager.Instance.SetUpGameStart();
+                                    PlayerManager.Instance.SetUpPlayers();
                                     ScreenManager.Instance.SetScreen(gameScreenString);
                                     return true; })
                                 });

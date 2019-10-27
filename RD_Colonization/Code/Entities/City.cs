@@ -7,10 +7,12 @@ namespace RD_Colonization.Code.Entities
     public class City
     {
         public Tile position;
+        public int playerId = -1;
 
-        public City(Tile position)
+        public City(int playerId, Tile position)
         {
             this.position = position;
+            this.playerId = playerId;
         }
 
         public void GenerateCash()

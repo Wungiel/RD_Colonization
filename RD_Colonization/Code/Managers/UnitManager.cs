@@ -11,10 +11,14 @@ namespace RD_Colonization.Code.Managers
 {
     public class UnitManager : BaseManager<UnitManager>
     {
-        public Dictionary<Rectangle, Unit> unitDictionary;
+        
+        public Dictionary<Rectangle, Unit> unitDictionary = new Dictionary<Rectangle, Unit>();
         public Dictionary<Unit, List<Tile>> movementDictionary = new Dictionary<Unit, List<Tile>>();
-        private Dictionary<String, UnitData> typesDictionary = new Dictionary<String, UnitData>();
         public Unit currentUnit = null;
+
+        private Dictionary<String, UnitData> typesDictionary = new Dictionary<String, UnitData>();
+        private static Random randomGenerator = new Random();
+        
 
         public UnitManager()
         {
@@ -23,45 +27,36 @@ namespace RD_Colonization.Code.Managers
             typesDictionary.Add(shipString, new UnitData(shipString, false, false));
             TurnManager.Instance.turnEvent += MoveUnits;
         }
-
-        public void SetUpGameStart()
+        
+        public void AddNewBuildingUnit(PlayerData tmpPlayer)
         {
-            unitDictionary = new Dictionary<Rectangle, Unit>();
-
             var grassTiles = MapManager.Instance.mapDictionary
                 .Where(kv => kv.Value.type.name == grassString).Select(kv => kv.Value).ToList();
 
-            var waterTiles = MapManager.Instance.mapDictionary
-                .Where(kv => kv.Value.type.name == waterString).Select(kv => kv.Value).ToList();
+            Tile tmpGrass = grassTiles[randomGenerator.Next(grassTiles.Count - 1)];
 
-            Tile tmpGrass = grassTiles[new Random().Next(grassTiles.Count - 1)];
-            Tile tmpWater = waterTiles[new Random().Next(waterTiles.Count - 1)];
-
-            SpawnUnit(tmpGrass, civilianString);
-            SpawnUnit(tmpWater, shipString);
-            unitDictionary.TryGetValue(tmpGrass.CreateRectangle(), out currentUnit);
-            
+            SpawnUnit(tmpPlayer.id, tmpGrass, civilianString);
         }
 
-        private void SpawnUnit(Tile tile, String key)
+        private void SpawnUnit(int playerId, Tile tile, String unitTypeString)
         {
-            Unit tmpUnit = new Unit(GetUnitType(key), tile);
+            Unit tmpUnit = new Unit(GetUnitType(unitTypeString), tile, playerId);
             List<Tile> tmpList = new List<Tile>();
             unitDictionary.Add(tile.CreateRectangle(), tmpUnit);
             movementDictionary.Add(tmpUnit, tmpList);
         }
 
-        public UnitData GetUnitType(String key)
+        public UnitData GetUnitType(String unitTypeString)
         {
             UnitData temp = null;
-            typesDictionary.TryGetValue(key, out temp);
+            typesDictionary.TryGetValue(unitTypeString, out temp);
             return temp;
         }
 
-        public List<Tile> GetPathTiles(Unit key)
+        public List<Tile> GetPathTiles(Unit unitKey)
         {
             List<Tile> temp = null;
-            movementDictionary.TryGetValue(key, out temp);
+            movementDictionary.TryGetValue(unitKey, out temp);
             return temp;
         }
 
@@ -227,6 +222,20 @@ namespace RD_Colonization.Code.Managers
         {
             UnitManager.Instance.unitDictionary.TryGetValue(tempRectangle, out UnitManager.Instance.currentUnit);
         }
+
+        public void ChangeCurrentUnit(PlayerData currentPlayer)
+        {
+            List<Unit> unitsList = unitDictionary.Values.ToList();
+            for (int i = 0; i < unitsList.Count; i++)
+            {
+                if (unitsList[i].playerId == currentPlayer.id)
+                {
+                    currentUnit = unitsList[i];
+                    break;
+                }
+            }
+        }
+
 
         public void ChangeCurrentUnit()
         {

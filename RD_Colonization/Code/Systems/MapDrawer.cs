@@ -87,14 +87,16 @@ namespace RD_Colonization.Code
                     spriteBatch.Draw(unitTileset, pair.Key, sourceRectangle, Color.White);
                 }
             }
+
+            spriteBatch.DrawRectangle(pair.Key, PlayerManager.Instance.GetPlayerByUnit(pair.Value).playerColor);
         }
 
-        private void DrawPaths(SpriteBatch spriteBatch, Unit value)
+        private void DrawPaths(SpriteBatch spriteBatch, Unit unit)
         {
-            List<Tile> tiles = UnitManager.Instance.GetPathTiles(value);
+            List<Tile> tiles = UnitManager.Instance.GetPathTiles(unit);
             foreach (Tile t in tiles)
             {
-                spriteBatch.DrawCircle(t.CreateCircle(), 12, Color.Red);
+                spriteBatch.DrawCircle(t.CreateCircle(), 12, PlayerManager.Instance.GetPlayerByUnit(unit).playerColor);
             }
         }
 
@@ -103,6 +105,8 @@ namespace RD_Colonization.Code
             Rectangle sourceRectangle;
             cityGraphics.TryGetValue(cityString, out sourceRectangle);
             spriteBatch.Draw(unitTileset, pair.Key, sourceRectangle, Color.White);
+            spriteBatch.DrawRectangle(pair.Key, PlayerManager.Instance.GetPlayerByCity(pair.Value).playerColor);
         }
+        
     }
 }
