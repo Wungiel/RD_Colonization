@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using RD_Colonization.Code.Commands;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Entities;
 using System;
@@ -15,7 +16,7 @@ namespace RD_Colonization.Code.Managers
         public Color[] playerColors = { Color.Red, Color.Blue, Color.Green, Color.White };
         public PlayerData currentPlayer = null;
 
-        public void SetUpPlayers()
+        public void SetUpPlayers(bool createLivePlayer = true)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -24,8 +25,30 @@ namespace RD_Colonization.Code.Managers
                 players.Add(tmpPlayer);
             }
 
+            if (createLivePlayer == true)
+            {
+                players[0].SetLivingPlayerControl();
+            }
+            
             currentPlayer = players[0];
             UnitManager.Instance.ChangeCurrentUnit(currentPlayer);
+        }
+
+        public void SwitchPlayer()
+        {
+            if (players.Last().id == currentPlayer.id)
+            {
+                currentPlayer = players[0];
+            }
+            else
+            {
+                currentPlayer = players[players.IndexOf(currentPlayer) + 1];
+            }
+        }
+
+        public int GetCurrentPlayerIndex()
+        {
+            return players.IndexOf(currentPlayer);
         }
 
         public PlayerData GetPlayerByUnit(Unit unit)
@@ -50,5 +73,37 @@ namespace RD_Colonization.Code.Managers
             return null;
         }
 
+        public void ProcessTurn()
+        {
+            Unit[] units = UnitManager.Instance.GetPlayersUnits(currentPlayer.id);
+            City[] cities = CityManager.Instance.GetPlayersCities(currentPlayer.id);
+
+            if (units.Length != 0)
+            {
+                units[0].currentCommand = new BuildCityCommand(units[0]);
+                units[0].currentCommand.Execute();
+            }
+
+            CreateSupportMaps(units, cities);
+            CommanResources(units, cities);
+            ExecuteCommands(units, cities);
+
+            TurnManager.Instance.IncreaseTurn();
+        }
+
+        private void CreateSupportMaps(Unit[] units, City[] cities)
+        {
+
+        }
+
+        private void CommanResources(Unit[] units, City[] cities)
+        {
+
+        }
+
+        private void ExecuteCommands(Unit[] units, City[] cities)
+        {
+
+        }
     }
 }

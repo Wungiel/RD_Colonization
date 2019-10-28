@@ -26,11 +26,16 @@ namespace RD_Colonization.Code
         public static readonly String soldierString = "soldier";
         public static readonly String shipString = "ship";
         public static readonly String cityString = "city";
+        public static readonly String scoutString = "scout";
 
         public static readonly String nextTurnString = "Turn";
 
         public static readonly String testDataFolderString = "TestData";
+        public static readonly String mapDataFolderString = "TestData";
+        public static readonly String resultDataFolderString = "ResultData";
 
         public static readonly String slash = "\\";
+        public static readonly String pngExtension = ".png";
+        public static readonly String txtExtension = ".txt";
     }
 }

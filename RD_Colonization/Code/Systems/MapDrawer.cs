@@ -14,22 +14,27 @@ namespace RD_Colonization.Code
     {
         private Texture2D mapTileset;
         private Texture2D unitTileset;
+        private Texture2D singlePixel;
         private Dictionary<String, Rectangle> tileGraphics = new Dictionary<String, Rectangle>();
         private Dictionary<String, Rectangle> unitGraphics = new Dictionary<String, Rectangle>();
         private Dictionary<String, Rectangle> cityGraphics = new Dictionary<String, Rectangle>();
+        private SpriteFont font;
         int blink = 0;
 
-        public void SetTileset(Texture2D mapTileset, Texture2D unitTileset)
+        public void SetGraphicData(Texture2D mapTileset, Texture2D unitTileset, Texture2D pixel, SpriteFont font)
         {
             this.mapTileset = mapTileset;
             this.unitTileset = unitTileset;
+            this.singlePixel = pixel;
+            this.font = font;
 
             tileGraphics.Add(grassString, new Rectangle(0, 64, 64, 64));
             tileGraphics.Add(mountainString, new Rectangle(192, 64, 64, 64));
             tileGraphics.Add(waterString, new Rectangle(0, 0, 64, 64));
 
             unitGraphics.Add(civilianString, new Rectangle(0, 0, 64, 64));
-            unitGraphics.Add(soldierString, new Rectangle(64, 0, 64, 64));            
+            unitGraphics.Add(soldierString, new Rectangle(64, 0, 64, 64));
+            unitGraphics.Add(scoutString, new Rectangle(64, 0, 64, 64));
             unitGraphics.Add(shipString, new Rectangle(192, 0, 64, 64));
 
             cityGraphics.Add(cityString, new Rectangle(128, 0, 64, 64));
@@ -57,6 +62,11 @@ namespace RD_Colonization.Code
                 DrawCity(spriteBatch, pair);
             }
 
+            foreach (KeyValuePair<Rectangle, Tile> pair in MapManager.Instance.mapDictionary)
+            {
+                DrawSpecialMode(spriteBatch, pair);
+            }
+
             blink++;
             if (blink == 45)
                 blink = 0;
@@ -69,6 +79,14 @@ namespace RD_Colonization.Code
             Rectangle sourceRectangle;
             tileGraphics.TryGetValue(pair.Value.type.name, out sourceRectangle);
             spriteBatch.Draw(mapTileset, pair.Key, sourceRectangle, Color.White);
+        }
+
+        private void DrawSpecialMode(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Tile> pair)
+        {
+            if (pair.Value.discoveredByPlayerIds.Contains(PlayerManager.Instance.currentPlayer.id) == false)
+            {
+                spriteBatch.Draw(singlePixel, pair.Key, Color.Black);
+            }
         }
 
         private void DrawUnits(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Unit> pair)
@@ -97,6 +115,7 @@ namespace RD_Colonization.Code
             foreach (Tile t in tiles)
             {
                 spriteBatch.DrawCircle(t.CreateCircle(), 12, PlayerManager.Instance.GetPlayerByUnit(unit).playerColor);
+                spriteBatch.DrawString(font, (tiles.IndexOf(t) / unit.type.speed).ToString(), t.GetCenter(), PlayerManager.Instance.GetPlayerByUnit(unit).playerColor);
             }
         }
 

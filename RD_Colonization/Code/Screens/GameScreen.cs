@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using RD_Colonization.Code;
 using RD_Colonization.Code.Data;
+using RD_Colonization.Code.Entities;
 using RD_Colonization.Code.Managers;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,9 @@ namespace RD_Colonization
         {
             Texture2D mapTileset = Content.Load<Texture2D>("Images\\TileSet");
             Texture2D unitTileset = Content.Load<Texture2D>("Images\\UnitSet");
-            mapDrawer.SetTileset(mapTileset, unitTileset);
+            Texture2D pixel = Content.Load<Texture2D>("Images\\pixel");
+            SpriteFont font = Content.Load<SpriteFont>("Font\\MainFont");
+            mapDrawer.SetGraphicData(mapTileset, unitTileset, pixel, font);
         }
 
         public override void Initialize()
@@ -69,8 +72,12 @@ namespace RD_Colonization
         private void ChangeTurn()
         {
             TurnManager.Instance.IncreaseTurn();
+
             turnCounter.Text = String.Format("Turn: {0}", TurnManager.Instance.TurnNumber);
             cashCounter.Text = String.Format("Cash: {0}", PlayerManager.Instance.currentPlayer.cash);
+
+            UnitManager.Instance.ChangeCurrentUnit();
+            CentreOnPosition(UnitManager.Instance.currentUnit);
         }
 
         private void SetEscapePanel()
@@ -101,7 +108,7 @@ namespace RD_Colonization
             foreach (Entity e in rootEntities)
                 e.Visible = true;
 
-            CentreOnPosition(UnitManager.Instance.currentUnit.currentTile);
+            CentreOnPosition(UnitManager.Instance.currentUnit);
         }
 
         public override void UnloadScreen()
@@ -171,7 +178,7 @@ namespace RD_Colonization
                             UnitManager.Instance.ChangeCurrentUnit(tempRectangle);
                         } else if (MapManager.Instance.mapDictionary.ContainsKey(tempRectangle) && UnitManager.Instance.currentUnit !=null)
                         {
-                            UnitManager.Instance.CheckPathfinding(tempRectangle);
+                            PathfinderManager.Instance.CheckPathfinding(tempRectangle);
                         }
                     }
                 }
@@ -187,6 +194,14 @@ namespace RD_Colonization
             GraphicsDevice.Clear(Color.Green);
             mapDrawer.Draw(SpriteBatch, camera);
             UserInterface.Active.Draw(SpriteBatch);
+        }
+
+        private void CentreOnPosition(Unit unit)
+        {
+            if (unit != null)
+            {
+                CentreOnPosition(unit.currentTile);
+            }
         }
 
         private void CentreOnPosition(Tile tile)

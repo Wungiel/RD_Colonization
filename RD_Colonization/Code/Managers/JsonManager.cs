@@ -14,5 +14,10 @@ namespace RD_Colonization.Code.Managers
             T newObject = JsonConvert.DeserializeObject<T>(jsonString);
             return newObject;
         }
+
+        public String WriteIntoJson <T> (T original)
+        {
+            return JsonConvert.SerializeObject(original);
+        }
     }
 }

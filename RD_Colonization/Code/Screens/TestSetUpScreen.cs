@@ -3,6 +3,7 @@ using GeonBit.UI.Entities;
 using GeonBit.UI.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Managers;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace RD_Colonization.Code.Screens
     {
         private List<Entity> rootEntities = new List<Entity>();
         private TabData countryTab, sizeMapTab;
+        private TestData selectedTest = null;
 
         public TestSetUpScreen(ColonizationGame game) : base(game)
         {
@@ -90,7 +92,13 @@ namespace RD_Colonization.Code.Screens
             startGameButton = new Button("Start", ButtonSkin.Default, Anchor.BottomRight, new Vector2(200, 50));
             startGameButton.OnClick += (Entity entity) =>
             {
-                MessageBox.ShowMsgBox("Start", "It will start a  test");
+                if (selectedTest != null)
+                {
+                    MapManager.Instance.GenerateMap(40);
+                    PlayerManager.Instance.SetUpPlayers(false);
+                    TestManager.Instance.InitializeTest(selectedTest);
+                    PlayerManager.Instance.ProcessTurn();
+                }
             };
         }
 
@@ -117,7 +125,9 @@ namespace RD_Colonization.Code.Screens
                 Button testFileButton = new Button(testFileName);
                 testFileButton.OnClick += (Entity entity) =>
                 {
-                    SetDescriptionPanelData(testFileName);
+                    selectedTest = TestManager.Instance.GetTestData(testFileName);
+                    SetDescriptionPanelData(selectedTest);
+
                 };
                 listPanel.AddChild(testFileButton);
             }
@@ -128,9 +138,9 @@ namespace RD_Colonization.Code.Screens
             descriptionPanel = new Panel(new Vector2(400, height), anchor: Anchor.AutoInline);
         }
 
-        private void SetDescriptionPanelData(String testName)
+        private void SetDescriptionPanelData(TestData test)
         {
-           Debug.WriteLine(TestManager.Instance.GetTestData(testName).name);
+           Debug.WriteLine(test.name);
         }
 
     }

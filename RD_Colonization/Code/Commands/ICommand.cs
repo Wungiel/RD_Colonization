@@ -8,6 +8,6 @@ namespace RD_Colonization.Code.Commands
 {
     public interface ICommand
     {
-        void Execute();
+        bool Execute();
     }
 }

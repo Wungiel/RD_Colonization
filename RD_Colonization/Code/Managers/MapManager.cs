@@ -27,25 +27,54 @@ namespace RD_Colonization.Code.Managers
             CreateDictionary(mapData);
         }
 
-        public bool LoadMap(MapData loadedData)
-        {
-            if (loadedData != null)
-            {
-                mapSize = loadedData.size;
-                mapDictionary = new Dictionary<Rectangle, Tile>();
-                Tile[,] mapData = new MapGenerator().Generate(loadedData, mapSize);
-                CreateDictionary(mapData);
-                return true;
-            }
-            else
-                return false;
-        }
-
         public TileData GetTileType(String key)
         {
             TileData temp = null;
             typesDictionary.TryGetValue(key, out temp);
             return temp;
+        }
+
+        public HashSet<Tile> GetNeighbours(Tile center, int width)
+        {
+            HashSet<Tile> tiles = new HashSet<Tile>();
+            tiles.Add(center);
+            while (width > 0)
+            {
+                HashSet<Tile> newTiles = new HashSet<Tile>();
+                foreach (Tile tile in tiles)
+                {
+                    for (int i = 0; i < tile.neighbours.Count; i++)
+                    {
+                        newTiles.Add(tile.neighbours[i]);
+                    }
+                }
+                tiles.UnionWith(newTiles);
+                width--;
+            }
+
+            return tiles;
+        }
+
+        public void DiscoverMap(Tile tile, int fieldOfView, int playerId)
+        {
+            HashSet<Tile> discoveredTiles = GetNeighbours(tile, fieldOfView);
+            foreach (Tile discoveredTile in discoveredTiles)
+            {
+                discoveredTile.discoveredByPlayerIds.Add(playerId);
+            }
+        }
+
+        public Tile[] GetDiscoveredTiles(int playerId)
+        {
+            List<Tile> playerDiscoveredTiles = new List<Tile>();
+            foreach (Tile tile in mapDictionary.Values)
+            {
+                if (tile.discoveredByPlayerIds.Contains(playerId))
+                {
+                    playerDiscoveredTiles.Add(tile);
+                }
+            }
+            return playerDiscoveredTiles.ToArray();
         }
 
         private void CreateDictionary(Tile[,] mapData)

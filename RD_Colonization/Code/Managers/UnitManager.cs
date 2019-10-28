@@ -22,9 +22,10 @@ namespace RD_Colonization.Code.Managers
 
         public UnitManager()
         {
-            typesDictionary.Add(civilianString, new UnitData(civilianString, true, true));
-            typesDictionary.Add(soldierString, new UnitData(soldierString, true, false));
-            typesDictionary.Add(shipString, new UnitData(shipString, false, false));
+            typesDictionary.Add(civilianString, new UnitData(civilianString, true, true, 2));
+            typesDictionary.Add(soldierString, new UnitData(soldierString, true, false, 1));
+            typesDictionary.Add(scoutString, new UnitData(scoutString, true, false, 1));
+            typesDictionary.Add(shipString, new UnitData(shipString, false, false, 1));
             TurnManager.Instance.turnEvent += MoveUnits;
         }
         
@@ -40,10 +41,12 @@ namespace RD_Colonization.Code.Managers
 
         private void SpawnUnit(int playerId, Tile tile, String unitTypeString)
         {
-            Unit tmpUnit = new Unit(GetUnitType(unitTypeString), tile, playerId);
+            UnitData type = GetUnitType(unitTypeString);
+            Unit tmpUnit = new Unit(type, tile, playerId);
             List<Tile> tmpList = new List<Tile>();
             unitDictionary.Add(tile.CreateRectangle(), tmpUnit);
             movementDictionary.Add(tmpUnit, tmpList);
+            DiscoverMap(tmpUnit);            
         }
 
         public UnitData GetUnitType(String unitTypeString)
@@ -60,135 +63,17 @@ namespace RD_Colonization.Code.Managers
             return temp;
         }
 
-
-        public bool CheckPathfinding(Rectangle destiny)
+        public Unit[] GetPlayersUnits(int playerId)
         {
-            Tile tmpTile = null;
-            List<Tile> oldPath = null;
-            movementDictionary.TryGetValue(currentUnit, out oldPath);
-            movementDictionary.Remove(currentUnit);
-
-            MapManager.Instance.mapDictionary.TryGetValue(destiny, out tmpTile);
-            List<Tile> newPath = FindPath(tmpTile);
-            if (newPath == null)
+            List<Unit> playerUnits = new List<Unit>();
+            foreach (Unit unit in unitDictionary.Values)
             {
-                movementDictionary.Add(currentUnit, oldPath);
-                return false;
-            }
-            else
-            {
-                movementDictionary.Add(currentUnit, newPath);
-                return true;
-            }
-        }
-
-        private List<Tile> FindPath(Tile destinyTile)
-        {
-            List<Tile> closedSet = new List<Tile>();
-            List<Tile> openset = new List<Tile>();
-            Dictionary<Tile, float> g_score = new Dictionary<Tile, float>(); //Distance from starting point
-            Dictionary<Tile, float> h_score = new Dictionary<Tile, float>(); //Distance from destination
-            Dictionary<Tile, float> f_score = new Dictionary<Tile, float>(); //H+G
-            Dictionary<Tile, Tile> came_from = new Dictionary<Tile, Tile>(); //Skąd się przyszło
-            Tile currentTile = null;
-
-            openset.Add(currentUnit.currentTile);
-            g_score[currentUnit.currentTile] = 0;
-
-            while (openset.Count != 0)
-            {
-                currentTile = GetShortestOverallDistance(openset, destinyTile, g_score);
-                if (currentTile == destinyTile)
-                    return ReconstructPath(came_from, destinyTile);
-                openset.Remove(currentTile);
-                closedSet.Add(currentTile);
-                foreach (Tile t in currentTile.neighbours)
+                if (unit.playerId == playerId)
                 {
-                    if (closedSet.Contains(t))
-                        continue;
-                    if (!t.type.walkable)
-                    {
-                        closedSet.Add(t);
-                        continue;
-                    }
-                    if (t.type.land ^ currentUnit.type.land)
-                    {
-                        closedSet.Add(t);
-                        continue;
-                    }
-                    float temp_g = g_score[currentTile] + 1;
-                    if (!openset.Contains(t))
-                    {
-                        came_from[t] = currentTile;
-                        openset.Add(t);
-                        h_score[t] = CalculateDistance(t, destinyTile);
-                        g_score[t] = temp_g;
-                    } else if (temp_g < g_score[t])
-                    {
-                        came_from[t] = currentTile;
-                        g_score[t] = temp_g;
-                        f_score[t] = g_score[t] + h_score[t];
-                    }
-                }             
-            }
-            return null;
-        }
-
-        private List<Tile> ReconstructPath(Dictionary<Tile, Tile> cameFrom, Tile currentNode)
-        {
-            List<Tile> tmpList = new List<Tile>();
-            Tile tmpTile = null;
-            while (cameFrom.TryGetValue(currentNode, out tmpTile))
-            {
-                tmpList.Add(currentNode);
-                currentNode = tmpTile;
-            }
-            tmpList.Reverse();
-            return tmpList;
-        }
-
-        private Tile GetShortestOverallDistance(List<Tile> openset, Tile destinyTile, Dictionary<Tile, float> g_score)
-        {
-            Tile closestTile = openset[0];
-            float min = CalculateDistance(openset[0], destinyTile)+ g_score[closestTile];
-            foreach (Tile t in openset)
-            {
-                float tmp = CalculateDistance(t, destinyTile) + g_score[t];
-                if (tmp < min)
-                {
-                    min = tmp;
-                    closestTile = t;
+                    playerUnits.Add(unit);
                 }
             }
-            return closestTile;
-
-        }
-
-        private Tile GetShortestDistance(List<Tile> openset, Tile destinyTile)
-        {
-            Tile closestTile = openset[0];
-            float min = CalculateDistance(openset[0], destinyTile);
-            foreach(Tile t in openset)
-            {
-                float tmp = CalculateDistance(t, destinyTile);
-                if (tmp < min){
-                    min = tmp;
-                    closestTile = t;
-                }
-            }
-            return closestTile;
-        }
-
-
-        //Euclidean distance - units can move diagonally
-        private float CalculateDistance(Tile start, Tile end)
-        {
-            Point startPoint = start.position;
-            Point endPoint = end.position;
-
-            double tmp = Math.Pow((startPoint.X-endPoint.X),2) + Math.Pow((startPoint.Y - endPoint.Y), 2);
-            tmp = Math.Sqrt(tmp);
-            return (float)tmp;
+            return playerUnits.ToArray();
         }
 
         private void MoveUnits()
@@ -199,12 +84,21 @@ namespace RD_Colonization.Code.Managers
                 {
                     Unit tmpUnit = kvp.Key;
                     List<Tile> tmpTiles = kvp.Value;
-                    if (tmpTiles.Count > 0)
+                    while (tmpUnit.remainingEnergy > 0)
                     {
-                        unitDictionary.Remove(tmpUnit.currentTile.CreateRectangle());
-                        tmpUnit.currentTile = tmpTiles[0];
-                        tmpTiles.RemoveAt(0);
-                        unitDictionary.Add(tmpUnit.currentTile.CreateRectangle(), tmpUnit);
+                        if (tmpTiles.Count > 0)
+                        {
+                            unitDictionary.Remove(tmpUnit.currentTile.CreateRectangle());
+                            tmpUnit.currentTile = tmpTiles[0];
+                            tmpTiles.RemoveAt(0);
+                            unitDictionary.Add(tmpUnit.currentTile.CreateRectangle(), tmpUnit);
+                            DiscoverMap(tmpUnit);
+                            tmpUnit.remainingEnergy--;
+                        } 
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
             }
@@ -236,17 +130,31 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
-
         public void ChangeCurrentUnit()
         {
             var units = unitDictionary
-                .Select(kv => kv.Value).ToList();
-            int currentIndex = units.FindIndex(u => u == currentUnit);
-            if (currentIndex == units.Count - 1)
-                currentIndex = 0;
+                .Select(kv => kv.Value)
+                .Where(u => u.playerId == PlayerManager.Instance.currentPlayer.id)
+                .ToList();
+            if (units.Count != 0)
+            {
+                int currentIndex = units.FindIndex(u => u == currentUnit);
+                if (currentIndex == units.Count - 1)
+                    currentIndex = 0;
+                else
+                    currentIndex++;
+                currentUnit = units[currentIndex];
+            }
             else
-                currentIndex++;
-            currentUnit = units[currentIndex];
+            {
+                currentUnit = null;
+            }
         }
+
+        private void DiscoverMap(Unit tmpUnit)
+        {
+            MapManager.Instance.DiscoverMap(tmpUnit.currentTile, tmpUnit.type.fieldOfView, tmpUnit.playerId);
+        }
+
     }
 }

@@ -14,5 +14,19 @@ namespace RD_Colonization.Code.Managers
             citytDictionary.Add(unit.GetPosition(), tmpCity);
             TurnManager.Instance.turnEvent += tmpCity.GenerateCash;
         }
+
+        public City[] GetPlayersCities(int playerId)
+        {
+
+            List<City> playersCities = new List<City>();
+            foreach (City city in citytDictionary.Values)
+            {
+                if (city.playerId == playerId)
+                {
+                    playersCities.Add(city);
+                }
+            }
+            return playersCities.ToArray();
+        }
     }
 }

@@ -59,49 +59,6 @@ namespace RD_Colonization.Code.Managers
             return tileTemp;
         }
 
-        public Tile[,] Generate(MapData loadedData, int size)
-        {
-            Tile[,] tileTemp = new Tile[size, size];
-            Char[] tempChars = loadedData.tileData.ToCharArray();
-
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    string tileKey = null;
-                    Char c = tempChars[(i * size) + j];
-                    if (c == '0')
-                    {
-                        tileKey = waterString;
-                    }
-                    else if (c == '1')
-                    {
-                        tileKey = grassString;
-                    }
-                    else
-                    {
-                        tileKey = mountainString;
-                    }
-                    tileTemp[i, j] = new Tile(MapManager.Instance.GetTileType(tileKey), new Point(i, j));
-                }
-            }
-
-            List<int> availableValuesX = new List<int>();
-            List<int> availableValuesY = new List<int>();
-            for (int i = 0; i < size; i++)
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    PrepareAvailableValues(size, availableValuesX, availableValuesY, i, j);
-                    AddNeighbours(availableValuesX, availableValuesY, i, j, tileTemp);
-                    availableValuesX.Clear();
-                    availableValuesY.Clear();
-                }
-            }
-
-            return tileTemp;
-        }
-
         private double[,] NormalizeArray(double[,] temp)
         {
             double min = temp[0, 0];

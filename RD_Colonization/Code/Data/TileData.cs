@@ -7,8 +7,7 @@ namespace RD_Colonization.Code.Data
         public string name;
         public int movementCost;
         public bool land;
-        public bool walkable;
-        public HashSet<int> discoveredByPlayerIds = new HashSet<int>();
+        public bool walkable;        
 
         public TileData(string name, int movementCost, bool land, bool walkable)
         {

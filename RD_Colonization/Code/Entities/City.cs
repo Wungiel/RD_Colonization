@@ -23,7 +23,7 @@ namespace RD_Colonization.Code.Entities
                 if (n.type.name == grassString)
                     cash++;
             }
-            CivilizationManager.Instance.AddCash(cash);
+            PlayerManager.Instance.GetPlayerById(playerId).ModifyCash(cash);
         }
     }
 }
