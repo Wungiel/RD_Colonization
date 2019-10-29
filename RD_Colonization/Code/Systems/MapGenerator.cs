@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using RD_Colonization.Code.Data;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,38 @@ namespace RD_Colonization.Code.Managers
             {
                 for (int j = 0; j < size; j++)
                 {
-                    PrepareAvailableValues(size, availableValuesX, availableValuesY, i, j);
+                    PrepareAvailableValues(size, size, availableValuesX, availableValuesY, i, j);
+                    AddNeighbours(availableValuesX, availableValuesY, i, j, tileTemp);
+                    availableValuesX.Clear();
+                    availableValuesY.Clear();
+                }
+            }
+
+            return tileTemp;
+        }
+
+        internal Tile[,] Generate(Texture2D mapTexture)
+        {
+            Color[] colors = new Color[mapTexture.Width * mapTexture.Height];
+            Tile[,] tileTemp = new Tile[mapTexture.Width, mapTexture.Height];
+
+            mapTexture.GetData<Color>(colors);
+
+            for (int i = 0; i < mapTexture.Width; i++)
+            {
+                for (int j = 0; j < mapTexture.Height; j++)
+                {
+                    tileTemp[i, j] = GetTile(colors[i +  j * mapTexture.Width], i, j);
+                }
+            }
+
+            List<int> availableValuesX = new List<int>();
+            List<int> availableValuesY = new List<int>();
+            for (int i = 0; i < mapTexture.Width; i++)
+            {
+                for (int j = 0; j < mapTexture.Height; j++)
+                {
+                    PrepareAvailableValues(mapTexture.Width, mapTexture.Height, availableValuesX, availableValuesY, i, j);
                     AddNeighbours(availableValuesX, availableValuesY, i, j, tileTemp);
                     availableValuesX.Clear();
                     availableValuesY.Clear();
@@ -82,19 +114,19 @@ namespace RD_Colonization.Code.Managers
             return temp;
         }
 
-        private static void PrepareAvailableValues(int size, List<int> availableValuesX, List<int> availableValuesY, int i, int y)
+        private static void PrepareAvailableValues(int width, int height, List<int> availableValuesX, List<int> availableValuesY, int i, int y)
         {
             availableValuesX.Add(0);
             availableValuesY.Add(0);
 
             if (i != 0)
                 availableValuesX.Add(-1);
-            if (i != size - 1)
+            if (i != width - 1)
                 availableValuesX.Add(1);
 
             if (y != 0)
                 availableValuesY.Add(-1);
-            if (y != size - 1)
+            if (y != height - 1)
                 availableValuesY.Add(1);
         }
 
@@ -112,6 +144,29 @@ namespace RD_Colonization.Code.Managers
                 }
             }
             tileTemp[i, j].SetNeigbhours(tmpTiles);
+        }
+
+        private Tile GetTile(Color color, int i, int j)
+        {
+            String tileKey = string.Empty;
+            if (color.R == 255)
+            {
+                tileKey = grassString;
+            } 
+            else if (color.G == 255)
+            {
+                tileKey = grassString;
+            }
+            else if (color.B == 255)
+            {
+                tileKey = waterString;
+            }
+            else
+            {
+                tileKey = mountainString;
+            }
+
+            return new Tile(MapManager.Instance.GetTileType(tileKey), new Point(i, j));
         }
 
 

@@ -31,7 +31,7 @@ namespace RD_Colonization.Code
         public static readonly String nextTurnString = "Turn";
 
         public static readonly String testDataFolderString = "TestData";
-        public static readonly String mapDataFolderString = "TestData";
+        public static readonly String mapDataFolderString = "MapData";
         public static readonly String resultDataFolderString = "ResultData";
 
         public static readonly String slash = "\\";

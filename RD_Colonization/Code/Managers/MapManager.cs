@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using RD_Colonization.Code.Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using static RD_Colonization.Code.StringList;
 
@@ -10,7 +12,6 @@ namespace RD_Colonization.Code.Managers
     public class MapManager : BaseManager<MapManager>
     {
         public Dictionary<Rectangle, Tile> mapDictionary = null;
-        public int mapSize = 0;
         private readonly Dictionary<String, TileData> typesDictionary = new Dictionary<String, TileData>();
         private static Random randomGenerator = new Random();
 
@@ -23,10 +24,24 @@ namespace RD_Colonization.Code.Managers
 
         public void GenerateMap(int size)
         {
-            mapSize = size;
             mapDictionary = new Dictionary<Rectangle, Tile>();
             Tile[,] mapData = new MapGenerator().Generate(size);
             CreateDictionary(mapData);
+        }
+
+        public void GenerateMap (string mapName, GraphicsDevice device)
+        {
+            Texture2D mapTexture = ReadMapFile(mapName, device);
+            if (mapTexture == null)
+            {
+                GenerateMap(40);
+            }
+            else
+            {
+                mapDictionary = new Dictionary<Rectangle, Tile>();
+                Tile[,] mapData = new MapGenerator().Generate(mapTexture);
+                CreateDictionary(mapData);
+            }
         }
 
         public Tile GetRandomGrassTile()
@@ -94,6 +109,23 @@ namespace RD_Colonization.Code.Managers
             {
                 Rectangle keyRectangle = new Rectangle(t.position.X * 64, t.position.Y * 64, 64, 64);
                 mapDictionary.Add(keyRectangle, t);
+            }
+        }
+
+        private Texture2D ReadMapFile(string mapName, GraphicsDevice device)
+        {
+            string filePath = System.IO.Directory.GetCurrentDirectory() + slash + mapDataFolderString + slash + mapName + pngExtension;
+            if (File.Exists(filePath) == true)
+            {
+                FileStream fileStream = new FileStream(filePath, FileMode.Open);
+                Texture2D mapTexture = Texture2D.FromStream(device, fileStream);
+                fileStream.Dispose();
+                return mapTexture;
+
+            }
+            else
+            {
+                return null;
             }
         }
     }

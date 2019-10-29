@@ -94,7 +94,14 @@ namespace RD_Colonization.Code.Screens
             {
                 if (selectedTest != null)
                 {
-                    MapManager.Instance.GenerateMap(40);                    
+                    if (selectedTest.mapName != null && selectedTest.mapName != string.Empty)
+                    {
+                        MapManager.Instance.GenerateMap(selectedTest.mapName, GraphicsDevice);
+                    }
+                    else
+                    {
+                        MapManager.Instance.GenerateMap(40);
+                    }                                       
                     
                     if (selectedTest.canPlayerPlay == true)
                     {

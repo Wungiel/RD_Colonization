@@ -178,6 +178,12 @@ namespace RD_Colonization
                     if (mousePosition.X > 0 && mousePosition.Y > 0)
                     {
                         Rectangle tempRectangle = new Rectangle(((int)mousePosition.X / 64) * 64, ((int)mousePosition.Y / 64) * 64, 64, 64);
+
+                        if (CityManager.Instance.citytDictionary.ContainsKey(tempRectangle))
+                        {
+                            CityManager.Instance.ChangeCurrenCity(tempRectangle);
+                        }
+
                         if (UnitManager.Instance.unitDictionary.ContainsKey(tempRectangle))
                         {
                             UnitManager.Instance.ChangeCurrentUnit(tempRectangle);
@@ -185,12 +191,6 @@ namespace RD_Colonization
                         {
                             PathfinderManager.Instance.CheckPathfinding(tempRectangle);
                         }
-
-                        if (CityManager.Instance.citytDictionary.ContainsKey(tempRectangle))
-                        {
-                            CityManager.Instance.ChangeCurrenCity(tempRectangle);
-                        }
-
                     }
                 }
                 if (InputManager.Instance.IsSingleRightPress())
