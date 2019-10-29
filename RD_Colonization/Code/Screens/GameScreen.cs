@@ -148,6 +148,11 @@ namespace RD_Colonization
                     CentreOnPosition(UnitManager.Instance.currentUnit.currentTile);
                 }
 
+                if (InputManager.Instance.IsSinglePress(Keys.W))
+                {
+                    ActionManager.Instance.CreateUnit();
+                }
+
                 if (InputManager.Instance.IsSinglePress(Keys.B))
                 {
                     ActionManager.Instance.BuildCity();
@@ -180,6 +185,12 @@ namespace RD_Colonization
                         {
                             PathfinderManager.Instance.CheckPathfinding(tempRectangle);
                         }
+
+                        if (CityManager.Instance.citytDictionary.ContainsKey(tempRectangle))
+                        {
+                            CityManager.Instance.ChangeCurrenCity(tempRectangle);
+                        }
+
                     }
                 }
                 if (InputManager.Instance.IsSingleRightPress())

@@ -9,9 +9,19 @@ namespace RD_Colonization.Code.Managers
     public class JsonManager : BaseManager<JsonManager>
     {
 
-        public T ReadJSON <T> (String jsonString)
+        public T ReadJSON <T> (String jsonString) where T: new()
         {
-            T newObject = JsonConvert.DeserializeObject<T>(jsonString);
+            T newObject;
+
+            try
+            {
+                newObject = JsonConvert.DeserializeObject<T>(jsonString);
+            }
+            catch (Exception)
+            {
+                newObject = new T();
+            }
+            
             return newObject;
         }
 

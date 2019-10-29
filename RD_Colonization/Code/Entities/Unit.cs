@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using RD_Colonization.Code.Commands;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Managers;
@@ -11,7 +12,13 @@ namespace RD_Colonization.Code.Entities
         public UnitData type;
         public Tile currentTile;
         public int remainingEnergy;
+        public int health;
         public ICommand currentCommand = null;
+
+        public Unit()
+        {
+            
+        }
 
         public Unit(UnitData type, Tile position, int playerId)
         {
@@ -19,6 +26,7 @@ namespace RD_Colonization.Code.Entities
             this.currentTile = position;
             this.playerId = playerId;
             this.remainingEnergy = type.speed;
+            this.health = type.maxHealth;
             TurnManager.Instance.turnEvent += RegenerateEnergy;
         }
 
@@ -30,6 +38,11 @@ namespace RD_Colonization.Code.Entities
         public void RegenerateEnergy()
         {
             remainingEnergy = type.speed; ;
+        }
+
+        public void removeCommand()
+        {
+            currentCommand = null;
         }
     }
 }

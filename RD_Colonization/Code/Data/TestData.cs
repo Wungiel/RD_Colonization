@@ -9,7 +9,9 @@ namespace RD_Colonization.Code.Data
     public class TestData
     {
         public String name;
+        public String mapName;
         public bool useEvolution;
         public bool useResourceFitting;
+        public bool canPlayerPlay;
     }
 }

@@ -21,7 +21,8 @@ namespace RD_Colonization.Code.Managers
             for (int i = 0; i < 4; i++)
             {
                 PlayerData tmpPlayer = new PlayerData(playerColors[i]);
-                UnitManager.Instance.AddNewBuildingUnit(tmpPlayer);
+                Tile tile = MapManager.Instance.GetRandomGrassTile();
+                UnitManager.Instance.AddNewBuildingUnit(tmpPlayer, tile);
                 players.Add(tmpPlayer);
             }
 
@@ -77,13 +78,7 @@ namespace RD_Colonization.Code.Managers
         {
             Unit[] units = UnitManager.Instance.GetPlayersUnits(currentPlayer.id);
             City[] cities = CityManager.Instance.GetPlayersCities(currentPlayer.id);
-
-            if (units.Length != 0)
-            {
-                units[0].currentCommand = new BuildCityCommand(units[0]);
-                units[0].currentCommand.Execute();
-            }
-
+            
             CreateSupportMaps(units, cities);
             CommanResources(units, cities);
             ExecuteCommands(units, cities);
@@ -103,7 +98,24 @@ namespace RD_Colonization.Code.Managers
 
         private void ExecuteCommands(Unit[] units, City[] cities)
         {
+            foreach (Unit u in units)
+            {
+                if (u.currentCommand != null)
+                {
+                    if (u.currentCommand.Execute() == true)
+                    {
+                        u.removeCommand();
+                    }                        
+                }
+            }
 
+            foreach (City c in cities)
+            {
+                if (c.currentCommand.Execute() == true)
+                {
+                    c.removeCommand();
+                }
+            }
         }
     }
 }

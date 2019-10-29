@@ -57,7 +57,7 @@ namespace RD_Colonization.Code.Managers
                     return ReconstructPath(came_from, destinyTile);
                 openset.Remove(currentTile);
                 closedSet.Add(currentTile);
-                foreach (Tile t in currentTile.neighbours)
+                foreach (Tile t in MapManager.Instance.GetNeighbours(currentTile))
                 {
                     if (closedSet.Contains(t))
                         continue;
@@ -66,7 +66,7 @@ namespace RD_Colonization.Code.Managers
                         closedSet.Add(t);
                         continue;
                     }
-                    if (UnitManager.Instance.unitDictionary.ContainsKey(t.CreateRectangle()))
+                    if (OtherUnitToAvoid(t, unit) == true)
                     {
                         closedSet.Add(t);
                         continue;
@@ -152,6 +152,34 @@ namespace RD_Colonization.Code.Managers
             return (float)tmp;
         }
 
+        private bool OtherUnitToAvoid(Tile t, Unit currentUnit)
+        {
+            if  (UnitManager.Instance.unitDictionary.ContainsKey(t.CreateRectangle()))
+            {
+                Unit tmpUnit = new Unit();
+                UnitManager.Instance.unitDictionary.TryGetValue(t.CreateRectangle(), out tmpUnit);
+                if (currentUnit.playerId == tmpUnit.playerId)
+                {
+                    return true;
+                }
+                else
+                {
+                    if (currentUnit.type.strenght == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 }

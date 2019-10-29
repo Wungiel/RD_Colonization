@@ -16,27 +16,20 @@ namespace RD_Colonization.Code.Managers
         public Dictionary<Unit, List<Tile>> movementDictionary = new Dictionary<Unit, List<Tile>>();
         public Unit currentUnit = null;
 
-        private Dictionary<String, UnitData> typesDictionary = new Dictionary<String, UnitData>();
-        private static Random randomGenerator = new Random();
-        
+        private Dictionary<String, UnitData> typesDictionary = new Dictionary<String, UnitData>();      
 
         public UnitManager()
         {
-            typesDictionary.Add(civilianString, new UnitData(civilianString, true, true, 2));
-            typesDictionary.Add(soldierString, new UnitData(soldierString, true, false, 1));
-            typesDictionary.Add(scoutString, new UnitData(scoutString, true, false, 1));
-            typesDictionary.Add(shipString, new UnitData(shipString, false, false, 1));
+            typesDictionary.Add(civilianString, new UnitData(civilianString, true, true, 2, 1, 0));
+            typesDictionary.Add(soldierString, new UnitData(soldierString, true, false, 1, 5, 2));
+            typesDictionary.Add(scoutString, new UnitData(scoutString, true, false, 3, 1, 1));
+            typesDictionary.Add(shipString, new UnitData(shipString, false, false, 1, 2, 2));
             TurnManager.Instance.turnEvent += MoveUnits;
         }
         
-        public void AddNewBuildingUnit(PlayerData tmpPlayer)
+        public void AddNewBuildingUnit(PlayerData tmpPlayer, Tile tile)
         {
-            var grassTiles = MapManager.Instance.mapDictionary
-                .Where(kv => kv.Value.type.name == grassString).Select(kv => kv.Value).ToList();
-
-            Tile tmpGrass = grassTiles[randomGenerator.Next(grassTiles.Count - 1)];
-
-            SpawnUnit(tmpPlayer.id, tmpGrass, civilianString);
+            SpawnUnit(tmpPlayer.id, tile, civilianString);
         }
 
         private void SpawnUnit(int playerId, Tile tile, String unitTypeString)
@@ -112,9 +105,19 @@ namespace RD_Colonization.Code.Managers
             movementDictionary.Remove(unit);
         }
 
+        public void DeselectUnit()
+        {
+            currentUnit = null;
+        }
+
         public void ChangeCurrentUnit(Rectangle tempRectangle)
         {
-            UnitManager.Instance.unitDictionary.TryGetValue(tempRectangle, out UnitManager.Instance.currentUnit);
+            Unit tmpUnit = new Unit();
+            unitDictionary.TryGetValue(tempRectangle, out tmpUnit);
+            if (tmpUnit.playerId == PlayerManager.Instance.currentPlayer.id)
+            {
+                SetCurrentUnit(tmpUnit);
+            }
         }
 
         public void ChangeCurrentUnit(PlayerData currentPlayer)
@@ -124,7 +127,7 @@ namespace RD_Colonization.Code.Managers
             {
                 if (unitsList[i].playerId == currentPlayer.id)
                 {
-                    currentUnit = unitsList[i];
+                    SetCurrentUnit(unitsList[i]);
                     break;
                 }
             }
@@ -138,17 +141,29 @@ namespace RD_Colonization.Code.Managers
                 .ToList();
             if (units.Count != 0)
             {
-                int currentIndex = units.FindIndex(u => u == currentUnit);
-                if (currentIndex == units.Count - 1)
-                    currentIndex = 0;
-                else
-                    currentIndex++;
-                currentUnit = units[currentIndex];
+                int currentIndex = 0;
+                if (currentUnit != null)
+                {
+                    currentIndex = units.FindIndex(u => u == currentUnit);
+                    if (currentIndex == units.Count - 1)
+                        currentIndex = 0;
+                    else
+                        currentIndex++;
+
+                }
+
+                SetCurrentUnit(units[currentIndex]);
             }
             else
             {
                 currentUnit = null;
             }
+        }
+
+        private void SetCurrentUnit(Unit unit)
+        {
+            CityManager.Instance.DeselectCurrentCity();
+            currentUnit = unit;
         }
 
         private void DiscoverMap(Unit tmpUnit)

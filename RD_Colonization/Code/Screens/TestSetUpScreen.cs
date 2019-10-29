@@ -15,7 +15,7 @@ namespace RD_Colonization.Code.Screens
     public class TestSetUpScreen : DefaultScreen
     {
         private List<Entity> rootEntities = new List<Entity>();
-        private TabData countryTab, sizeMapTab;
+        private List<Paragraph> descriptionParagraphs = new List<Paragraph>();
         private TestData selectedTest = null;
 
         public TestSetUpScreen(ColonizationGame game) : base(game)
@@ -94,10 +94,20 @@ namespace RD_Colonization.Code.Screens
             {
                 if (selectedTest != null)
                 {
-                    MapManager.Instance.GenerateMap(40);
-                    PlayerManager.Instance.SetUpPlayers(false);
-                    TestManager.Instance.InitializeTest(selectedTest);
-                    PlayerManager.Instance.ProcessTurn();
+                    MapManager.Instance.GenerateMap(40);                    
+                    
+                    if (selectedTest.canPlayerPlay == true)
+                    {
+                        PlayerManager.Instance.SetUpPlayers();
+                        TestManager.Instance.InitializeTest(selectedTest);
+                        ScreenManager.Instance.SetScreen(gameScreenString);
+                    }
+                    else
+                    {
+                        PlayerManager.Instance.SetUpPlayers(false);
+                        TestManager.Instance.InitializeTest(selectedTest);
+                        PlayerManager.Instance.ProcessTurn();
+                    }
                 }
             };
         }
@@ -136,11 +146,27 @@ namespace RD_Colonization.Code.Screens
         private void SetDescriptionPanel(out Panel descriptionPanel, float height)
         {
             descriptionPanel = new Panel(new Vector2(400, height), anchor: Anchor.AutoInline);
+            descriptionPanel.AddChild(new Header("Description"));
+            descriptionParagraphs.Add((Paragraph) descriptionPanel.AddChild(new Paragraph("Name: + ")));
+            descriptionParagraphs.Add((Paragraph )descriptionPanel.AddChild(new Paragraph("Map: ")));
+            descriptionParagraphs.Add((Paragraph) descriptionPanel.AddChild(new Paragraph("Use Evolution: ")));
+            descriptionParagraphs.Add((Paragraph) descriptionPanel.AddChild(new Paragraph("Use RF: ")));
+            descriptionParagraphs.Add((Paragraph) descriptionPanel.AddChild(new Paragraph("Live player: ")));            
         }
 
         private void SetDescriptionPanelData(TestData test)
         {
-           Debug.WriteLine(test.name);
+            foreach(Paragraph p in descriptionParagraphs)
+            {
+                int index = p.Text.IndexOf(":");
+                p.Text = p.Text.Substring(0, index + 1);
+            }
+
+            descriptionParagraphs[0].Text += test.name;
+            descriptionParagraphs[1].Text += test.mapName;
+            descriptionParagraphs[2].Text += test.useEvolution;
+            descriptionParagraphs[3].Text += test.useResourceFitting;
+            descriptionParagraphs[4].Text += test.canPlayerPlay;
         }
 
     }

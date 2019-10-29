@@ -54,5 +54,23 @@ namespace RD_Colonization.Code.Data
 
             return value;
         }
+
+        public Tile GetNeighbourTileForNewUnit()
+        {
+            foreach (Tile t in neighbours)
+            {
+                if (t.IsFree() == true)
+                {
+                    return t;
+                }
+            }
+
+            return null;
+        }
+
+        private bool IsFree()
+        {
+            return type.walkable == true && type.land && UnitManager.Instance.unitDictionary.ContainsKey(this.CreateRectangle()) == false;
+        }
     }
 }

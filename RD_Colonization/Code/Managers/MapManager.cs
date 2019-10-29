@@ -2,6 +2,7 @@
 using RD_Colonization.Code.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Managers
@@ -11,6 +12,7 @@ namespace RD_Colonization.Code.Managers
         public Dictionary<Rectangle, Tile> mapDictionary = null;
         public int mapSize = 0;
         private readonly Dictionary<String, TileData> typesDictionary = new Dictionary<String, TileData>();
+        private static Random randomGenerator = new Random();
 
         public MapManager()
         {
@@ -27,6 +29,15 @@ namespace RD_Colonization.Code.Managers
             CreateDictionary(mapData);
         }
 
+        public Tile GetRandomGrassTile()
+        {
+            var grassTiles = MapManager.Instance.mapDictionary
+                .Where(kv => kv.Value.type.name == grassString).Select(kv => kv.Value).ToList();
+
+            return grassTiles[randomGenerator.Next(grassTiles.Count - 1)];
+
+        }
+
         public TileData GetTileType(String key)
         {
             TileData temp = null;
@@ -34,7 +45,7 @@ namespace RD_Colonization.Code.Managers
             return temp;
         }
 
-        public HashSet<Tile> GetNeighbours(Tile center, int width)
+        public HashSet<Tile> GetNeighbours(Tile center, int width = 1)
         {
             HashSet<Tile> tiles = new HashSet<Tile>();
             tiles.Add(center);

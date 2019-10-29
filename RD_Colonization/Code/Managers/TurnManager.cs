@@ -18,7 +18,7 @@ namespace RD_Colonization.Code.Managers
         {
             if (CheckEndingConditions() == true)
             {
-                MessageBox.ShowMsgBox("End", "Game finished " + PlayerManager.Instance.players[1].cash);
+                MessageBox.ShowMsgBox("End", "Game finished ");
                 TestManager.Instance.WriteTestResultData();
                 ScreenManager.Instance.SetScreen(mainMenuScreenString);
                 return;

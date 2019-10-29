@@ -123,7 +123,18 @@ namespace RD_Colonization.Code
         {
             Rectangle sourceRectangle;
             cityGraphics.TryGetValue(cityString, out sourceRectangle);
-            spriteBatch.Draw(unitTileset, pair.Key, sourceRectangle, Color.White);
+            if (pair.Value != CityManager.Instance.currentCity)
+            {
+                spriteBatch.Draw(unitTileset, pair.Key, sourceRectangle, Color.White);
+            }
+            else
+            {
+                if (blink > 15)
+                {
+                    spriteBatch.Draw(unitTileset, pair.Key, sourceRectangle, Color.White);
+                }
+            }
+            
             spriteBatch.DrawRectangle(pair.Key, PlayerManager.Instance.GetPlayerByCity(pair.Value).playerColor);
         }
         

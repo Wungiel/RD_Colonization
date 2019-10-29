@@ -69,10 +69,6 @@ namespace RD_Colonization.Code.Managers
 
         public void WriteTestResultData()
         {
-            if (usedTest == null)
-            {
-                return;
-            }
             string testResultDirectoryPath = System.IO.Directory.GetCurrentDirectory() + slash + resultDataFolderString;
             string fileName = testResultDirectoryPath + slash + "result" + txtExtension;
             File.WriteAllText(fileName, "Results:");
