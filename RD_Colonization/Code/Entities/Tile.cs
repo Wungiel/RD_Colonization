@@ -68,9 +68,29 @@ namespace RD_Colonization.Code.Data
             return null;
         }
 
+        public Tile GetNeighbourTileForNewWaterUnit()
+        {
+            foreach (Tile t in neighbours)
+            {
+                if (t.IsFreeForWaterUnit() == true)
+                {
+                    return t;
+                }
+            }
+
+            return null;
+        }
+
+
         private bool IsFree()
         {
-            return type.walkable == true && type.land && UnitManager.Instance.unitDictionary.ContainsKey(this.CreateRectangle()) == false;
+            return type.walkable == true && type.land  == true && UnitManager.Instance.unitDictionary.ContainsKey(this.CreateRectangle()) == false;
         }
+
+        private bool IsFreeForWaterUnit()
+        {
+            return type.walkable == true && type.land == false && UnitManager.Instance.unitDictionary.ContainsKey(this.CreateRectangle()) == false;
+        }
+
     }
 }

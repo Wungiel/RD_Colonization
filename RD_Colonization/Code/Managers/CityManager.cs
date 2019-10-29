@@ -59,10 +59,18 @@ namespace RD_Colonization.Code.Managers
             return false;
         }
 
+        public City GetCity(Rectangle tempRectangle)
+        {
+            City tmpCity = new City();
+            citytDictionary.TryGetValue(tempRectangle, out tmpCity);
+            return tmpCity;
+        }
+
         private void SetCurrentCity(City city)
         {
             UnitManager.Instance.DeselectUnit();
             currentCity = city;
         }
+
     }
 }

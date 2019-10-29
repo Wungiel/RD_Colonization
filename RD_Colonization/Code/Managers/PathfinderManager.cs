@@ -71,6 +71,12 @@ namespace RD_Colonization.Code.Managers
                         closedSet.Add(t);
                         continue;
                     }
+                    if (CityToAvoid(t, unit) == true)
+                    {
+                        closedSet.Add(t);
+                        continue;
+                    }
+
                     if (t.type.land ^ unit.type.land)
                     {
                         closedSet.Add(t);
@@ -180,6 +186,36 @@ namespace RD_Colonization.Code.Managers
                 return false;
             }
         }
+
+        private bool CityToAvoid(Tile t, Unit currentUnit)
+        {
+            if (CityManager.Instance.citytDictionary.ContainsKey(t.CreateRectangle()))
+            {
+                City tmpCity = new City();
+                CityManager.Instance.citytDictionary.TryGetValue(t.CreateRectangle(), out tmpCity);
+                if (currentUnit.playerId == tmpCity.playerId)
+                {
+                    return false;
+                }
+                else
+                {
+                    if (currentUnit.type.strenght == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
     }
 }

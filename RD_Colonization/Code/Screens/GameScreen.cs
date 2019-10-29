@@ -148,9 +148,21 @@ namespace RD_Colonization
                     CentreOnPosition(UnitManager.Instance.currentUnit.currentTile);
                 }
 
+                if (InputManager.Instance.IsSinglePress(Keys.Q))
+                {
+                    ActionManager.Instance.CreateUnit(civilianString);
+                }
                 if (InputManager.Instance.IsSinglePress(Keys.W))
                 {
-                    ActionManager.Instance.CreateUnit();
+                    ActionManager.Instance.CreateUnit(soldierString);
+                }
+                if (InputManager.Instance.IsSinglePress(Keys.E))
+                {
+                    ActionManager.Instance.CreateUnit(scoutString);
+                }
+                if (InputManager.Instance.IsSinglePress(Keys.R))
+                {
+                    ActionManager.Instance.CreateUnit(shipString);
                 }
 
                 if (InputManager.Instance.IsSinglePress(Keys.B))
@@ -178,16 +190,12 @@ namespace RD_Colonization
                     if (mousePosition.X > 0 && mousePosition.Y > 0)
                     {
                         Rectangle tempRectangle = new Rectangle(((int)mousePosition.X / 64) * 64, ((int)mousePosition.Y / 64) * 64, 64, 64);
-
-                        if (CityManager.Instance.citytDictionary.ContainsKey(tempRectangle))
-                        {
-                            CityManager.Instance.ChangeCurrenCity(tempRectangle);
-                        }
-
+                        
                         if (UnitManager.Instance.unitDictionary.ContainsKey(tempRectangle))
                         {
                             UnitManager.Instance.ChangeCurrentUnit(tempRectangle);
-                        } else if (MapManager.Instance.mapDictionary.ContainsKey(tempRectangle) && UnitManager.Instance.currentUnit !=null)
+                        }
+                        else if (MapManager.Instance.mapDictionary.ContainsKey(tempRectangle) && UnitManager.Instance.currentUnit !=null)
                         {
                             PathfinderManager.Instance.CheckPathfinding(tempRectangle);
                         }
@@ -195,7 +203,20 @@ namespace RD_Colonization
                 }
                 if (InputManager.Instance.IsSingleRightPress())
                 {
-                    UnitManager.Instance.currentUnit = null;
+                    UnitManager.Instance.DeselectUnit();
+                    CityManager.Instance.DeselectCurrentCity();
+
+                    Vector2 mousePosition = camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+                    if (mousePosition.X > 0 && mousePosition.Y > 0)
+                    {
+                        Rectangle tempRectangle = new Rectangle(((int)mousePosition.X / 64) * 64, ((int)mousePosition.Y / 64) * 64, 64, 64);
+
+                        if (CityManager.Instance.citytDictionary.ContainsKey(tempRectangle))
+                        {
+                            CityManager.Instance.ChangeCurrenCity(tempRectangle);
+                        }
+                    }
+                    
                 }
             }
         }

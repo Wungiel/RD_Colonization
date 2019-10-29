@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Managers
 {
@@ -22,7 +23,7 @@ namespace RD_Colonization.Code.Managers
             {
                 PlayerData tmpPlayer = new PlayerData(playerColors[i]);
                 Tile tile = MapManager.Instance.GetRandomGrassTile();
-                UnitManager.Instance.AddNewBuildingUnit(tmpPlayer, tile);
+                UnitManager.Instance.AddNewUnit(tmpPlayer, tile, civilianString);
                 players.Add(tmpPlayer);
             }
 

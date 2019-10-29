@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.Managers
 {
@@ -12,7 +13,10 @@ namespace RD_Colonization.Code.Managers
     {
         public void BuildCity()
         {
-            BuildCity(UnitManager.Instance.currentUnit);
+            if (UnitManager.Instance.currentUnit != null)
+            {
+                BuildCity(UnitManager.Instance.currentUnit);
+            }            
         }
 
         public void BuildCity(Unit unit)
@@ -24,21 +28,33 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
-        public void CreateUnit()
+        public void CreateUnit(string unitKey)
         {
             if (CityManager.Instance.currentCity != null)
-                CreateUnit(CityManager.Instance.currentCity);
+            {
+                CreateUnit(CityManager.Instance.currentCity, unitKey);
+            }                
         }
 
-        public void CreateUnit(City city)
+        public void CreateUnit(City city, string unitKey)
         {
-            Tile tile = city.position.GetNeighbourTileForNewUnit();
+            UnitData unitType = UnitManager.Instance.GetUnitType(unitKey);
+
+            Tile tile = null;
+            if (unitType.land == true)
+            {
+                tile = city.position.GetNeighbourTileForNewUnit();
+            }
+            else
+            {
+                tile = city.position.GetNeighbourTileForNewWaterUnit();
+            }            
+
             if (tile != null)
             {
-                UnitManager.Instance.AddNewBuildingUnit(PlayerManager.Instance.GetPlayerByCity(city), tile);
+                UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerByCity(city), tile, unitKey);
             }            
         }
-
 
         private bool CanBuild(Unit unit)
         {

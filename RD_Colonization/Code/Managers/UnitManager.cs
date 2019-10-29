@@ -22,14 +22,14 @@ namespace RD_Colonization.Code.Managers
         {
             typesDictionary.Add(civilianString, new UnitData(civilianString, true, true, 2, 1, 0));
             typesDictionary.Add(soldierString, new UnitData(soldierString, true, false, 1, 5, 2));
-            typesDictionary.Add(scoutString, new UnitData(scoutString, true, false, 3, 1, 1));
+            typesDictionary.Add(scoutString, new UnitData(scoutString, true, false, 5, 1, 1));
             typesDictionary.Add(shipString, new UnitData(shipString, false, false, 1, 2, 2));
             TurnManager.Instance.turnEvent += MoveUnits;
         }
         
-        public void AddNewBuildingUnit(PlayerData tmpPlayer, Tile tile)
+        public void AddNewUnit(PlayerData tmpPlayer, Tile tile, String unitType)
         {
-            SpawnUnit(tmpPlayer.id, tile, civilianString);
+            SpawnUnit(tmpPlayer.id, tile, unitType);
         }
 
         private void SpawnUnit(int playerId, Tile tile, String unitTypeString)

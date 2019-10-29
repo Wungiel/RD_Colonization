@@ -51,15 +51,15 @@ namespace RD_Colonization.Code
                 DrawMap(spriteBatch, pair);
             }
 
+            foreach (KeyValuePair<Rectangle, City> pair in CityManager.Instance.citytDictionary)
+            {
+                DrawCity(spriteBatch, pair);
+            }
+
             foreach (KeyValuePair<Rectangle, Unit> pair in UnitManager.Instance.unitDictionary)
             {
                 DrawUnits(spriteBatch, pair);
                 DrawPaths(spriteBatch, pair.Value);
-            }
-
-            foreach (KeyValuePair<Rectangle, City> pair in CityManager.Instance.citytDictionary)
-            {
-                DrawCity(spriteBatch, pair);
             }
 
             foreach (KeyValuePair<Rectangle, Tile> pair in MapManager.Instance.mapDictionary)
