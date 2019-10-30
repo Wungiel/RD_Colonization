@@ -12,13 +12,10 @@ namespace RD_Colonization.Code.Managers
 {
     public class PathfinderManager : BaseManager<PathfinderManager>
     {
+
         public bool CheckPathfinding(Rectangle destiny, MoveCommand command)
         {
-            return CheckPathfinding(destiny, UnitManager.Instance.currentUnit, command);
-        }
-
-        public bool CheckPathfinding(Rectangle destiny, Unit unit, MoveCommand command)
-        {
+            Unit unit = command.unit;
             Tile tmpTile = null;
             List<Tile> oldPath = command.GetPath();
 

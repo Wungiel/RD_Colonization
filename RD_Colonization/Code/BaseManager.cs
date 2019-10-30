@@ -20,6 +20,15 @@ namespace RD_Colonization.Code
                 }
                 return instance;
             }
+            private set
+            {
+                instance = value;
+            }
+        }
+
+        public void DestroyInstance()
+        {
+            Instance = null;
         }
     }
 }

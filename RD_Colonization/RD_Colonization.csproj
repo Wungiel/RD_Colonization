@@ -50,6 +50,7 @@
     <Compile Include="Code\Data\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />
     <Compile Include="Code\Data\PlayerData.cs" />
+    <Compile Include="Code\Data\ScoreData.cs" />
     <Compile Include="Code\Data\SinglePlayerTurnData.cs" />
     <Compile Include="Code\Data\TestData.cs" />
     <Compile Include="Code\Data\UnitData.cs" />

@@ -164,14 +164,14 @@ namespace RD_Colonization.Code.Managers
 
         public bool IsUnitOnRectangleFriendly(Rectangle tempRectangle)
         {
-            return IsUnitOnRectangleFriendly(tempRectangle, currentUnit);
+            return IsUnitOnRectangleFriendly(tempRectangle, PlayerManager.Instance.currentPlayer.id);
         }
 
-        public bool IsUnitOnRectangleFriendly(Rectangle tempRectangle, Unit unit)
+        public bool IsUnitOnRectangleFriendly(Rectangle tempRectangle, int playerId)
         {
             Unit otherUnit = new Unit();
             unitDictionary.TryGetValue(tempRectangle, out otherUnit);
-            if (unit.playerId == otherUnit.playerId)
+            if (playerId == otherUnit.playerId)
             {
                 return true;
             }

@@ -101,20 +101,9 @@ namespace RD_Colonization.Code.Screens
                     else
                     {
                         MapManager.Instance.GenerateMap(40);
-                    }                                       
-                    
-                    if (selectedTest.canPlayerPlay == true)
-                    {
-                        PlayerManager.Instance.SetUpPlayers();
-                        TestManager.Instance.InitializeTest(selectedTest);
-                        ScreenManager.Instance.SetScreen(gameScreenString);
                     }
-                    else
-                    {
-                        PlayerManager.Instance.SetUpPlayers(false);
-                        TestManager.Instance.InitializeTest(selectedTest);
-                        PlayerManager.Instance.ProcessTurn();
-                    }
+
+                    TestManager.Instance.InitializeTest(selectedTest);
                 }
             };
         }

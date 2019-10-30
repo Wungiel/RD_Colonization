@@ -91,7 +91,7 @@ namespace RD_Colonization
             Button mainMenu = new Button(mainMenuString);
             mainMenu.OnClick += (Entity entity) =>
             {
-                ScreenManager.Instance.SetScreen(mainMenuScreenString);
+                TurnManager.Instance.EndGame();
             };
 
             Button exit = new Button(exitString);
@@ -198,7 +198,7 @@ namespace RD_Colonization
                             {
                                 UnitManager.Instance.ChangeCurrentUnit(tempRectangle);
                             }
-                            else
+                            else if (UnitManager.Instance.currentUnit != null)
                             {
                                 UnitManager.Instance.currentUnit.currentCommand = new MoveCommand(tempRectangle, UnitManager.Instance.currentUnit);
                             }

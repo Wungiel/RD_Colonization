@@ -9,9 +9,9 @@ namespace RD_Colonization.Code.Managers
 {
     public class CivilizationManager : BaseManager<CivilizationManager>
     {
-        private static Dictionary<string, CivilizationData> civilizations = new Dictionary<string, CivilizationData>();
-        private static Texture2D portraitsTexture;
-        public static int Cash { get; private set; }
+        private Dictionary<string, CivilizationData> civilizations = new Dictionary<string, CivilizationData>();
+        private Texture2D portraitsTexture;
+        public int Cash { get; private set; }
 
         public CivilizationManager()
         {

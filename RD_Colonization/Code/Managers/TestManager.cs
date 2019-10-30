@@ -46,14 +46,20 @@ namespace RD_Colonization.Code.Managers
 
             usedTest = test;
 
-            List<PlayerData> players = PlayerManager.Instance.players;
-
-            foreach(PlayerData player in players)
+            if (usedTest.canPlayerPlay == true)
             {
-                playersScore.Add(new SinglePlayerTurnData(player.id));
+                PlayerManager.Instance.SetUpPlayers();
+                SetUpPlayerScoreRecords();
+                ScreenManager.Instance.SetScreen(gameScreenString);
+            }
+            else
+            {
+                PlayerManager.Instance.SetUpPlayers(false);
+                SetUpPlayerScoreRecords();
+                PlayerManager.Instance.ProcessTurn();
             }
 
-            TurnManager.Instance.turnEvent += GetData;
+            
         }
 
         public void GetData()
@@ -90,6 +96,19 @@ namespace RD_Colonization.Code.Managers
 
             return null;
         }
+
+        private void SetUpPlayerScoreRecords()
+        {
+            List<PlayerData> players = PlayerManager.Instance.players;
+
+            foreach (PlayerData player in players)
+            {
+                playersScore.Add(new SinglePlayerTurnData(player.id));
+            }
+
+            TurnManager.Instance.turnEvent += GetData;
+        }
+
 
     }
 }

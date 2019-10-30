@@ -19,9 +19,7 @@ namespace RD_Colonization.Code.Managers
         {
             if (CheckEndingConditions() == true)
             {
-                MessageBox.ShowMsgBox("End", "Game finished ");
-                TestManager.Instance.WriteTestResultData();
-                ScreenManager.Instance.SetScreen(mainMenuScreenString);
+                EndGame();
                 return;
             }
 
@@ -40,6 +38,32 @@ namespace RD_Colonization.Code.Managers
             {
                 manager.ProcessTurn();
             }
+        }
+
+        public void EndGame()
+        {
+            MessageBox.ShowMsgBox("End", "Game finished ");
+            TestManager.Instance.WriteTestResultData();
+            ScreenManager.Instance.SetScreen(mainMenuScreenString);
+            ClearManagers();
+        }
+
+        private void ClearManagers()
+        {
+            ActionManager.Instance.DestroyInstance();
+            CityManager.Instance.DestroyInstance();
+            CivilizationManager.Instance.DestroyInstance();
+            DDAEvolutionaryAIManager.Instance.DestroyInstance();
+            DDAResourceManager.Instance.DestroyInstance();
+            InputManager.Instance.DestroyInstance();
+            JsonManager.Instance.DestroyInstance();
+            MapManager.Instance.DestroyInstance();
+            PathfinderManager.Instance.DestroyInstance();
+            PlayerManager.Instance.DestroyInstance();
+            ScoreManager.Instance.DestroyInstance();
+            TestManager.Instance.DestroyInstance();
+            UnitManager.Instance.DestroyInstance();
+            UnitManager.Instance.DestroyInstance();
         }
 
         private bool CheckEndingConditions()
