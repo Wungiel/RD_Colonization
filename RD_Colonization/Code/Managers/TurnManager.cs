@@ -13,6 +13,7 @@ namespace RD_Colonization.Code.Managers
         public int TurnNumber { get; private set; }
         public delegate void turnChanged();
         public turnChanged turnEvent;
+        public int maxTurnsNumber = 100;
 
         public void IncreaseTurn()
         {
@@ -43,7 +44,7 @@ namespace RD_Colonization.Code.Managers
 
         private bool CheckEndingConditions()
         {
-            return TurnNumber == 100;
+            return TurnNumber == maxTurnsNumber;
         }
     }
 }

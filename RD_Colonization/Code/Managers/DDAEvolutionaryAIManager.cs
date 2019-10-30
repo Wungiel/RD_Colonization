@@ -15,5 +15,9 @@ namespace RD_Colonization.Code.Managers
 {
     public class DDAEvolutionaryAIManager : BaseManager<DDAEvolutionaryAIManager>
     {
+        public void GenerateHistory()
+        {
+            //If historia == null to generate historia
+        }
     }
 }

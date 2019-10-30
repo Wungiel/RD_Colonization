@@ -45,6 +45,7 @@
     <Compile Include="Code\BaseManager.cs" />
     <Compile Include="Code\Commands\BuildCityCommand.cs" />
     <Compile Include="Code\Commands\ICommand.cs" />
+    <Compile Include="Code\Commands\MoveCommand.cs" />
     <Compile Include="Code\Data\CivilizationData.cs" />
     <Compile Include="Code\Data\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />

@@ -56,6 +56,44 @@ namespace RD_Colonization.Code.Managers
             }            
         }
 
+        public void StartBattle(Unit attacker, Unit defender)
+        {
+            bool fightFinished = false;
+            int turnCount = 0;
+
+            while (fightFinished == false)
+            {
+                attacker.health -= GetAttackPower(defender);
+                if (attacker.health > 0)
+                {
+                    defender.health -= GetAttackPower(attacker);
+                    if (defender.health < 0)
+                    {
+                        fightFinished = true;
+                        UnitManager.Instance.DestroyUnit(defender);
+                    }
+                } 
+                else
+                {
+                    UnitManager.Instance.DestroyUnit(attacker);
+                    fightFinished = true;
+                }
+
+                if (turnCount == 100)
+                {
+                    fightFinished = true;
+                }
+
+                turnCount++;
+            }
+        }
+
+        private float GetAttackPower(Unit attackingUnit)
+        {
+            PlayerData unitOwner = PlayerManager.Instance.GetPlayerByUnit(attackingUnit);
+            return attackingUnit.type.strenght * unitOwner.GetDDABonus() * unitOwner.GetBoughtBonus();
+        }
+
         private bool CanBuild(Unit unit)
         {
             bool canUnitBuild = unit != null && unit.type.canBuild;

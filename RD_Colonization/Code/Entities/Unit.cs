@@ -12,7 +12,7 @@ namespace RD_Colonization.Code.Entities
         public UnitData type;
         public Tile currentTile;
         public int remainingEnergy;
-        public int health;
+        public float health;
         public ICommand currentCommand = null;
 
         public Unit()

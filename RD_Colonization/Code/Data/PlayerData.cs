@@ -13,7 +13,8 @@ namespace RD_Colonization.Code.Data
         public int id = 0;
         public int cash = 0;
         public int food = 0;
-        public int attackBonus = 0;
+        public int attackBonus = 1;
+        public int attackDDABonus = 1;
         public int healthBonus = 0;
         public bool isControlledByAI = true;
         public Color playerColor;
@@ -33,6 +34,38 @@ namespace RD_Colonization.Code.Data
         public void ModifyCash(int cashAmount)
         {
             cash += cashAmount;
+        }
+
+        public float GetDDABonus()
+        {
+            if (attackDDABonus > 2)
+            {
+                return 2;
+            }
+            else if (attackDDABonus < 0.1)
+            {
+                return 0.1f;
+            }
+            else
+            {
+                return attackDDABonus;
+            }
+        }
+
+        public float GetBoughtBonus()
+        {
+            if (attackBonus > 2)
+            {
+                return 2;
+            }
+            else if (attackBonus < 0.1)
+            {
+                return 0.1f;
+            }
+            else
+            {
+                return attackBonus;
+            }
         }
     }
 }

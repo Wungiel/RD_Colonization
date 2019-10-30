@@ -81,6 +81,7 @@ namespace RD_Colonization.Code.Managers
                     {
                         if (tmpTiles.Count > 0)
                         {
+                            CheckBattle(kvp.Key, tmpTiles[0]);
                             unitDictionary.Remove(tmpUnit.currentTile.CreateRectangle());
                             tmpUnit.currentTile = tmpTiles[0];
                             tmpTiles.RemoveAt(0);
@@ -93,6 +94,21 @@ namespace RD_Colonization.Code.Managers
                             break;
                         }
                     }
+                }
+            }
+        }
+
+        private void CheckBattle(Unit movedUnit, Tile tile)
+        {
+            Rectangle tileRectangle = tile.CreateRectangle();
+
+            if (UnitManager.Instance.unitDictionary.ContainsKey(tileRectangle))
+            {
+                Unit tmpUnit = new Unit();
+                UnitManager.Instance.unitDictionary.TryGetValue(tileRectangle, out tmpUnit);
+                if (tmpUnit.playerId != movedUnit.playerId)
+                {
+                    ActionManager.Instance.StartBattle(movedUnit, tmpUnit);
                 }
             }
         }
