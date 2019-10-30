@@ -35,6 +35,8 @@ namespace RD_Colonization.Code
         public static readonly String resultDataFolderString = "ResultData";
 
         public static readonly String slash = "\\";
+        public static readonly String underscore = "_";
+        public static readonly String dot = ".";
         public static readonly String pngExtension = ".png";
         public static readonly String txtExtension = ".txt";
     }

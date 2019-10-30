@@ -15,12 +15,12 @@ namespace RD_Colonization.Code.Managers
         public turnChanged turnEvent;
         public int maxTurnsNumber = 100;
 
-        public void IncreaseTurn()
+        public bool IncreaseTurn()
         {
             if (CheckEndingConditions() == true)
             {
                 EndGame();
-                return;
+                return true;
             }
 
             PlayerManager manager = PlayerManager.Instance;
@@ -38,6 +38,8 @@ namespace RD_Colonization.Code.Managers
             {
                 manager.ProcessTurn();
             }
+
+            return false;
         }
 
         public void EndGame()
@@ -63,7 +65,7 @@ namespace RD_Colonization.Code.Managers
             ScoreManager.Instance.DestroyInstance();
             TestManager.Instance.DestroyInstance();
             UnitManager.Instance.DestroyInstance();
-            UnitManager.Instance.DestroyInstance();
+            TurnManager.Instance.DestroyInstance();
         }
 
         private bool CheckEndingConditions()

@@ -70,13 +70,25 @@ namespace RD_Colonization.Code.Managers
             {
                 SinglePlayerTurnData score = GetPlayerTestData(player.id);
                 score.cashValue.Add(player.cash);
+                score.scoreValue.Add(ScoreManager.Instance.GetScore(player.id));
             }
         }
 
         public void WriteTestResultData()
         {
+            string testName = string.Empty;
+
+            if (usedTest == null)
+            {
+                testName = "result";
+            }
+            else
+            {
+                testName = usedTest.name;
+            }
+
             string testResultDirectoryPath = System.IO.Directory.GetCurrentDirectory() + slash + resultDataFolderString;
-            string fileName = testResultDirectoryPath + slash + "result" + txtExtension;
+            string fileName = testResultDirectoryPath + slash + testName + underscore + DateTime.Now.Hour + dot + DateTime.Now.Minute + txtExtension;
             File.WriteAllText(fileName, "Results:");
             for (int i = 0; i < playersScore.Count; i++)
             {

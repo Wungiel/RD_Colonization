@@ -15,11 +15,66 @@ namespace RD_Colonization.Code.Managers
         public float scoreForDiscoveredTile = 0.1f;
         public float scoreForDestroyedCity = 50;
         public float scoreForDestroyedUnit = 5;
+        public Dictionary<int, ScoreData> playersScores = new Dictionary<int, ScoreData>();
 
+
+        public void SetUpScoreManager()
+        {
+            foreach (PlayerData player in PlayerManager.Instance.players)
+            {
+                playersScores.Add(player.id, new ScoreData());
+            }
+        }
+
+        public void SetUpNewScoreDataFromTest(TestData testData)
+        {
+            scoreForNewCity = testData.buildCityScore;
+            scoreForNewUnit = testData.buildUnitScore;
+            scoreForDiscoveredTile = testData.discoverTileScore;
+            scoreForDestroyedCity = testData.destroyEnemyCityScore;
+            scoreForDestroyedUnit = testData.destroyEnemyUnitScore;
+        }
 
         public float CalculateScore(ScoreData scoreData)
         {
-            throw new NotImplementedException();
+            float score = 0;
+            score += scoreData.builtCities * scoreForNewCity;
+            score += scoreData.builtUnits * scoreForNewUnit;
+            score += scoreData.discoveredTiles * scoreForDiscoveredTile;
+            score += scoreData.destroyedEnemyCities * scoreForDestroyedCity;
+            score += scoreData.destroyedEnemyUnits * scoreForDestroyedUnit;
+            return score;
         }
+
+        public float GetScore(int id)
+        {
+            return CalculateScore(playersScores[id]);
+        }
+
+        public void AddNewCityPoint(int id)
+        {
+            playersScores[id].builtCities++;
+        }
+
+        public void AddNewUnitPoint(int id)
+        {
+            playersScores[id].builtUnits++;
+        }
+
+        public void AddDiscoveredTilePoint(int id)
+        {
+            playersScores[id].discoveredTiles++;
+        }
+
+        public void AddDestroyedCityPoint(int id)
+        {
+            playersScores[id].destroyedEnemyCities++;
+        }
+
+        public void AddDestroyedUnitPoint(int id)
+        {
+            playersScores[id].destroyedEnemyUnits++;
+        }
+        
     }
 }

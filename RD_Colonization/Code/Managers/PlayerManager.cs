@@ -22,15 +22,23 @@ namespace RD_Colonization.Code.Managers
             for (int i = 0; i < 4; i++)
             {
                 PlayerData tmpPlayer = new PlayerData(playerColors[i]);
-                Tile tile = MapManager.Instance.GetRandomGrassTile();
-                UnitManager.Instance.AddNewUnit(tmpPlayer, tile, civilianString);
+                              
                 players.Add(tmpPlayer);
+            }
+
+            ScoreManager.Instance.SetUpScoreManager();
+
+            foreach(PlayerData player in players)
+            {
+                Tile tile = MapManager.Instance.GetRandomGrassTile();
+                UnitManager.Instance.AddNewUnit(player, tile, civilianString);
             }
 
             if (createLivePlayer == true)
             {
                 players[0].SetLivingPlayerControl();
             }
+
             
             currentPlayer = players[0];
             UnitManager.Instance.ChangeCurrentUnit(currentPlayer);

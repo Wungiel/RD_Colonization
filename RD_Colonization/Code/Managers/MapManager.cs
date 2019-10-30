@@ -41,6 +41,7 @@ namespace RD_Colonization.Code.Managers
                 mapDictionary = new Dictionary<Rectangle, Tile>();
                 Tile[,] mapData = new MapGenerator().Generate(mapTexture);
                 CreateDictionary(mapData);
+                CheckCorrectness();
             }
         }
 
@@ -86,7 +87,11 @@ namespace RD_Colonization.Code.Managers
             HashSet<Tile> discoveredTiles = GetNeighbours(tile, fieldOfView);
             foreach (Tile discoveredTile in discoveredTiles)
             {
-                discoveredTile.discoveredByPlayerIds.Add(playerId);
+                if (discoveredTile.discoveredByPlayerIds.Contains(playerId) == false)
+                {
+                    ScoreManager.Instance.AddDiscoveredTilePoint(playerId);
+                    discoveredTile.discoveredByPlayerIds.Add(playerId);
+                }                
             }
         }
 
@@ -128,5 +133,26 @@ namespace RD_Colonization.Code.Managers
                 return null;
             }
         }
+
+        private void CheckCorrectness()
+        {
+            List<Tile> tiles = mapDictionary.Values.ToList();
+            int numberOfGrassTiles = 0;
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                if (tiles[i].type.land == true && tiles[i].type.walkable == true)
+                {
+                    numberOfGrassTiles++;
+                }
+                if (numberOfGrassTiles >= 4)
+                {
+                    return;
+                }
+            }
+
+            mapDictionary.Clear();
+            GenerateMap(40);
+        }
+
     }
 }

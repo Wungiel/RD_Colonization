@@ -15,6 +15,7 @@ namespace RD_Colonization.Code.Managers
         {
             City tmpCity = new City(unit.playerId, unit.currentTile);
             citytDictionary.Add(unit.GetPosition(), tmpCity);
+            ScoreManager.Instance.AddNewCityPoint(unit.playerId);
             TurnManager.Instance.turnEvent += tmpCity.GenerateCash;
         }
 
@@ -64,6 +65,16 @@ namespace RD_Colonization.Code.Managers
             City tmpCity = new City();
             citytDictionary.TryGetValue(tempRectangle, out tmpCity);
             return tmpCity;
+        }
+
+        public void DestroyCity(City city)
+        {
+            if (currentCity == city)
+            {
+                currentCity = null;
+            }
+
+            citytDictionary.Remove(city.position.CreateRectangle());
         }
 
         private void SetCurrentCity(City city)

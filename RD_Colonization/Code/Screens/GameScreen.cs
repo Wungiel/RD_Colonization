@@ -72,7 +72,10 @@ namespace RD_Colonization
 
         private void ChangeTurn()
         {
-            TurnManager.Instance.IncreaseTurn();
+            if (TurnManager.Instance.IncreaseTurn() == true)
+            {
+                return;
+            };
 
             turnCounter.Text = String.Format("Turn: {0}", TurnManager.Instance.TurnNumber);
             cashCounter.Text = String.Format("Cash: {0}", PlayerManager.Instance.currentPlayer.cash);
@@ -146,7 +149,7 @@ namespace RD_Colonization
                 if (InputManager.Instance.IsSinglePress(Keys.N))
                 {
                     UnitManager.Instance.ChangeCurrentUnit();
-                    CentreOnPosition(UnitManager.Instance.currentUnit.currentTile);
+                    CentreOnPosition(UnitManager.Instance.currentUnit);
                 }
 
                 if (InputManager.Instance.IsSinglePress(Keys.Q))

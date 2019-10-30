@@ -57,9 +57,17 @@ namespace RD_Colonization.Code.Managers
 
             if (tile != null)
             {
-                UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerByCity(city), tile, unitKey);
+                PlayerData player = PlayerManager.Instance.GetPlayerByCity(city);
+                UnitManager.Instance.AddNewUnit(player, tile, unitKey);
                 city.didBuildInThisTurn = true;
+                ScoreManager.Instance.AddNewUnitPoint(player.id);
             }            
+        }
+
+        public void DestroyCity(Unit attacker, City defender)
+        {
+            CityManager.Instance.DestroyCity(defender);
+            ScoreManager.Instance.AddDestroyedCityPoint(attacker.playerId);
         }
 
         public void StartBattle(Unit attacker, Unit defender)
@@ -77,12 +85,14 @@ namespace RD_Colonization.Code.Managers
                     {
                         fightFinished = true;
                         UnitManager.Instance.DestroyUnit(defender);
+                        ScoreManager.Instance.AddDestroyedUnitPoint(attacker.playerId);
                     }
                 } 
                 else
-                {
-                    UnitManager.Instance.DestroyUnit(attacker);
+                {                    
                     fightFinished = true;
+                    UnitManager.Instance.DestroyUnit(attacker);
+                    ScoreManager.Instance.AddDestroyedUnitPoint(defender.playerId);
                 }
 
                 if (turnCount == 100)
