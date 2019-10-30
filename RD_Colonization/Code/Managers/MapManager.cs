@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RD_Colonization.Code.Data;
+using RD_Colonization.Code.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -106,6 +107,77 @@ namespace RD_Colonization.Code.Managers
                 }
             }
             return playerDiscoveredTiles.ToArray();
+        }
+
+        public void CreateRiskMap(int playerId)
+        {
+            Tile [] discoveredTiles = GetDiscoveredTiles(playerId);
+
+            foreach (Tile t in discoveredTiles)
+            {
+                if (t.BordersUndiscovered(playerId) == true)
+                {
+                    t.riskValues[playerId] = 1;
+                }
+                else
+                {
+                    t.riskValues[playerId] = 0;
+                }
+            }
+
+            Unit[] enemyUnits = UnitManager.Instance.CollectEnemyUnitsFromTiles(discoveredTiles, playerId);
+
+            foreach (Unit enemyUnit in enemyUnits)
+            {
+                foreach (Tile t in GetNeighbours(enemyUnit.currentTile, enemyUnit.type.speed))
+                {
+                    if (discoveredTiles.Contains(t) == true)
+                    {
+                        t.riskValues[playerId] += enemyUnit.type.strenght;
+                    }
+                }
+            }
+
+        }
+
+        public void CreateSafetyMap(int playerId, Unit[] units, City[] cities)
+        {
+            Tile[] discoveredTiles = GetDiscoveredTiles(playerId);
+            foreach (Tile t in discoveredTiles)
+            {
+                t.safetyValues[playerId] = 0;
+            }
+
+            foreach (Unit u in units)
+            {
+                foreach (Tile t in GetNeighbours(u.currentTile, u.type.speed))
+                {
+                    if (discoveredTiles.Contains(t) == true)
+                    {
+                        t.safetyValues[playerId] += u.type.strenght;
+                    }
+                }
+            }
+
+            foreach(City c in cities)
+            {
+                foreach (Tile t in GetNeighbours(c.currentTile, 3))
+                {
+                    if (discoveredTiles.Contains(t) == true)
+                    {
+                        t.safetyValues[playerId] += 3;
+                    }
+                }
+            }
+        }
+
+        public void CreateTensionMap(int playerId)
+        {
+            Tile[] discoveredTiles = GetDiscoveredTiles(playerId);
+            foreach (Tile t in discoveredTiles)
+            {
+                t.tensionValues[playerId] = t.safetyValues[playerId] - t.riskValues[playerId];
+            }
         }
 
         private void CreateDictionary(Tile[,] mapData)

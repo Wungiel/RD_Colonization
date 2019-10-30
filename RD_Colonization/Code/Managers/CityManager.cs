@@ -74,7 +74,7 @@ namespace RD_Colonization.Code.Managers
                 currentCity = null;
             }
 
-            citytDictionary.Remove(city.position.CreateRectangle());
+            citytDictionary.Remove(city.currentTile.CreateRectangle());
         }
 
         private void SetCurrentCity(City city)

@@ -92,6 +92,16 @@ namespace RD_Colonization.Code.Managers
                 {
                     ActionManager.Instance.StartBattle(movedUnit, tmpUnit);
                 }
+            } 
+            else if(CityManager.Instance.citytDictionary.ContainsKey(tileRectangle))
+            {
+                City tmpCity = new City();
+                CityManager.Instance.citytDictionary.TryGetValue(tileRectangle, out tmpCity);
+                if (tmpCity.playerId != movedUnit.playerId)
+                {
+                    ActionManager.Instance.DestroyCity(movedUnit, tmpCity);
+                }
+
             }
         }
 
@@ -180,6 +190,26 @@ namespace RD_Colonization.Code.Managers
                 return false;
             }
         }
+
+        public Unit[] CollectEnemyUnitsFromTiles(Tile[] discoveredTiles, int playerId)
+        {
+            List<Unit> enemyUnits = new List<Unit>();
+
+            foreach (Tile t in discoveredTiles)
+            {
+                Rectangle tileRectangle = t.CreateRectangle();
+                if (unitDictionary.ContainsKey(t.CreateRectangle()))
+                {
+                    if (unitDictionary[tileRectangle].playerId != playerId)
+                    {
+                        enemyUnits.Add(unitDictionary[tileRectangle]);
+                    }
+                }
+            }
+
+            return enemyUnits.ToArray();
+        }
+
 
         private void SetCurrentUnit(Unit unit)
         {

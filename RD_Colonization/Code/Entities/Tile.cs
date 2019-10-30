@@ -13,6 +13,9 @@ namespace RD_Colonization.Code.Data
         public Point position;
         public List<Tile> neighbours = new List<Tile>();
         public HashSet<int> discoveredByPlayerIds = new HashSet<int>();
+        public Dictionary<int, int> riskValues = new Dictionary<int, int>();
+        public Dictionary<int, int> safetyValues = new Dictionary<int, int>();
+        public Dictionary<int, int> tensionValues = new Dictionary<int, int>();
 
         public Tile(TileData type, Point position)
         {
@@ -80,6 +83,21 @@ namespace RD_Colonization.Code.Data
 
             return null;
         }
+
+        public bool BordersUndiscovered(int playerId)
+        {
+            foreach (Tile t in neighbours)
+            {
+                if (t.discoveredByPlayerIds.Contains(playerId) == false)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
+
 
 
         private bool IsFree()

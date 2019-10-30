@@ -7,7 +7,7 @@ namespace RD_Colonization.Code.Entities
 {
     public class City
     {
-        public Tile position;
+        public Tile currentTile;
         public int playerId = -1;
         public bool didBuildInThisTurn = false;
         public ICommand currentCommand = null;
@@ -19,7 +19,7 @@ namespace RD_Colonization.Code.Entities
 
         public City(int playerId, Tile position)
         {
-            this.position = position;
+            this.currentTile = position;
             this.playerId = playerId;
             TurnManager.Instance.turnEvent += AllowToBuildInThisTurn;
         }
@@ -27,7 +27,7 @@ namespace RD_Colonization.Code.Entities
         public void GenerateCash()
         {
             int cash = 0;
-            foreach(Tile n in position.neighbours)
+            foreach(Tile n in currentTile.neighbours)
             {
                 if (n.type.name == grassString)
                     cash++;

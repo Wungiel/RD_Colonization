@@ -43,7 +43,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Code\BaseManager.cs" />
+    <Compile Include="Code\Commands\AttackCommand.cs" />
     <Compile Include="Code\Commands\BuildCityCommand.cs" />
+    <Compile Include="Code\Commands\BuildUnitCommand.cs" />
+    <Compile Include="Code\Commands\GuardCityCommand.cs" />
     <Compile Include="Code\Commands\ICommand.cs" />
     <Compile Include="Code\Commands\MoveCommand.cs" />
     <Compile Include="Code\Data\CivilizationData.cs" />

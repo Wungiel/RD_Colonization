@@ -42,7 +42,7 @@ namespace RD_Colonization.Code.Managers
             
             currentPlayer = players[0];
             UnitManager.Instance.ChangeCurrentUnit(currentPlayer);
-            TurnManager.Instance.turnEvent += ExecuteCommands;
+            TurnManager.Instance.changePlayerEvent += ExecuteCommands;
         }
 
         public void SwitchPlayer()
@@ -89,20 +89,50 @@ namespace RD_Colonization.Code.Managers
             Unit[] units = UnitManager.Instance.GetPlayersUnits(currentPlayer.id);
             City[] cities = CityManager.Instance.GetPlayersCities(currentPlayer.id);
             
-            CreateSupportMaps(units, cities);
-            CommandResources(units, cities);
+            if (IsPlayerDefeated(units, cities) == false)
+            {
+                CreateSupportMaps(units, cities);
+                CommandResources(units, cities);
+            }
+
 
             TurnManager.Instance.IncreaseTurn();
         }
 
+        private bool IsPlayerDefeated(Unit[] units, City[] cities)
+        {
+            if (currentPlayer.isDefeated == true)
+            {
+                return true;
+            } 
+            else
+            {
+                if (units.Count() == 0 && cities.Count() == 0)
+                {
+                    currentPlayer.isDefeated = true;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void CreateSupportMaps(Unit[] units, City[] cities)
         {
-
+            MapManager.Instance.CreateRiskMap(currentPlayer.id);
+            MapManager.Instance.CreateSafetyMap(currentPlayer.id, units, cities);
+            MapManager.Instance.CreateTensionMap(currentPlayer.id);
         }
 
         private void CommandResources(Unit[] units, City[] cities)
         {
-
+            foreach (Unit u in units)
+            {
+                if (u.currentCommand == null && u.type.canBuild)
+                {
+                    u.currentCommand = new BuildCityCommand(u);
+                }
+            }
         }
 
         private void ExecuteCommands()

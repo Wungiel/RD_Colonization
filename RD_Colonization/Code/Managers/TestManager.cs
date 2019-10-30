@@ -92,7 +92,7 @@ namespace RD_Colonization.Code.Managers
             File.WriteAllText(fileName, "Results:");
             for (int i = 0; i < playersScore.Count; i++)
             {
-                File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson<SinglePlayerTurnData>(playersScore[i]) + Environment.NewLine);
+                File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson<SinglePlayerTurnData>(playersScore[i]) + Environment.NewLine + Environment.NewLine);
             }
         }
 

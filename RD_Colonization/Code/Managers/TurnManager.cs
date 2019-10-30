@@ -11,8 +11,9 @@ namespace RD_Colonization.Code.Managers
     public class TurnManager : BaseManager<TurnManager>
     {
         public int TurnNumber { get; private set; }
-        public delegate void turnChanged();
-        public turnChanged turnEvent;
+        public delegate void turnManagerEvent();
+        public turnManagerEvent turnEvent;
+        public turnManagerEvent changePlayerEvent;
         public int maxTurnsNumber = 100;
 
         public bool IncreaseTurn()
@@ -25,6 +26,7 @@ namespace RD_Colonization.Code.Managers
 
             PlayerManager manager = PlayerManager.Instance;
 
+            changePlayerEvent();
             manager.SwitchPlayer();
 
             if (manager.GetCurrentPlayerIndex() == 0)

@@ -48,11 +48,11 @@ namespace RD_Colonization.Code.Managers
             Tile tile = null;
             if (unitType.land == true)
             {
-                tile = city.position.GetNeighbourTileForNewUnit();
+                tile = city.currentTile.GetNeighbourTileForNewUnit();
             }
             else
             {
-                tile = city.position.GetNeighbourTileForNewWaterUnit();
+                tile = city.currentTile.GetNeighbourTileForNewWaterUnit();
             }            
 
             if (tile != null)
