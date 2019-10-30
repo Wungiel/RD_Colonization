@@ -34,6 +34,7 @@ namespace RD_Colonization.Code.Managers
             
             currentPlayer = players[0];
             UnitManager.Instance.ChangeCurrentUnit(currentPlayer);
+            TurnManager.Instance.turnEvent += ExecuteCommands;
         }
 
         public void SwitchPlayer()
@@ -81,8 +82,7 @@ namespace RD_Colonization.Code.Managers
             City[] cities = CityManager.Instance.GetPlayersCities(currentPlayer.id);
             
             CreateSupportMaps(units, cities);
-            CommanResources(units, cities);
-            ExecuteCommands(units, cities);
+            CommandResources(units, cities);
 
             TurnManager.Instance.IncreaseTurn();
         }
@@ -92,29 +92,29 @@ namespace RD_Colonization.Code.Managers
 
         }
 
-        private void CommanResources(Unit[] units, City[] cities)
+        private void CommandResources(Unit[] units, City[] cities)
         {
 
         }
 
-        private void ExecuteCommands(Unit[] units, City[] cities)
+        private void ExecuteCommands()
         {
+            Unit[] units = UnitManager.Instance.GetPlayersUnits(currentPlayer.id);
+            City[] cities = CityManager.Instance.GetPlayersCities(currentPlayer.id);
+
             foreach (Unit u in units)
             {
-                if (u.currentCommand != null)
-                {
-                    if (u.currentCommand.Execute() == true)
+                    if (u.currentCommand != null && u.currentCommand.Execute() == true)
                     {
                         u.removeCommand();
-                    }                        
-                }
+                    }    
             }
 
             foreach (City c in cities)
             {
-                if (c.currentCommand.Execute() == true)
+                if (c.currentCommand != null && c.currentCommand.Execute() == true)
                 {
-                    c.removeCommand();
+                    c.RemoveCommand();
                 }
             }
         }

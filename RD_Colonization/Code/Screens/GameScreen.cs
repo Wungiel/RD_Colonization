@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using RD_Colonization.Code;
+using RD_Colonization.Code.Commands;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Entities;
 using RD_Colonization.Code.Managers;
@@ -193,11 +194,18 @@ namespace RD_Colonization
                         
                         if (UnitManager.Instance.unitDictionary.ContainsKey(tempRectangle))
                         {
-                            UnitManager.Instance.ChangeCurrentUnit(tempRectangle);
+                            if (UnitManager.Instance.IsUnitOnRectangleFriendly(tempRectangle) == true)
+                            {
+                                UnitManager.Instance.ChangeCurrentUnit(tempRectangle);
+                            }
+                            else
+                            {
+                                UnitManager.Instance.currentUnit.currentCommand = new MoveCommand(tempRectangle, UnitManager.Instance.currentUnit);
+                            }
                         }
                         else if (MapManager.Instance.mapDictionary.ContainsKey(tempRectangle) && UnitManager.Instance.currentUnit !=null)
                         {
-                            PathfinderManager.Instance.CheckPathfinding(tempRectangle);
+                            UnitManager.Instance.currentUnit.currentCommand = new MoveCommand(tempRectangle, UnitManager.Instance.currentUnit);
                         }
                     }
                 }

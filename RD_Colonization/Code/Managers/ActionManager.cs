@@ -38,6 +38,11 @@ namespace RD_Colonization.Code.Managers
 
         public void CreateUnit(City city, string unitKey)
         {
+            if (city.didBuildInThisTurn == true)
+            {
+                return;
+            }
+
             UnitData unitType = UnitManager.Instance.GetUnitType(unitKey);
 
             Tile tile = null;
@@ -53,6 +58,7 @@ namespace RD_Colonization.Code.Managers
             if (tile != null)
             {
                 UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerByCity(city), tile, unitKey);
+                city.didBuildInThisTurn = true;
             }            
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using RD_Colonization.Code.Commands;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Entities;
 using System;
@@ -13,7 +14,6 @@ namespace RD_Colonization.Code.Managers
     {
         
         public Dictionary<Rectangle, Unit> unitDictionary = new Dictionary<Rectangle, Unit>();
-        public Dictionary<Unit, List<Tile>> movementDictionary = new Dictionary<Unit, List<Tile>>();
         public Unit currentUnit = null;
 
         private Dictionary<String, UnitData> typesDictionary = new Dictionary<String, UnitData>();      
@@ -24,7 +24,6 @@ namespace RD_Colonization.Code.Managers
             typesDictionary.Add(soldierString, new UnitData(soldierString, true, false, 1, 5, 2));
             typesDictionary.Add(scoutString, new UnitData(scoutString, true, false, 5, 1, 1));
             typesDictionary.Add(shipString, new UnitData(shipString, false, false, 1, 2, 2));
-            TurnManager.Instance.turnEvent += MoveUnits;
         }
         
         public void AddNewUnit(PlayerData tmpPlayer, Tile tile, String unitType)
@@ -38,8 +37,14 @@ namespace RD_Colonization.Code.Managers
             Unit tmpUnit = new Unit(type, tile, playerId);
             List<Tile> tmpList = new List<Tile>();
             unitDictionary.Add(tile.CreateRectangle(), tmpUnit);
-            movementDictionary.Add(tmpUnit, tmpList);
             DiscoverMap(tmpUnit);            
+        }
+
+        public void ChangeUnitPlace(Unit unit, Tile tile)
+        {
+            unitDictionary.Remove(unit.currentTile.CreateRectangle());
+            unitDictionary.Add(tile.CreateRectangle(), unit);
+            unit.currentTile = tile;
         }
 
         public UnitData GetUnitType(String unitTypeString)
@@ -51,9 +56,15 @@ namespace RD_Colonization.Code.Managers
 
         public List<Tile> GetPathTiles(Unit unitKey)
         {
-            List<Tile> temp = null;
-            movementDictionary.TryGetValue(unitKey, out temp);
-            return temp;
+            MoveCommand command = (MoveCommand) unitKey.currentCommand;
+            if (command != null)
+            {
+                return command.GetPath();
+            }
+            else
+            {
+                return new List<Tile>();
+            }
         }
 
         public Unit[] GetPlayersUnits(int playerId)
@@ -69,36 +80,7 @@ namespace RD_Colonization.Code.Managers
             return playerUnits.ToArray();
         }
 
-        private void MoveUnits()
-        {
-            foreach (KeyValuePair<Unit, List<Tile>> kvp in movementDictionary)
-            {
-                if (unitDictionary.ContainsValue(kvp.Key))
-                {
-                    Unit tmpUnit = kvp.Key;
-                    List<Tile> tmpTiles = kvp.Value;
-                    while (tmpUnit.remainingEnergy > 0)
-                    {
-                        if (tmpTiles.Count > 0)
-                        {
-                            CheckBattle(kvp.Key, tmpTiles[0]);
-                            unitDictionary.Remove(tmpUnit.currentTile.CreateRectangle());
-                            tmpUnit.currentTile = tmpTiles[0];
-                            tmpTiles.RemoveAt(0);
-                            unitDictionary.Add(tmpUnit.currentTile.CreateRectangle(), tmpUnit);
-                            DiscoverMap(tmpUnit);
-                            tmpUnit.remainingEnergy--;
-                        } 
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void CheckBattle(Unit movedUnit, Tile tile)
+        public void CheckBattle(Unit movedUnit, Tile tile)
         {
             Rectangle tileRectangle = tile.CreateRectangle();
 
@@ -118,7 +100,6 @@ namespace RD_Colonization.Code.Managers
             if (unit == currentUnit)
                 currentUnit = null;
             unitDictionary.Remove(unit.GetPosition());
-            movementDictionary.Remove(unit);
         }
 
         public void DeselectUnit()
@@ -176,15 +157,34 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
+        public void DiscoverMap(Unit tmpUnit)
+        {
+            MapManager.Instance.DiscoverMap(tmpUnit.currentTile, tmpUnit.type.fieldOfView, tmpUnit.playerId);
+        }
+
+        public bool IsUnitOnRectangleFriendly(Rectangle tempRectangle)
+        {
+            return IsUnitOnRectangleFriendly(tempRectangle, currentUnit);
+        }
+
+        public bool IsUnitOnRectangleFriendly(Rectangle tempRectangle, Unit unit)
+        {
+            Unit otherUnit = new Unit();
+            unitDictionary.TryGetValue(tempRectangle, out otherUnit);
+            if (unit.playerId == otherUnit.playerId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void SetCurrentUnit(Unit unit)
         {
             CityManager.Instance.DeselectCurrentCity();
             currentUnit = unit;
-        }
-
-        private void DiscoverMap(Unit tmpUnit)
-        {
-            MapManager.Instance.DiscoverMap(tmpUnit.currentTile, tmpUnit.type.fieldOfView, tmpUnit.playerId);
         }
 
     }

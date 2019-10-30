@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using RD_Colonization.Code.Commands;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Entities;
 using System;
@@ -11,28 +12,26 @@ namespace RD_Colonization.Code.Managers
 {
     public class PathfinderManager : BaseManager<PathfinderManager>
     {
-        public bool CheckPathfinding(Rectangle destiny)
+        public bool CheckPathfinding(Rectangle destiny, MoveCommand command)
         {
-            return CheckPathfinding(destiny, UnitManager.Instance.currentUnit);
+            return CheckPathfinding(destiny, UnitManager.Instance.currentUnit, command);
         }
 
-        public bool CheckPathfinding(Rectangle destiny, Unit unit)
+        public bool CheckPathfinding(Rectangle destiny, Unit unit, MoveCommand command)
         {
             Tile tmpTile = null;
-            List<Tile> oldPath = null;
-            UnitManager.Instance.movementDictionary.TryGetValue(unit, out oldPath);
-            UnitManager.Instance.movementDictionary.Remove(unit);
+            List<Tile> oldPath = command.GetPath();
 
             MapManager.Instance.mapDictionary.TryGetValue(destiny, out tmpTile);
             List<Tile> newPath = FindPath(tmpTile, unit);
             if (newPath == null)
             {
-                UnitManager.Instance.movementDictionary.Add(unit, oldPath);
+                command.SetPath(oldPath);
                 return false;
             }
             else
             {
-                UnitManager.Instance.movementDictionary.Add(unit, newPath);
+                command.SetPath(newPath);
                 return true;
             }
         }

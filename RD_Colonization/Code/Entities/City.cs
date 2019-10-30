@@ -9,17 +9,19 @@ namespace RD_Colonization.Code.Entities
     {
         public Tile position;
         public int playerId = -1;
+        public bool didBuildInThisTurn = false;
         public ICommand currentCommand = null;
 
         public City ()
         {
-
+            
         }
 
         public City(int playerId, Tile position)
         {
             this.position = position;
             this.playerId = playerId;
+            TurnManager.Instance.turnEvent += AllowToBuildInThisTurn;
         }
 
         public void GenerateCash()
@@ -33,9 +35,14 @@ namespace RD_Colonization.Code.Entities
             PlayerManager.Instance.GetPlayerById(playerId).ModifyCash(cash);
         }
 
-        public void removeCommand()
+        public void RemoveCommand()
         {
             currentCommand = null;
+        }
+
+        public void AllowToBuildInThisTurn()
+        {
+            didBuildInThisTurn = false;
         }
     }
 }

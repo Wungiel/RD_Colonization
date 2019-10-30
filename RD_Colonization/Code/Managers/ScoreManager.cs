@@ -8,5 +8,6 @@ namespace RD_Colonization.Code.Managers
 {
     public class ScoreManager : BaseManager<ScoreManager>
     {
+        //Metoda wyliczająca max. punkty zdobyte za odkrywanie mapy
     }
 }
