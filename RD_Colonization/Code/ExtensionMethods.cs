@@ -30,5 +30,33 @@ namespace RD_Colonization.Code
         {
             return new CircleF(tile.GetCenter(), 32);
         }
+
+        public static Tile GetClosestTile(this Tile[] tiles, Tile tile)
+        {
+            if (tiles.Length == 0)
+            {
+                return null;
+            }
+
+            Tile closestTile = tiles[0];
+            double closestDistance = closestTile.position.GetDistance(tile.position);
+
+            foreach(Tile t in tiles)
+            {
+                if (t.position.GetDistance(tile.position) < closestDistance)
+                {
+                    closestDistance = t.position.GetDistance(tile.position);
+                    closestTile = t;
+                }
+            }
+
+            return closestTile;
+        }
+
+        public static double GetDistance (this Point point, Point anotherPoint)
+        {
+            double distance = Math.Pow(point.X + anotherPoint.X, 2) + Math.Pow(point.Y + anotherPoint.Y, 2);
+            return Math.Sqrt(distance);
+        }
     }
 }

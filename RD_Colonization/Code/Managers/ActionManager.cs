@@ -28,19 +28,23 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
-        public void CreateUnit(string unitKey)
+        public bool CreateUnit(string unitKey)
         {
             if (CityManager.Instance.currentCity != null)
             {
-                CreateUnit(CityManager.Instance.currentCity, unitKey);
-            }                
+                return CreateUnit(CityManager.Instance.currentCity, unitKey);
+            }          
+            else
+            {
+                return false;
+            }
         }
 
-        public void CreateUnit(City city, string unitKey)
+        public bool CreateUnit(City city, string unitKey)
         {
             if (city.didBuildInThisTurn == true)
             {
-                return;
+                return false;
             }
 
             UnitData unitType = UnitManager.Instance.GetUnitType(unitKey);
@@ -61,7 +65,10 @@ namespace RD_Colonization.Code.Managers
                 UnitManager.Instance.AddNewUnit(player, tile, unitKey);
                 city.didBuildInThisTurn = true;
                 ScoreManager.Instance.AddNewUnitPoint(player.id);
-            }            
+                return true;
+            }
+
+            return false;
         }
 
         public void DestroyCity(Unit attacker, City defender)

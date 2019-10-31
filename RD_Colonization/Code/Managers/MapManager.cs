@@ -30,19 +30,20 @@ namespace RD_Colonization.Code.Managers
             CreateDictionary(mapData);
         }
 
-        public void GenerateMap (string mapName, GraphicsDevice device)
+        public bool GenerateMap (string mapName, GraphicsDevice device)
         {
             Texture2D mapTexture = ReadMapFile(mapName, device);
             if (mapTexture == null)
             {
                 GenerateMap(40);
+                return false;
             }
             else
             {
                 mapDictionary = new Dictionary<Rectangle, Tile>();
                 Tile[,] mapData = new MapGenerator().Generate(mapTexture);
                 CreateDictionary(mapData);
-                CheckCorrectness();
+                return CheckCorrectness();
             }
         }
 
@@ -180,6 +181,27 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
+        public Tile[] CreateExplorationMap(int playerId)
+        {
+            Tile[] discoveredTiles = GetDiscoveredTiles(playerId);
+            List<Tile> tilesForExploration = new List<Tile>();
+
+            foreach (Tile t in discoveredTiles)
+            {
+                if (t.BordersUndiscovered(playerId) == true && t.type.walkable == true)
+                {
+                    t.explorationMap[playerId] = true;
+                    tilesForExploration.Add(t);
+                }
+                else
+                {
+                    t.explorationMap[playerId] = false;
+                }
+            }
+            return tilesForExploration.ToArray();
+        }
+
+
         private void CreateDictionary(Tile[,] mapData)
         {
             foreach (Tile t in mapData)
@@ -206,7 +228,7 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
-        private void CheckCorrectness()
+        private bool CheckCorrectness()
         {
             List<Tile> tiles = mapDictionary.Values.ToList();
             int numberOfGrassTiles = 0;
@@ -218,12 +240,13 @@ namespace RD_Colonization.Code.Managers
                 }
                 if (numberOfGrassTiles >= 4)
                 {
-                    return;
+                    return true;
                 }
             }
 
             mapDictionary.Clear();
             GenerateMap(40);
+            return false;
         }
 
     }

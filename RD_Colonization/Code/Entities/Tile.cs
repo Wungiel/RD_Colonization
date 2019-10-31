@@ -16,6 +16,7 @@ namespace RD_Colonization.Code.Data
         public Dictionary<int, int> riskValues = new Dictionary<int, int>();
         public Dictionary<int, int> safetyValues = new Dictionary<int, int>();
         public Dictionary<int, int> tensionValues = new Dictionary<int, int>();
+        public Dictionary<int, bool> explorationMap = new Dictionary<int, bool>();
 
         public Tile(TileData type, Point position)
         {

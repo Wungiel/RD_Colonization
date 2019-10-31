@@ -122,17 +122,12 @@ namespace RD_Colonization.Code.Managers
             MapManager.Instance.CreateRiskMap(currentPlayer.id);
             MapManager.Instance.CreateSafetyMap(currentPlayer.id, units, cities);
             MapManager.Instance.CreateTensionMap(currentPlayer.id);
+            MapManager.Instance.CreateExplorationMap(currentPlayer.id);
         }
 
         private void CommandResources(Unit[] units, City[] cities)
         {
-            foreach (Unit u in units)
-            {
-                if (u.currentCommand == null && u.type.canBuild)
-                {
-                    u.currentCommand = new BuildCityCommand(u);
-                }
-            }
+
         }
 
         private void ExecuteCommands()

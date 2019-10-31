@@ -19,5 +19,7 @@ namespace RD_Colonization.Code.Managers
         {
             //If historia == null to generate historia
         }
+
+
     }
 }

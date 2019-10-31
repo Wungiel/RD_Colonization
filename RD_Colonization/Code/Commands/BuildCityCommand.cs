@@ -41,6 +41,7 @@ namespace RD_Colonization.Code.Commands
                 }
 
                 moveToDestinyTileCommand.Execute();
+                return false;
             }
 
             ActionManager.Instance.BuildCity(unitUnderCommand);

@@ -42,16 +42,22 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Code\ArtificialIntelligenceModules\AIModules.cs" />
+    <Compile Include="Code\ArtificialIntelligenceModules\ExpansionModule.cs" />
+    <Compile Include="Code\ArtificialIntelligenceModules\ExploitationModule.cs" />
+    <Compile Include="Code\ArtificialIntelligenceModules\ExploratioModule.cs" />
     <Compile Include="Code\BaseManager.cs" />
     <Compile Include="Code\Commands\AttackCommand.cs" />
     <Compile Include="Code\Commands\BuildCityCommand.cs" />
     <Compile Include="Code\Commands\BuildUnitCommand.cs" />
+    <Compile Include="Code\Commands\ExploreCommand.cs" />
     <Compile Include="Code\Commands\GuardCityCommand.cs" />
     <Compile Include="Code\Commands\ICommand.cs" />
     <Compile Include="Code\Commands\MoveCommand.cs" />
     <Compile Include="Code\Data\CivilizationData.cs" />
     <Compile Include="Code\Data\MapData.cs" />
     <Compile Include="Code\ColonizationGame.cs" />
+    <Compile Include="Code\Data\PlayerAISettingsData.cs" />
     <Compile Include="Code\Data\PlayerData.cs" />
     <Compile Include="Code\Data\ScoreData.cs" />
     <Compile Include="Code\Data\SinglePlayerTurnData.cs" />
