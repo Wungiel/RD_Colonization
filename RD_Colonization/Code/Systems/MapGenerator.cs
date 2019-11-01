@@ -149,9 +149,12 @@ namespace RD_Colonization.Code.Managers
         private Tile GetTile(Color color, int i, int j)
         {
             String tileKey = string.Empty;
+            bool saveStartingPoint = false;
+    
             if (color.R == 255)
             {
                 tileKey = grassString;
+                saveStartingPoint = true;
             } 
             else if (color.G == 255)
             {
@@ -166,7 +169,14 @@ namespace RD_Colonization.Code.Managers
                 tileKey = mountainString;
             }
 
-            return new Tile(MapManager.Instance.GetTileType(tileKey), new Point(i, j));
+            Tile newTile = new Tile(MapManager.Instance.GetTileType(tileKey), new Point(i, j));
+
+            if (saveStartingPoint == true)
+            {
+                MapManager.Instance.startingTiles.Add(newTile);
+            }
+
+            return newTile;
         }
 
 

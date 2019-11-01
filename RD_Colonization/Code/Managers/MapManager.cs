@@ -13,6 +13,7 @@ namespace RD_Colonization.Code.Managers
     public class MapManager : BaseManager<MapManager>
     {
         public Dictionary<Rectangle, Tile> mapDictionary = null;
+        public List<Tile> startingTiles = new List<Tile>();
         private readonly Dictionary<String, TileData> typesDictionary = new Dictionary<String, TileData>();
         private static Random randomGenerator = new Random();
 
@@ -45,6 +46,27 @@ namespace RD_Colonization.Code.Managers
                 CreateDictionary(mapData);
                 return CheckCorrectness();
             }
+        }
+
+        public Tile GetStartingTile(int remainingPlayers)
+        {
+            Random random = new Random();
+            Tile startingTile = null;
+
+            if (startingTiles.Count() > remainingPlayers)
+            {
+                startingTile = startingTiles[random.Next(startingTiles.Count())];
+            }
+            else if (startingTiles.Count() == remainingPlayers)
+            {
+                startingTile = startingTiles.First();
+            }
+            else
+            {
+                startingTile = GetRandomGrassTile();                
+            }
+            startingTiles.Remove(startingTile);
+            return startingTile;
         }
 
         public Tile GetRandomGrassTile()

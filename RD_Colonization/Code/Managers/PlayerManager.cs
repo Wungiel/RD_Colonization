@@ -28,10 +28,12 @@ namespace RD_Colonization.Code.Managers
 
             ScoreManager.Instance.SetUpScoreManager();
 
+            int remainingPlayers = 4;
             foreach(PlayerData player in players)
             {
-                Tile tile = MapManager.Instance.GetRandomGrassTile();
+                Tile tile = MapManager.Instance.GetStartingTile(remainingPlayers);
                 UnitManager.Instance.AddNewUnit(player, tile, civilianString);
+                remainingPlayers--;
             }
 
             if (createLivePlayer == true)
