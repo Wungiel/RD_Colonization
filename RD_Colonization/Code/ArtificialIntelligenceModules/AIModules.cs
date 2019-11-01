@@ -11,13 +11,13 @@ namespace RD_Colonization.Code.ArtificialIntelligenceModules
     {
         public ExpansionModule expansion;
         public ExploitationModule exploitation;
-        public ExploratioModule exploration;
+        public ExplorationModule exploration;
 
         public AIModules(PlayerData player)
         {
             expansion = new ExpansionModule(player);
             exploitation = new ExploitationModule(player);
-            exploration = new ExploratioModule(player);
+            exploration = new ExplorationModule(player);
         }
 
     }

@@ -33,7 +33,12 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
-        private List<Tile> FindPath(Tile destinyTile, Unit unit)
+        public List<Tile> CheckPathfinding(Rectangle destiny, Unit unit, bool useUnitType)
+        {
+            return FindPath(MapManager.Instance.mapDictionary[destiny], unit, useUnitType);
+        }
+
+        private List<Tile> FindPath(Tile destinyTile, Unit unit, bool useUnitType = true)
         {
             List<Tile> closedSet = new List<Tile>();
             List<Tile> openset = new List<Tile>();
@@ -73,7 +78,7 @@ namespace RD_Colonization.Code.Managers
                         continue;
                     }
 
-                    if (t.type.land ^ unit.type.land)
+                    if (useUnitType && (t.type.land ^ unit.type.land))
                     {
                         closedSet.Add(t);
                         continue;

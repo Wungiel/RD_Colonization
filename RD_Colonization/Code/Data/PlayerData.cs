@@ -20,6 +20,7 @@ namespace RD_Colonization.Code.Data
         public Color playerColor;
         public bool isDefeated = false;
         public PlayerAISettingsData settingsAI = new PlayerAISettingsData();
+        public HashSet<Tile> discoveredTiles = new HashSet<Tile>();
 
         public PlayerData(Color color)
         {
@@ -68,6 +69,11 @@ namespace RD_Colonization.Code.Data
             {
                 return attackBonus;
             }
+        }
+
+        public void AddToDiscoveredHashset(Tile tile)
+        {
+            discoveredTiles.Add(tile);
         }
     }
 }

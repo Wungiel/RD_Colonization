@@ -83,10 +83,18 @@ namespace RD_Colonization.Code
 
         private void DrawSpecialMode(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Tile> pair)
         {
-            if (pair.Value.discoveredByPlayerIds.Contains(PlayerManager.Instance.currentPlayer.id) == false)
+            /*if (pair.Value.discoveredByPlayerIds.Contains(PlayerManager.Instance.currentPlayer.id) == false)
             {
                 spriteBatch.Draw(singlePixel, pair.Key, Color.Black);
+            }*/
+            for (int i = 0; i < 4; i++)
+            {
+                if (pair.Value.riskValues.ContainsKey(i) == true && pair.Value.riskValues[i] > 0)
+                {
+                    spriteBatch.Draw(singlePixel, pair.Key, Color.Red * 0.5f);
+                }
             }
+
         }
 
         private void DrawUnits(SpriteBatch spriteBatch, KeyValuePair<Rectangle, Unit> pair)
@@ -111,7 +119,7 @@ namespace RD_Colonization.Code
 
         private void DrawPaths(SpriteBatch spriteBatch, Unit unit)
         {
-            List<Tile> tiles = UnitManager.Instance.GetPathTiles(unit);
+            List<Tile> tiles = UnitManager.Instance.GetPathTiles(unit.currentCommand);
             foreach (Tile t in tiles)
             {
                 spriteBatch.DrawCircle(t.CreateCircle(), 12, PlayerManager.Instance.GetPlayerByUnit(unit).playerColor);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RD_Colonization.Code.Commands
 {
-    public class GuardCityCommand : ICommand
+    public class GuardCommand : ICommand
     {
         public bool Execute()
         {

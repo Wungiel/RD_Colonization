@@ -9,7 +9,12 @@ namespace RD_Colonization.Code.Data
 {
     public class PlayerAISettingsData
     {
-        int aggresiveness
+        private int aggresiveness;
+        private int landness;
+        private int expansiveness;
+        private int risk;
+
+        int Aggresiveness
         {
             get
             {
@@ -26,7 +31,7 @@ namespace RD_Colonization.Code.Data
             }
         }
 
-        int landness
+        int Landness
         {
             get
             {
@@ -43,7 +48,7 @@ namespace RD_Colonization.Code.Data
             }
         }
 
-        int expansiveness
+        int Expansiveness
         {
             get
             {
@@ -60,7 +65,7 @@ namespace RD_Colonization.Code.Data
             }
         }
 
-        int risk
+        int Risk
         {
             get
             {

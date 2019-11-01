@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace RD_Colonization.Code.ArtificialIntelligenceModules
 {
-    public class ExploratioModule
+    public class ExplorationModule
     {
         public PlayerData player;
 
-        public ExploratioModule(PlayerData player)
+        public ExplorationModule(PlayerData player)
         {
             this.player = player;
         }

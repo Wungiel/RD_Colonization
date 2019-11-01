@@ -54,12 +54,12 @@ namespace RD_Colonization.Code.Managers
             return temp;
         }
 
-        public List<Tile> GetPathTiles(Unit unitKey)
+        public List<Tile> GetPathTiles(ICommand command)
         {
-            MoveCommand command = (MoveCommand) unitKey.currentCommand;
-            if (command != null)
+            if (command != null && command.GetType() == typeof(MoveCommand))
             {
-                return command.GetPath();
+                MoveCommand moveCommand = (MoveCommand)command;
+                return moveCommand.GetPath();
             }
             else
             {

@@ -93,21 +93,14 @@ namespace RD_Colonization.Code.Managers
                 {
                     ScoreManager.Instance.AddDiscoveredTilePoint(playerId);
                     discoveredTile.discoveredByPlayerIds.Add(playerId);
+                    PlayerManager.Instance.GetPlayerById(playerId).AddToDiscoveredHashset(discoveredTile);
                 }                
             }
         }
 
         public Tile[] GetDiscoveredTiles(int playerId)
         {
-            List<Tile> playerDiscoveredTiles = new List<Tile>();
-            foreach (Tile tile in mapDictionary.Values)
-            {
-                if (tile.discoveredByPlayerIds.Contains(playerId))
-                {
-                    playerDiscoveredTiles.Add(tile);
-                }
-            }
-            return playerDiscoveredTiles.ToArray();
+            return PlayerManager.Instance.GetPlayerById(playerId).discoveredTiles.ToArray();
         }
 
         public void CreateRiskMap(int playerId)
@@ -147,6 +140,18 @@ namespace RD_Colonization.Code.Managers
             foreach (Tile t in discoveredTiles)
             {
                 t.safetyValues[playerId] = 0;
+            }
+
+            foreach(City c in cities)
+            {
+                foreach (Tile t in GetNeighbours(c.currentTile, 4))
+                {
+                    if (discoveredTiles.Contains(t) == true)
+                    {
+                        t.safetyValues[playerId] += 2;
+                    }
+                }
+
             }
 
             foreach (Unit u in units)

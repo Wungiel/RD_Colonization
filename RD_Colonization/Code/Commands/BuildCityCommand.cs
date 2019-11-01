@@ -28,9 +28,13 @@ namespace RD_Colonization.Code.Commands
 
         public bool Execute()
         {
-            if (destinyTile == null)
+            if (destinyTile == null || CanBuildCityHere(destinyTile) == false)
             {
-                destinyTile = GetBestTile(MapManager.Instance.GetDiscoveredTiles(unitUnderCommand.playerId));
+                destinyTile = GetBestTile(unitUnderCommand.playerId);
+                if (destinyTile == null)
+                {
+                    return true;
+                }
             }
 
             if (unitUnderCommand.currentTile != destinyTile)
@@ -48,9 +52,18 @@ namespace RD_Colonization.Code.Commands
             return true;
         }
 
-        private Tile GetBestTile(Tile[] tiles)
+        private Tile GetBestTile(int playerId)
         {
-            Tile bestTile = tiles.First();
+            Random random = new Random();
+            List<Tile> tiles = PlayerManager.Instance.GetPlayerById(playerId).discoveredTiles.ToList();
+            tiles = GetTilesWithOptionToBuild(tiles);
+
+            if (tiles.Count() == 0)
+            {
+                return null;
+            }
+
+            Tile bestTile = tiles[random.Next(tiles.Count)];
 
             foreach (Tile t in tiles)
             {
@@ -61,6 +74,26 @@ namespace RD_Colonization.Code.Commands
             }
 
             return bestTile;
+        }
+
+        private List<Tile> GetTilesWithOptionToBuild(List<Tile> tiles)
+        {
+            List<Tile> buildableTiles = new List<Tile>();
+
+            foreach(Tile t in tiles)
+            {
+                if (CanBuildCityHere(t) == true)
+                {
+                    buildableTiles.Add(t);
+                }
+            }
+
+            return buildableTiles;
+        }
+
+        private bool CanBuildCityHere(Tile tile)
+        {
+            return CityManager.Instance.CheckCitiesOnTiles(MapManager.Instance.GetNeighbours(tile, 2)) == false;
         }
     }
 }
