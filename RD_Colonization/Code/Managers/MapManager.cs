@@ -117,6 +117,7 @@ namespace RD_Colonization.Code.Managers
                     discoveredTile.discoveredByPlayerIds.Add(playerId);
                     PlayerManager.Instance.GetPlayerById(playerId).AddToDiscoveredHashset(discoveredTile);
                 }                
+                
             }
         }
 

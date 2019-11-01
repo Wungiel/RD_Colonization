@@ -88,6 +88,8 @@ namespace RD_Colonization.Code.Managers
 
         public void ProcessTurn()
         {
+            DiscoverOtherPlayers();
+
             Unit[] units = UnitManager.Instance.GetPlayersUnits(currentPlayer.id);
             City[] cities = CityManager.Instance.GetPlayersCities(currentPlayer.id);
             
@@ -163,6 +165,37 @@ namespace RD_Colonization.Code.Managers
                     c.RemoveCommand();
                 }
             }
+        }
+
+        private void DiscoverOtherPlayers()
+        {
+            if (currentPlayer.id == 0 && OtherPlayersNotDiscovered() == true)
+            {
+                foreach (Tile tile in currentPlayer.discoveredTiles)
+                {
+                    if (UnitManager.Instance.unitDictionary.ContainsKey(tile.CreateRectangle()))
+                    {
+                        Unit unit = UnitManager.Instance.unitDictionary[tile.CreateRectangle()];
+                        if (unit.playerId != 0)
+                        {
+                            PlayerManager.Instance.GetPlayerByUnit(unit).isDiscoveredByPlayer = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        private bool OtherPlayersNotDiscovered()
+        {
+            foreach (PlayerData player in PlayerManager.Instance.players)
+            {
+                if (player.id != 0 && player.isDiscoveredByPlayer == false && player.isDefeated == false)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

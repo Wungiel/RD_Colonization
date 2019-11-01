@@ -19,6 +19,7 @@ namespace RD_Colonization.Code.Data
         public bool isControlledByAI = true;
         public Color playerColor;
         public bool isDefeated = false;
+        public bool isDiscoveredByPlayer = false;
         public PlayerAISettingsData settingsAI = new PlayerAISettingsData();
         public HashSet<Tile> discoveredTiles = new HashSet<Tile>();
 
