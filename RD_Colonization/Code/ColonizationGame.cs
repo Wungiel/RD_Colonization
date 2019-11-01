@@ -40,7 +40,6 @@ namespace RD_Colonization
 
             ScreenManager manager = ScreenManager.Instance;
             manager.RegisterScreen(mainMenuScreenString, new MainMenuScreen(this));
-            manager.RegisterScreen(gameSetUpScreenString, new GameSetUpScreen(this));
             manager.RegisterScreen(gameScreenString, new GameScreen(this));
             manager.RegisterScreen(testScreenString, new TestSetUpScreen(this));
             manager.Initialize();

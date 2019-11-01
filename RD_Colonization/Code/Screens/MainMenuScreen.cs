@@ -32,7 +32,10 @@ namespace RD_Colonization.Code
             Button newGameButton = new Button(newGameString);
             newGameButton.OnClick += (Entity entity) =>
             {
-                ScreenManager.Instance.SetScreen(gameSetUpScreenString);
+                MapManager.Instance.GenerateMap(40);
+                PlayerManager.Instance.SetUpPlayers();
+                ScreenManager.Instance.SetScreen(gameScreenString);
+
             };
 
             Button testGameButton = new Button(testGameString);

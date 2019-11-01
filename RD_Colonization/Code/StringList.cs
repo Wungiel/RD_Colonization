@@ -6,7 +6,6 @@ namespace RD_Colonization.Code
     {
         public static readonly String mainMenuScreenString = "mainMenu";
         public static readonly String gameScreenString = "game";
-        public static readonly String gameSetUpScreenString = "setUp";
         public static readonly String testScreenString = "test";
 
         public static readonly String newGameString = "New Game";

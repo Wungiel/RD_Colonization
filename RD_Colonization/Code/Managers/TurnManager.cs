@@ -56,7 +56,6 @@ namespace RD_Colonization.Code.Managers
         {
             ActionManager.Instance.DestroyInstance();
             CityManager.Instance.DestroyInstance();
-            CivilizationManager.Instance.DestroyInstance();
             DDAEvolutionaryAIManager.Instance.DestroyInstance();
             DDAResourceManager.Instance.DestroyInstance();
             InputManager.Instance.DestroyInstance();
