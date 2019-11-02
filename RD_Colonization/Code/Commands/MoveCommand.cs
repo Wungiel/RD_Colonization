@@ -37,7 +37,7 @@ namespace RD_Colonization.Code.Commands
         {
             if (PathfinderManager.Instance.CheckPathfinding(destination, this) == false)
             {
-                return false;
+                return true;
             }
             else
             {

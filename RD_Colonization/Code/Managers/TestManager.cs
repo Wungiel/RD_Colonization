@@ -13,6 +13,7 @@ namespace RD_Colonization.Code.Managers
     {
         public List<SinglePlayerTurnData> playersScore = new List<SinglePlayerTurnData>();
         public TestData usedTest = null;
+        public Dictionary<int, HistoryData> history = new Dictionary<int, HistoryData>();
 
         public List<String> GetTestFiles()
         {
@@ -81,18 +82,14 @@ namespace RD_Colonization.Code.Managers
             if (usedTest == null)
             {
                 testName = "result";
-            }
-            else
-            {
-                testName = usedTest.name;
-            }
 
-            string testResultDirectoryPath = System.IO.Directory.GetCurrentDirectory() + slash + resultDataFolderString;
-            string fileName = testResultDirectoryPath + slash + testName + underscore + DateTime.Now.Hour + dot + DateTime.Now.Minute + txtExtension;
-            File.WriteAllText(fileName, "Results:");
-            for (int i = 0; i < playersScore.Count; i++)
-            {
-                File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson<SinglePlayerTurnData>(playersScore[i]) + Environment.NewLine + Environment.NewLine);
+                string testResultDirectoryPath = System.IO.Directory.GetCurrentDirectory() + slash + resultDataFolderString;
+                string fileName = testResultDirectoryPath + slash + testName + underscore + DateTime.Now.Hour + dot + DateTime.Now.Minute + txtExtension;
+                File.WriteAllText(fileName, "Results:");
+                for (int i = 0; i < playersScore.Count; i++)
+                {
+                    File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson<SinglePlayerTurnData>(playersScore[i]) + Environment.NewLine + Environment.NewLine);
+                }
             }
         }
 
@@ -120,7 +117,6 @@ namespace RD_Colonization.Code.Managers
 
             TurnManager.Instance.turnEvent += GetData;
         }
-
-
+                
     }
 }

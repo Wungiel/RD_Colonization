@@ -1,5 +1,6 @@
 ﻿using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Entities;
+using RD_Colonization.Code.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,28 @@ namespace RD_Colonization.Code.Commands
     {
         public Unit exploringUnit;
         public MoveCommand moveToDestinyTileCommand = null;
+        public Tile tileToExplore = null;
 
-        public ExploreCommand(Unit exploringUnit, Tile[] borderTiles)
+        public ExploreCommand(Unit exploringUnit)
         {
             this.exploringUnit = exploringUnit;
         }
 
         public bool Execute()
         {
-            return false;
+            if (tileToExplore == null)
+            {
+                tileToExplore = PlayerManager.Instance.GetPlayerByUnit(exploringUnit).explorationMap.GetRandomFromArray();
+                if (tileToExplore == null)
+                    return true;
+            }
+
+            if (moveToDestinyTileCommand == null)
+            {
+                moveToDestinyTileCommand = new MoveCommand(tileToExplore.CreateRectangle(), exploringUnit);
+            }
+
+            return moveToDestinyTileCommand.Execute();
         }
 
     }

@@ -12,6 +12,7 @@ namespace RD_Colonization.Code
         public static readonly String exitString = "Quit";
         public static readonly String testGameString = "Test Difficulty";
         public static readonly String aboutString = "About";
+        public static readonly String createHistoryString = "Generate history";
 
         public static readonly String saveGameString = "Save game";
         public static readonly String loadGameString = "Load game";
@@ -33,10 +34,12 @@ namespace RD_Colonization.Code
         public static readonly String mapDataFolderString = "MapData";
         public static readonly String resultDataFolderString = "ResultData";
 
+
         public static readonly String slash = "\\";
         public static readonly String underscore = "_";
         public static readonly char dot = '.';
         public static readonly String pngExtension = ".png";
         public static readonly String txtExtension = ".txt";
+        public static readonly String hisExtension = ".his";
     }
 }

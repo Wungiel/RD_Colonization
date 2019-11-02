@@ -58,5 +58,18 @@ namespace RD_Colonization.Code
             double distance = Math.Pow(point.X + anotherPoint.X, 2) + Math.Pow(point.Y + anotherPoint.Y, 2);
             return Math.Sqrt(distance);
         }
+
+        public static T GetRandomFromArray <T> (this T [] array) where T: class
+        {
+            if (array.Length == 0)
+            {
+                return null;
+            } 
+            else
+            {
+                Random random = new Random();
+                return array[random.Next(0, array.Length)];
+            }
+        }
     }
 }

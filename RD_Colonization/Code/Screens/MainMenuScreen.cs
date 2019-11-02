@@ -44,6 +44,12 @@ namespace RD_Colonization.Code
                 ScreenManager.Instance.SetScreen(testScreenString);
             };
 
+            Button createHistoryButton = new Button(createHistoryString);
+            createHistoryButton.OnClick += (Entity entity) =>
+            {
+                HistoryManagr.Instance.GenerateHistory(GraphicsDevice);
+            };
+
             Button aboutButton = new Button(aboutString);
             aboutButton.OnClick += (Entity entity) =>
             {
@@ -56,9 +62,10 @@ namespace RD_Colonization.Code
                 Game.Exit();
             };
 
-            mainPanel.Size = new Vector2(mainPanel.Size.X, newGameButton.Size.Y * 5);
+            mainPanel.Size = new Vector2(mainPanel.Size.X, newGameButton.Size.Y * 6);
             mainPanel.AddChild(newGameButton);
             mainPanel.AddChild(testGameButton);
+            mainPanel.AddChild(createHistoryButton);
             mainPanel.AddChild(aboutButton);
             mainPanel.AddChild(exitButton);
         }

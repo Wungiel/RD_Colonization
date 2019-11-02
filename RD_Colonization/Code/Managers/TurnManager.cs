@@ -46,18 +46,29 @@ namespace RD_Colonization.Code.Managers
 
         public void EndGame()
         {
-            MessageBox.ShowMsgBox("End", "Game finished ");
+            MessageBox.MsgBoxOption acceptEndGame = new MessageBox.MsgBoxOption("Ok", Finish);
+            MessageBox.MsgBoxOption[] options = { acceptEndGame };
+            MessageBox.ShowMsgBox("End", "Game finished", options);
+        }
+
+        private bool Finish()
+        {
             TestManager.Instance.WriteTestResultData();
             ScreenManager.Instance.SetScreen(mainMenuScreenString);
             ClearManagers();
+
+            if (HistoryManagr.Instance.savingHistory == true)
+            {
+                HistoryManagr.Instance.ContinueGenerating();
+            }
+
+            return true;
         }
 
         private void ClearManagers()
         {
             ActionManager.Instance.DestroyInstance();
             CityManager.Instance.DestroyInstance();
-            DDAEvolutionaryAIManager.Instance.DestroyInstance();
-            DDAResourceManager.Instance.DestroyInstance();
             InputManager.Instance.DestroyInstance();
             JsonManager.Instance.DestroyInstance();
             MapManager.Instance.DestroyInstance();

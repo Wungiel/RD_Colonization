@@ -48,6 +48,16 @@ namespace RD_Colonization.Code.Managers
             }
 
             UnitData unitType = UnitManager.Instance.GetUnitType(unitKey);
+            PlayerData player = PlayerManager.Instance.GetPlayerByCity(city);
+
+            if (player.cash < unitType.cost)
+            {
+                return false;
+            }
+            else
+            {
+                player.ModifyCash(-unitType.cost);
+            }
 
             Tile tile = null;
             if (unitType.land == true)
@@ -60,8 +70,7 @@ namespace RD_Colonization.Code.Managers
             }            
 
             if (tile != null)
-            {
-                PlayerData player = PlayerManager.Instance.GetPlayerByCity(city);
+            {                
                 UnitManager.Instance.AddNewUnit(player, tile, unitKey);
                 city.didBuildInThisTurn = true;
                 ScoreManager.Instance.AddNewUnitPoint(player.id);

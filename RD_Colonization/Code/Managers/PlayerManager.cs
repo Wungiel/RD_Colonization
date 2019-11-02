@@ -21,7 +21,7 @@ namespace RD_Colonization.Code.Managers
         {
             for (int i = 0; i < 4; i++)
             {
-                PlayerData tmpPlayer = new PlayerData(playerColors[i]);
+                PlayerData tmpPlayer = new PlayerData(playerColors[i], i);
                               
                 players.Add(tmpPlayer);
             }
@@ -126,7 +126,7 @@ namespace RD_Colonization.Code.Managers
             MapManager.Instance.CreateRiskMap(currentPlayer.id);
             MapManager.Instance.CreateSafetyMap(currentPlayer.id, units, cities);
             MapManager.Instance.CreateTensionMap(currentPlayer.id);
-            MapManager.Instance.CreateExplorationMap(currentPlayer.id);
+            currentPlayer.explorationMap = MapManager.Instance.CreateExplorationMap(currentPlayer.id);
         }
 
         private void CommandResources(Unit[] units, City[] cities)
@@ -134,7 +134,7 @@ namespace RD_Colonization.Code.Managers
             foreach (Unit unit in units)
             {
                 if (unit.currentCommand == null)
-                    unit.currentCommand = new BuildCityCommand(unit);
+                    unit.currentCommand = new ExploreCommand(unit);
             }
 
             if  (cities.Count() != 0)

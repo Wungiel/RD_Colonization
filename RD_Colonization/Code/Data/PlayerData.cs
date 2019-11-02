@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using RD_Colonization.Code.ArtificialIntelligenceModules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,6 @@ namespace RD_Colonization.Code.Data
 {
     public class PlayerData
     {
-        private static int currentId = 0;
         public int id = 0;
         public int cash = 0;
         public int food = 0;
@@ -21,13 +21,15 @@ namespace RD_Colonization.Code.Data
         public bool isDefeated = false;
         public bool isDiscoveredByPlayer = false;
         public PlayerAISettingsData settingsAI = new PlayerAISettingsData();
+        public AIModules aiModules;
         public HashSet<Tile> discoveredTiles = new HashSet<Tile>();
+        public Tile[] explorationMap;
 
-        public PlayerData(Color color)
+        public PlayerData(Color color, int id)
         {
             playerColor = color;
-            id = currentId;
-            currentId++;
+            this.id = id;
+            aiModules = new AIModules(this);
         }
 
         public void SetLivingPlayerControl()
