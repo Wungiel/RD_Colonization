@@ -35,6 +35,11 @@ namespace RD_Colonization.Code.Commands
 
         public bool Execute()
         {
+            if (destination == null)
+            {
+                return true;
+            }
+
             if (PathfinderManager.Instance.CheckPathfinding(destination, this) == false)
             {
                 return true;

@@ -15,9 +15,9 @@ namespace RD_Colonization.Code.Data
         public int id = 0;
         public int cash = 0;
         public int food = 0;
-        public int attackBonus = 1;
-        public int attackDDABonus = 1;
-        public int healthBonus = 0;
+        public float attackBonus = 1;
+        public float attackDDABonus = 1;
+        public float cashBonus = 0;
         public bool isControlledByAI = true;
         public Color playerColor;
         public bool isDefeated = false;
