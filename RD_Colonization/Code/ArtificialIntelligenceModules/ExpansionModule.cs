@@ -31,5 +31,10 @@ namespace RD_Colonization.Code.ArtificialIntelligenceModules
                 }
             }
         }
+
+        public void RequestSeaTransport(Unit unit, Tile destiny)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

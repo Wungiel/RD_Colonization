@@ -23,7 +23,7 @@ namespace RD_Colonization.Code.Managers
         private List<string> mapNames = new List<string>();
         private int currentMapIndex = 0;
         private GraphicsDevice device;
-        private Dictionary<int, HistoryData> historyPerPlayer = null;
+        private List<HistoryData> historyPerPlayer = null;
 
         public void GenerateHistory(GraphicsDevice device)
         {
@@ -56,11 +56,11 @@ namespace RD_Colonization.Code.Managers
 
         private void CreateHistoryForNewMap()
         {
-            historyPerPlayer = new Dictionary<int, HistoryData>();
+            historyPerPlayer = new List<HistoryData>();
 
             foreach (PlayerData player in PlayerManager.Instance.players)
             {
-                historyPerPlayer[player.id] = new HistoryData();
+                historyPerPlayer.Add(new HistoryData(player.id));
             }
 
         }
@@ -88,20 +88,12 @@ namespace RD_Colonization.Code.Managers
 
         private void SaveDataToHistory()
         {
-            foreach (PlayerData player in PlayerManager.Instance.players)
+            foreach(HistoryData history in historyPerPlayer)
             {
-                HistoryData historyForPlayer = historyPerPlayer[player.id];
-                if (historyForPlayer.savedScoreDataPerTurn.ContainsKey(TurnManager.Instance.TurnNumber) == false)
-                {
-                    historyForPlayer.savedScoreDataPerTurn[TurnManager.Instance.TurnNumber] = new List<HistoryData.ScoreAISettingsPair>();
-                }
-
-                HistoryData.ScoreAISettingsPair scoreAiSettings = new HistoryData.ScoreAISettingsPair(player.settingsAI.
-                                                                    SaveSettingsIntoString(), ScoreManager.Instance.playersScores[player.id].GetTotalScore());
-                historyForPlayer.savedScoreDataPerTurn[TurnManager.Instance.TurnNumber].Add(scoreAiSettings);
+                PlayerData player = PlayerManager.Instance.GetPlayerById(history.playerId);
+                history.aiSettings.Add(player.settingsAI.SaveSettingsIntoString());
+                history.scores.Add(ScoreManager.Instance.playersScores[player.id].GetTotalScore());
             }
-
-
         }
 
         private void SaveDataHistoryToFile()
@@ -109,7 +101,10 @@ namespace RD_Colonization.Code.Managers
             string mapFolderPath = System.IO.Directory.GetCurrentDirectory() + slash + mapDataFolderString;
             string fileName = mapFolderPath + slash + mapNames[currentMapIndex] + hisExtension;
             File.WriteAllText(fileName, "Results:");
-            File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson<Dictionary<int, HistoryData>>(historyPerPlayer));
+            foreach (HistoryData history in historyPerPlayer)
+            {
+                File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson <HistoryData>(history) + Environment.NewLine);
+            }
         }
 
 

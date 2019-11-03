@@ -71,7 +71,7 @@ namespace RD_Colonization.Code.Managers
             {
                 SinglePlayerTurnData score = GetPlayerTestData(player.id);
                 score.cashValue.Add(player.cash);
-                score.aiSettings.Add(player.settingsAI.ToString());
+                score.aiSettings.Add(player.settingsAI.SaveSettingsIntoString());
                 score.scoreValue.Add(ScoreManager.Instance.GetScore(player.id));
             }
         }
@@ -83,15 +83,18 @@ namespace RD_Colonization.Code.Managers
             if (usedTest == null)
             {
                 testName = "result";
+            }
+            else
+            {
+                testName = usedTest.name;
+            }
 
                 string testResultDirectoryPath = System.IO.Directory.GetCurrentDirectory() + slash + resultDataFolderString;
                 string fileName = testResultDirectoryPath + slash + testName + underscore + DateTime.Now.Hour + dot + DateTime.Now.Minute + txtExtension;
-                File.WriteAllText(fileName, "Results:");
                 for (int i = 0; i < playersScore.Count; i++)
                 {
                     File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson<SinglePlayerTurnData>(playersScore[i]) + Environment.NewLine + Environment.NewLine);
                 }
-            }
         }
 
         private SinglePlayerTurnData GetPlayerTestData(int id)

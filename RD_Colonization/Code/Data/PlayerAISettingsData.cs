@@ -9,6 +9,7 @@ namespace RD_Colonization.Code.Data
 {
     public class PlayerAISettingsData
     {
+        private static Random randomizer = new Random((int)System.DateTime.Now.Ticks);
         private int aggresiveness;
         private int landness;
         private int expansiveness;
@@ -115,8 +116,7 @@ namespace RD_Colonization.Code.Data
         }
 
         private void RandomizeSettings()
-        {
-            Random randomizer = new Random();
+        {            
             aggresiveness = randomizer.Next(0, 8);
             landness = randomizer.Next(0, 8);
             expansiveness = randomizer.Next(0, 8);

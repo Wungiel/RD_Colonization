@@ -70,9 +70,9 @@
     <Compile Include="Code\Entities\Unit.cs" />
     <Compile Include="Code\Managers\ActionManager.cs" />
     <Compile Include="Code\Managers\CityManager.cs" />
-    <Compile Include="Code\Managers\DDAEvolutionaryAIManager.cs" />
+    <Compile Include="Code\DDA\DDAEvolutionaryAIManager.cs" />
     <Compile Include="Code\Managers\HistoryManager.cs" />
-    <Compile Include="Code\Managers\DDAResourceManager.cs" />
+    <Compile Include="Code\DDA\DDAResourceManager.cs" />
     <Compile Include="Code\Managers\PathfinderManager.cs" />
     <Compile Include="Code\Managers\PlayerManager.cs" />
     <Compile Include="Code\Managers\JsonManager.cs" />

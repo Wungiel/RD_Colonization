@@ -13,10 +13,11 @@ using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using Microsoft.Xna.Framework.Graphics;
 using RD_Colonization.Code.Data;
+using RD_Colonization.Code.Managers;
 using static RD_Colonization.Code.StringList;
 
 
-namespace RD_Colonization.Code.Managers
+namespace RD_Colonization.Code.DDA
 {
     public class DDAEvolutionaryAIManager : BaseManager<DDAEvolutionaryAIManager>
     {

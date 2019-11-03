@@ -6,22 +6,15 @@ using System.Threading.Tasks;
 
 namespace RD_Colonization.Code.Data
 {
-    [Serializable]
     public class HistoryData
     {
-        public Dictionary<int, List<ScoreAISettingsPair>> savedScoreDataPerTurn = new Dictionary<int, List<ScoreAISettingsPair>>();
+        public int playerId;
+        public List<string> aiSettings = new List<string>();
+        public List<float> scores = new List<float>();
 
-        [Serializable]
-        public  class ScoreAISettingsPair
+        public HistoryData(int playerId)
         {
-            string aiSettings;
-            float score;
-                        
-            public ScoreAISettingsPair(string settings, float score)
-            {
-                this.aiSettings = settings;
-                this.score = score;
-            }
+            this.playerId = playerId;
         }
     }
 }
