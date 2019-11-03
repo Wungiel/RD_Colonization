@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using RD_Colonization.Code.ArtificialIntelligenceModules;
+using RD_Colonization.Code.Entities;
+using RD_Colonization.Code.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,5 +80,21 @@ namespace RD_Colonization.Code.Data
         {
             discoveredTiles.Add(tile);
         }
+
+        public Point GetCenterOfArea()
+        {
+            City[] cities = CityManager.Instance.GetPlayersCities(id);
+            Point centerPoint = new Point();
+            foreach(City city in cities)
+            {
+                centerPoint = city.currentTile.position;
+            }
+
+            centerPoint.X = centerPoint.X / cities.Length;
+            centerPoint.Y = centerPoint.Y / cities.Length;
+
+            return centerPoint;
+        }
+
     }
 }

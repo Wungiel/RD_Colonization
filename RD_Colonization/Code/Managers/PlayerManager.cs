@@ -176,7 +176,7 @@ namespace RD_Colonization.Code.Managers
                     if (UnitManager.Instance.unitDictionary.ContainsKey(tile.CreateRectangle()))
                     {
                         Unit unit = UnitManager.Instance.unitDictionary[tile.CreateRectangle()];
-                        if (unit.playerId != 0)
+                        if (unit.playerId != 0 && PlayerManager.Instance.GetPlayerByUnit(unit).isDiscoveredByPlayer == false)
                         {
                             PlayerManager.Instance.GetPlayerByUnit(unit).isDiscoveredByPlayer = true;
                         }

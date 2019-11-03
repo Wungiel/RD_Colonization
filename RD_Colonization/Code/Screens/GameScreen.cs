@@ -23,7 +23,7 @@ namespace RD_Colonization
         private List<Entity> rootEntities = new List<Entity>();
         private Panel escapePanel;
         private bool isEscapeMenuActive = false;
-        private const float movementSpeed = 300;
+        private const float movementSpeed = 400;
         private Paragraph turnCounter, cashCounter;
 
         public GameScreen(ColonizationGame game) : base(game)
