@@ -120,6 +120,34 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
+        public void LoadUnit(Unit cargo, Unit transport)
+        {
+            if (transport.type.canMoveUnits == true && transport.transportedUnit == null && cargo.type.canMoveUnits == false && cargo.remainingEnergy != 0)
+            {
+                if (cargo.currentTile.neighbours.Contains(transport.currentTile))
+                {
+                    transport.transportedUnit = cargo;
+                    UnitManager.Instance.DestroyUnit(cargo);
+                }
+            }
+        }
+
+        public void UnloadUnit(Unit transport, Tile destination)
+        {
+            if (transport.type.canMoveUnits == true && transport.transportedUnit != null && transport.remainingEnergy != 0)
+            {
+                if (!(destination.type.land ^ transport.transportedUnit.type.land) && transport.currentTile.neighbours.Contains(destination))
+                {
+                    transport.transportedUnit.currentTile = destination;
+                    UnitManager.Instance.unitDictionary.Add(destination.CreateRectangle(), transport.transportedUnit);
+                    transport.transportedUnit.remainingEnergy = 0;
+                    transport.remainingEnergy = 0;
+                    transport.transportedUnit = null;
+                }
+            }
+
+        }
+
         private float GetAttackPower(Unit attackingUnit)
         {
             PlayerData unitOwner = PlayerManager.Instance.GetPlayerByUnit(attackingUnit);

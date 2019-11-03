@@ -188,7 +188,30 @@ namespace RD_Colonization
                     }
                 }
 
-                if (InputManager.Instance.IsSingleLeftPress() && !mouseOverGUI)
+                if  (InputManager.Instance.IsPress(Keys.LeftShift) && InputManager.Instance.IsSingleLeftPress() && !mouseOverGUI)
+                {
+                    Vector2 mousePosition = camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+                    if (mousePosition.X > 0 && mousePosition.Y > 0)
+                    {
+                        Rectangle tempRectangle = new Rectangle(((int)mousePosition.X / 64) * 64, ((int)mousePosition.Y / 64) * 64, 64, 64);
+
+                        if (UnitManager.Instance.currentUnit != null)
+                        {
+                            if (UnitManager.Instance.currentUnit.transportedUnit == null)
+                            {
+                                if (UnitManager.Instance.unitDictionary.ContainsKey(tempRectangle) && UnitManager.Instance.IsUnitOnRectangleFriendly(tempRectangle) == true)
+                                {
+                                    ActionManager.Instance.LoadUnit(UnitManager.Instance.currentUnit, UnitManager.Instance.unitDictionary[tempRectangle]);
+                                }
+                            }
+                            else if (UnitManager.Instance.unitDictionary.ContainsKey(tempRectangle) == false)
+                            {
+                                ActionManager.Instance.UnloadUnit(UnitManager.Instance.currentUnit, MapManager.Instance.mapDictionary[tempRectangle]);
+                            }
+                        }
+                    }
+                }
+                else if (InputManager.Instance.IsSingleLeftPress() && !mouseOverGUI)
                 {
                     Vector2 mousePosition = camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
                     if (mousePosition.X > 0 && mousePosition.Y > 0)

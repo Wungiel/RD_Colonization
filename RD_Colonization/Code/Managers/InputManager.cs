@@ -14,6 +14,11 @@ namespace RD_Colonization.Code
             return newStateKeyboard.IsKeyDown(key) && oldStateKeyboard.IsKeyUp(key);
         }
 
+        public bool IsPress(Keys key)
+        {
+            return newStateKeyboard.IsKeyDown(key);
+        }
+
         public bool IsSingleLeftPress()
         {
             return newStateMouse.LeftButton == ButtonState.Pressed && oldStateMouse.LeftButton == ButtonState.Released;

@@ -131,18 +131,9 @@ namespace RD_Colonization.Code.Managers
 
         private void CommandResources(Unit[] units, City[] cities)
         {
-            foreach (Unit unit in units)
-            {
-                if (unit.currentCommand == null)
-                    unit.currentCommand = new ExploreCommand(unit);
-            }
-
-            if  (cities.Count() != 0)
-            {
-                if (units.Count() == 0)
-                if (cities[0].currentCommand == null)
-                        cities[0].currentCommand = new BuildUnitCommand(cities[0], civilianString);
-            }
+            currentPlayer.aiModules.expansion.ProcessData(units, cities);
+            currentPlayer.aiModules.exploitation.ProcessData(units, cities);
+            currentPlayer.aiModules.exploration.ProcessData(units, cities);
         }
 
         private void ExecuteCommands()

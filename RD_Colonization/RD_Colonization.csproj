@@ -46,6 +46,7 @@
     <Compile Include="Code\ArtificialIntelligenceModules\ExpansionModule.cs" />
     <Compile Include="Code\ArtificialIntelligenceModules\ExploitationModule.cs" />
     <Compile Include="Code\ArtificialIntelligenceModules\ExplorationModule.cs" />
+    <Compile Include="Code\ArtificialIntelligenceModules\IModule.cs" />
     <Compile Include="Code\BaseManager.cs" />
     <Compile Include="Code\Commands\AttackCommand.cs" />
     <Compile Include="Code\Commands\BuildCityCommand.cs" />

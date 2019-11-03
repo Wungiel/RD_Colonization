@@ -71,6 +71,7 @@ namespace RD_Colonization.Code.Managers
             {
                 SinglePlayerTurnData score = GetPlayerTestData(player.id);
                 score.cashValue.Add(player.cash);
+                score.aiSettings.Add(player.settingsAI.ToString());
                 score.scoreValue.Add(ScoreManager.Instance.GetScore(player.id));
             }
         }

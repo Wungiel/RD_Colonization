@@ -13,6 +13,7 @@ namespace RD_Colonization.Code.Entities
         public Tile currentTile;
         public int remainingEnergy;
         public float health;
+        public Unit transportedUnit = null;
         public ICommand currentCommand = null;
 
         public Unit()

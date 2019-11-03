@@ -34,6 +34,7 @@ namespace RD_Colonization.Code.Commands
         public bool Execute()
         {
             HashSet<Tile> neigbhouringTiles = new HashSet<Tile>();
+            HashSet<Tile> safetyTiles = new HashSet<Tile>();
             moveToDestinyTileCommand = null;
 
             if (cityGoal != null)
@@ -43,6 +44,7 @@ namespace RD_Colonization.Code.Commands
                     return true;
                 }
                 neigbhouringTiles = MapManager.Instance.GetNeighbours(cityGoal.currentTile, 3);
+                safetyTiles = MapManager.Instance.GetNeighbours(unitGoal.currentTile, 5);
             }
             else if (unitGoal != null)
             {
@@ -52,11 +54,12 @@ namespace RD_Colonization.Code.Commands
                 }
 
                 neigbhouringTiles = MapManager.Instance.GetNeighbours(unitGoal.currentTile, 3);
+                safetyTiles = MapManager.Instance.GetNeighbours(unitGoal.currentTile, 5);
             }
 
-            if (IsEnemyNearby(neigbhouringTiles) == true)
+            if (IsEnemyNearby(safetyTiles) == true)
             {
-                foreach (Tile tile in neigbhouringTiles)
+                foreach (Tile tile in safetyTiles)
                 {
                     Rectangle tileRectangle = tile.CreateRectangle();
                     if (UnitManager.Instance.unitDictionary.ContainsKey(tileRectangle))

@@ -13,8 +13,7 @@ namespace RD_Colonization.Code.Data
     public class PlayerData
     {
         public int id = 0;
-        public int cash = 0;
-        public int food = 0;
+        public float cash = 0;
         public float attackBonus = 1;
         public float attackDDABonus = 1;
         public float cashBonus = 0;
@@ -26,12 +25,14 @@ namespace RD_Colonization.Code.Data
         public AIModules aiModules;
         public HashSet<Tile> discoveredTiles = new HashSet<Tile>();
         public Tile[] explorationMap;
+        private float income = 0;
 
         public PlayerData(Color color, int id)
         {
             playerColor = color;
             this.id = id;
             aiModules = new AIModules(this);
+            TurnManager.Instance.lateTurnEvent += AddIncome;
         }
 
         public void SetLivingPlayerControl()
@@ -39,9 +40,15 @@ namespace RD_Colonization.Code.Data
             isControlledByAI = false;
         }
 
-        public void ModifyCash(int cashAmount)
+        public void ModifyCash(float cashAmount)
         {
-            cash += cashAmount;
+            income += cashAmount;
+        }
+
+        public void AddIncome()
+        {
+            cash += income;
+            income = 0;
         }
 
         public float GetDDABonus()

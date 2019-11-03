@@ -13,6 +13,7 @@ namespace RD_Colonization.Code.Managers
         public int TurnNumber { get; private set; }
         public delegate void turnManagerEvent();
         public turnManagerEvent turnEvent;
+        public turnManagerEvent lateTurnEvent;
         public turnManagerEvent changePlayerEvent;
         public int maxTurnsNumber = 100;
 
@@ -34,6 +35,7 @@ namespace RD_Colonization.Code.Managers
                 TurnNumber++;
                 if (turnEvent != null)
                     turnEvent();
+                    lateTurnEvent();
             }       
             
             if (manager.currentPlayer.isControlledByAI == true)
