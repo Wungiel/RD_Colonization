@@ -11,8 +11,9 @@
         public int maxHealth;
         public int strenght;
         public int cost;
+        public int upkeep;
 
-        public UnitData(string name, bool land, bool canBuild, bool canMoveUnits, int speed, int health, int strenght, int cost)
+        public UnitData(string name, bool land, bool canBuild, bool canMoveUnits, int speed, int health, int strenght, int cost, int upkeep)
         {
             this.name = name;
             this.land = land;
@@ -23,6 +24,7 @@
             this.maxHealth = health;
             this.strenght = strenght;
             this.cost = cost;
+            this.upkeep = upkeep;
         }
     }
 }

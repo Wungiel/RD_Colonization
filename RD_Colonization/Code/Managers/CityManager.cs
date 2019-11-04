@@ -74,6 +74,8 @@ namespace RD_Colonization.Code.Managers
                 currentCity = null;
             }
 
+            city.DestroyCity();
+            TurnManager.Instance.turnEvent -= city.GenerateCash;
             citytDictionary.Remove(city.currentTile.CreateRectangle());
         }
 

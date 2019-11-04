@@ -20,10 +20,10 @@ namespace RD_Colonization.Code.Managers
 
         public UnitManager()
         {
-            typesDictionary.Add(civilianString, new UnitData(civilianString, true, true, false, 2, 1, 0, 50));
-            typesDictionary.Add(soldierString, new UnitData(soldierString, true, false, false, 1, 5, 2, 20));
-            typesDictionary.Add(scoutString, new UnitData(scoutString, true, false, false, 5, 1, 1, 5));
-            typesDictionary.Add(shipString, new UnitData(shipString, false, false, true, 1, 2, 2, 20));
+            typesDictionary.Add(civilianString, new UnitData(civilianString, true, true, false, 2, 1, 0, 50, 0));
+            typesDictionary.Add(soldierString, new UnitData(soldierString, true, false, false, 1, 5, 2, 200, 1));
+            typesDictionary.Add(scoutString, new UnitData(scoutString, true, false, false, 5, 1, 1, 5, 1));
+            typesDictionary.Add(shipString, new UnitData(shipString, false, false, true, 1, 2, 2, 20, 1));
         }
         
         public void AddNewUnit(PlayerData tmpPlayer, Tile tile, String unitType)
@@ -37,7 +37,8 @@ namespace RD_Colonization.Code.Managers
             Unit tmpUnit = new Unit(type, tile, playerId);
             List<Tile> tmpList = new List<Tile>();
             unitDictionary.Add(tile.CreateRectangle(), tmpUnit);
-            DiscoverMap(tmpUnit);            
+            DiscoverMap(tmpUnit);
+            TurnManager.Instance.turnEvent += tmpUnit.ReduceIncome;
         }
 
         public void ChangeUnitPlace(Unit unit, Tile tile)
@@ -109,6 +110,8 @@ namespace RD_Colonization.Code.Managers
         {
             if (unit == currentUnit)
                 currentUnit = null;
+            unit.DestroyUnit();
+            TurnManager.Instance.turnEvent -= unit.ReduceIncome;
             unitDictionary.Remove(unit.GetPosition());
         }
 

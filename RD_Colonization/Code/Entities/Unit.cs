@@ -45,5 +45,15 @@ namespace RD_Colonization.Code.Entities
         {
             currentCommand = null;
         }
+
+        public void DestroyUnit()
+        {
+            TurnManager.Instance.turnEvent -= RegenerateEnergy;
+        }
+
+        public void ReduceIncome()
+        {
+            PlayerManager.Instance.GetPlayerById(playerId).ModifyTurnIncome(-type.upkeep);
+        }
     }
 }

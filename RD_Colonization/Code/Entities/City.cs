@@ -1,4 +1,5 @@
-﻿using RD_Colonization.Code.Commands;
+﻿using System;
+using RD_Colonization.Code.Commands;
 using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Managers;
 using static RD_Colonization.Code.StringList;
@@ -32,7 +33,7 @@ namespace RD_Colonization.Code.Entities
                 if (n.type.name == grassString)
                     cash++;
             }
-            PlayerManager.Instance.GetPlayerById(playerId).ModifyCash(cash);
+            PlayerManager.Instance.GetPlayerById(playerId).ModifyTurnIncome(cash);
         }
 
         public void RemoveCommand()
@@ -43,6 +44,11 @@ namespace RD_Colonization.Code.Entities
         public void AllowToBuildInThisTurn()
         {
             didBuildInThisTurn = false;
+        }
+
+        public void DestroyCity()
+        {
+            TurnManager.Instance.turnEvent -= AllowToBuildInThisTurn;
         }
     }
 }

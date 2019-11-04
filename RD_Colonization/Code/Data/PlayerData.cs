@@ -26,6 +26,7 @@ namespace RD_Colonization.Code.Data
         public HashSet<Tile> discoveredTiles = new HashSet<Tile>();
         public Tile[] explorationMap;
         private float income = 0;
+        private float lastTurnIncome = 0;
 
         public PlayerData(Color color, int id)
         {
@@ -40,14 +41,28 @@ namespace RD_Colonization.Code.Data
             isControlledByAI = false;
         }
 
-        public void ModifyCash(float cashAmount)
+        public void ModifyTurnIncome(float cashAmount)
         {
             income += cashAmount;
+        }
+
+        public bool ModifyCashPayment(float payment)
+        {
+            if (payment > cash)
+            {
+                return false;
+            }
+            else
+            {
+                cash -= payment;
+                return true;
+            }            
         }
 
         public void AddIncome()
         {
             cash += income;
+            lastTurnIncome = income;
             income = 0;
         }
 
@@ -101,6 +116,11 @@ namespace RD_Colonization.Code.Data
             centerPoint.Y = centerPoint.Y / cities.Length;
 
             return centerPoint;
+        }
+
+        public float GetLastTurnIncome()
+        {
+            return lastTurnIncome;
         }
 
     }

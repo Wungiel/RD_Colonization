@@ -50,13 +50,9 @@ namespace RD_Colonization.Code.Managers
             UnitData unitType = UnitManager.Instance.GetUnitType(unitKey);
             PlayerData player = PlayerManager.Instance.GetPlayerByCity(city);
 
-            if (player.cash < unitType.cost)
+            if (player.ModifyCashPayment(unitType.cost) == false)
             {
                 return false;
-            }
-            else
-            {
-                player.ModifyCash(-unitType.cost);
             }
 
             Tile tile = null;
