@@ -89,12 +89,13 @@ namespace RD_Colonization.Code.Managers
                 testName = usedTest.name;
             }
 
-                string testResultDirectoryPath = System.IO.Directory.GetCurrentDirectory() + slash + resultDataFolderString;
-                string fileName = testResultDirectoryPath + slash + testName + underscore + DateTime.Now.Hour + dot + DateTime.Now.Minute + txtExtension;
-                for (int i = 0; i < playersScore.Count; i++)
-                {
-                    File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson<SinglePlayerTurnData>(playersScore[i]) + Environment.NewLine + Environment.NewLine);
-                }
+            string testResultDirectoryPath = System.IO.Directory.GetCurrentDirectory() + slash + resultDataFolderString;
+            string fileName = testResultDirectoryPath + slash + testName + underscore + DateTime.Now.Hour + dot + DateTime.Now.Minute + txtExtension;
+            File.AppendText(testName);
+            for (int i = 0; i < playersScore.Count; i++)
+            {
+                File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson<SinglePlayerTurnData>(playersScore[i]) + Environment.NewLine);
+            }
         }
 
         private SinglePlayerTurnData GetPlayerTestData(int id)
