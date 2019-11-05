@@ -51,12 +51,14 @@ namespace RD_Colonization.Code.Managers
             {
                 PlayerManager.Instance.SetUpPlayers();
                 SetUpPlayerScoreRecords();
+                EventSaverManager.Instance.StartRegistering();
                 ScreenManager.Instance.SetScreen(gameScreenString);
             }
             else
             {
                 PlayerManager.Instance.SetUpPlayers(false);
                 SetUpPlayerScoreRecords();
+                EventSaverManager.Instance.StartRegistering();
                 PlayerManager.Instance.ProcessTurn();
             }
 
@@ -73,6 +75,7 @@ namespace RD_Colonization.Code.Managers
                 score.cashValue.Add(player.cash);
                 score.aiSettings.Add(player.settingsAI.SaveSettingsIntoString());
                 score.scoreValue.Add(ScoreManager.Instance.GetScore(player.id));
+                score.eventList.Add(EventSaverManager.Instance.GetPlayerEvents(player.id));
             }
         }
 

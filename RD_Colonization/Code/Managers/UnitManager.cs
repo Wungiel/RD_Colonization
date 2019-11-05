@@ -21,7 +21,7 @@ namespace RD_Colonization.Code.Managers
         public UnitManager()
         {
             typesDictionary.Add(civilianString, new UnitData(civilianString, true, true, false, 2, 1, 0, 50, 0));
-            typesDictionary.Add(soldierString, new UnitData(soldierString, true, false, false, 1, 5, 2, 200, 1));
+            typesDictionary.Add(soldierString, new UnitData(soldierString, true, false, false, 2, 5, 2, 30, 1));
             typesDictionary.Add(scoutString, new UnitData(scoutString, true, false, false, 5, 1, 1, 5, 1));
             typesDictionary.Add(shipString, new UnitData(shipString, false, false, true, 1, 2, 2, 20, 1));
         }

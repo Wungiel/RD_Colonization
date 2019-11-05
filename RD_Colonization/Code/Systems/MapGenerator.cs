@@ -36,10 +36,8 @@ namespace RD_Colonization.Code.Managers
                     string tileKey = null;
                     if (temp[i, y] > 0.7)
                         tileKey = mountainString;
-                    else if (temp[i, y] > 0.4)
+                    else 
                         tileKey = grassString;
-                    else
-                        tileKey = waterString;
                     tileTemp[i, y] = new Tile(MapManager.Instance.GetTileType(tileKey), new Point(i, y));
                 }
             }

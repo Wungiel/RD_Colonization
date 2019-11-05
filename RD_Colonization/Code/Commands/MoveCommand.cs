@@ -12,15 +12,18 @@ namespace RD_Colonization.Code.Commands
 {
     public class MoveCommand : ICommand
     {
-        public Rectangle destination;
+        public Tile destination;
         public Unit unit;
         private List<Tile> path = new List<Tile>();
 
-        public MoveCommand(Rectangle rectangle, Unit unit)
+        public MoveCommand(Tile tile, Unit unit)
         {
-            destination = rectangle;
+            destination = tile;
             this.unit = unit;
-            PathfinderManager.Instance.CheckPathfinding(destination, this);
+            if (destination != null)
+            {
+                PathfinderManager.Instance.CheckPathfinding(destination.CreateRectangle(), this);
+            }            
         }
 
         public void SetPath(List<Tile> newPath)
@@ -40,7 +43,7 @@ namespace RD_Colonization.Code.Commands
                 return true;
             }
 
-            if (PathfinderManager.Instance.CheckPathfinding(destination, this) == false)
+            if (PathfinderManager.Instance.CheckPathfinding(destination.CreateRectangle(), this) == false)
             {
                 return true;
             }

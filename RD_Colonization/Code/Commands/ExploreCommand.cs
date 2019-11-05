@@ -31,7 +31,7 @@ namespace RD_Colonization.Code.Commands
 
             if (moveToDestinyTileCommand == null)
             {
-                moveToDestinyTileCommand = new MoveCommand(tileToExplore.CreateRectangle(), exploringUnit);
+                moveToDestinyTileCommand = new MoveCommand(tileToExplore, exploringUnit);
             }
 
             return moveToDestinyTileCommand.Execute();

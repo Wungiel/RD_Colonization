@@ -25,6 +25,7 @@ namespace RD_Colonization.Code.Managers
             {
                 CityManager.Instance.SpawnCity(unit);
                 UnitManager.Instance.DestroyUnit(unit);
+                EventSaverManager.Instance.SaveBuildCityEvent(unit.playerId);
             }
         }
 
@@ -70,6 +71,7 @@ namespace RD_Colonization.Code.Managers
                 UnitManager.Instance.AddNewUnit(player, tile, unitKey);
                 city.didBuildInThisTurn = true;
                 ScoreManager.Instance.AddNewUnitPoint(player.id);
+                EventSaverManager.Instance.SaveBuildUnitEvent(player.id);
                 return true;
             }
 
@@ -80,6 +82,7 @@ namespace RD_Colonization.Code.Managers
         {
             CityManager.Instance.DestroyCity(defender);
             ScoreManager.Instance.AddDestroyedCityPoint(attacker.playerId);
+            EventSaverManager.Instance.SaveDestroyedEnemyCityEvent(attacker.playerId);
         }
 
         public void StartBattle(Unit attacker, Unit defender)
@@ -98,6 +101,7 @@ namespace RD_Colonization.Code.Managers
                         fightFinished = true;
                         UnitManager.Instance.DestroyUnit(defender);
                         ScoreManager.Instance.AddDestroyedUnitPoint(attacker.playerId);
+                        EventSaverManager.Instance.SaveDestroyedEnemyUnitEvent(attacker.playerId);
                     }
                 } 
                 else
@@ -105,9 +109,10 @@ namespace RD_Colonization.Code.Managers
                     fightFinished = true;
                     UnitManager.Instance.DestroyUnit(attacker);
                     ScoreManager.Instance.AddDestroyedUnitPoint(defender.playerId);
+                    EventSaverManager.Instance.SaveDestroyedEnemyUnitEvent(defender.playerId);
                 }
 
-                if (turnCount == 100)
+                if (turnCount == 10)
                 {
                     fightFinished = true;
                 }

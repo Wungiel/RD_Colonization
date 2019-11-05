@@ -80,6 +80,7 @@ namespace RD_Colonization.Code.Managers
             TestManager.Instance.DestroyInstance();
             UnitManager.Instance.DestroyInstance();
             TurnManager.Instance.DestroyInstance();
+            EventSaverManager.Instance.DestroyInstance();
         }
 
         private bool CheckEndingConditions()

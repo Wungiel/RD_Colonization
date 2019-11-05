@@ -226,12 +226,12 @@ namespace RD_Colonization
                             }
                             else if (UnitManager.Instance.currentUnit != null)
                             {
-                                UnitManager.Instance.currentUnit.currentCommand = new MoveCommand(tempRectangle, UnitManager.Instance.currentUnit);
+                                UnitManager.Instance.currentUnit.currentCommand = new MoveCommand(MapManager.Instance.mapDictionary[tempRectangle], UnitManager.Instance.currentUnit);
                             }
                         }
                         else if (MapManager.Instance.mapDictionary.ContainsKey(tempRectangle) && UnitManager.Instance.currentUnit !=null)
                         {
-                            UnitManager.Instance.currentUnit.currentCommand = new MoveCommand(tempRectangle, UnitManager.Instance.currentUnit);
+                            UnitManager.Instance.currentUnit.currentCommand = new MoveCommand(MapManager.Instance.mapDictionary[tempRectangle], UnitManager.Instance.currentUnit);
                         }
                     }
                 }

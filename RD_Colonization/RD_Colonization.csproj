@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Code\ArtificialIntelligenceModules\AIModules.cs" />
     <Compile Include="Code\ArtificialIntelligenceModules\ExpansionModule.cs" />
-    <Compile Include="Code\ArtificialIntelligenceModules\ExploitationModule.cs" />
+    <Compile Include="Code\ArtificialIntelligenceModules\ExterminationModule.cs" />
     <Compile Include="Code\ArtificialIntelligenceModules\ExplorationModule.cs" />
     <Compile Include="Code\ArtificialIntelligenceModules\IModule.cs" />
     <Compile Include="Code\BaseManager.cs" />
@@ -71,6 +71,7 @@
     <Compile Include="Code\Managers\ActionManager.cs" />
     <Compile Include="Code\Managers\CityManager.cs" />
     <Compile Include="Code\DDA\DDAEvolutionaryAIManager.cs" />
+    <Compile Include="Code\Managers\EventSaverManager.cs" />
     <Compile Include="Code\Managers\HistoryManager.cs" />
     <Compile Include="Code\DDA\DDAResourceManager.cs" />
     <Compile Include="Code\Managers\PathfinderManager.cs" />

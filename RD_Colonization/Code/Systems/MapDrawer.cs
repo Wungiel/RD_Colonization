@@ -87,6 +87,7 @@ namespace RD_Colonization.Code
             {
                 spriteBatch.Draw(singlePixel, pair.Key, Color.Black);
             }*/
+
             for (int i = 0; i < 4; i++)
             {
                 if (pair.Value.riskValues.ContainsKey(i) == true && pair.Value.riskValues[i] > 0)

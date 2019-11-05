@@ -53,7 +53,7 @@ namespace RD_Colonization.Code
             Button aboutButton = new Button(aboutString);
             aboutButton.OnClick += (Entity entity) =>
             {
-                GeonBit.UI.Utils.MessageBox.ShowMsgBox("About", "Made by Robert Dulemba. \nUsed frameworks: Monogame, GeonBit.UI, \nPerlin Noise from https://gist.github.com/Flafla2/1a0b9ebef678bbce3215 ");
+                GeonBit.UI.Utils.MessageBox.ShowMsgBox("About", "Made by Robert Dulemba. \nUsed frameworks: Monogame, GeonBit.UI, GeneticSharp \nPerlin Noise from https://gist.github.com/Flafla2/1a0b9ebef678bbce3215 ");
             };
 
             Button exitButton = new Button(exitString);

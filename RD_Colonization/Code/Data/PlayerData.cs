@@ -59,6 +59,13 @@ namespace RD_Colonization.Code.Data
             }            
         }
 
+        public City GetRandomCity()
+        {
+            Random random = new Random();
+            City [] cities = CityManager.Instance.GetPlayersCities(id);
+            return cities[random.Next(cities.Count())];
+        }
+
         public void AddIncome()
         {
             cash += income;

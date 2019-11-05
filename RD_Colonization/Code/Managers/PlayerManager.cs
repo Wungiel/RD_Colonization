@@ -131,9 +131,7 @@ namespace RD_Colonization.Code.Managers
 
         private void CommandResources(Unit[] units, City[] cities)
         {
-            currentPlayer.aiModules.expansion.ProcessData(units, cities);
-            currentPlayer.aiModules.exploitation.ProcessData(units, cities);
-            currentPlayer.aiModules.exploration.ProcessData(units, cities);
+            currentPlayer.aiModules.ProcessData(units, cities);
         }
 
         private void ExecuteCommands()

@@ -44,7 +44,7 @@ namespace RD_Colonization.Code.Commands
                     return true;
                 }
                 neigbhouringTiles = MapManager.Instance.GetNeighbours(cityGoal.currentTile, 3);
-                safetyTiles = MapManager.Instance.GetNeighbours(unitGoal.currentTile, 5);
+                safetyTiles = MapManager.Instance.GetNeighbours(cityGoal.currentTile, 5);
             }
             else if (unitGoal != null)
             {
@@ -66,7 +66,7 @@ namespace RD_Colonization.Code.Commands
                     {
                         if (UnitManager.Instance.unitDictionary[tileRectangle].playerId != defender.playerId)
                         {
-                            moveToDestinyTileCommand = new MoveCommand(tileRectangle, defender);
+                            moveToDestinyTileCommand = new MoveCommand(tile, defender);
                             break;
                         }
                     }
@@ -78,19 +78,21 @@ namespace RD_Colonization.Code.Commands
                 if (neigbhouringTiles.Contains(defender.currentTile) == false)
                 {
                     moveToDestinyTileCommand = new MoveCommand(GetPossibleTile(neigbhouringTiles), defender);
-                    if (moveToDestinyTileCommand.Execute() == true)
-                    {
-                        moveToDestinyTileCommand = null;
-                    }
                 }
             }
+
+            if (moveToDestinyTileCommand != null && moveToDestinyTileCommand.Execute() == true)
+            {
+                moveToDestinyTileCommand = null;
+            }
+
 
             return false;
 
         }
 
         private bool IsEnemyNearby(HashSet<Tile> neigbhouringTiles)
-        {
+         {
             foreach(Tile tile in neigbhouringTiles)
             {
                 Rectangle tileRectangle = tile.CreateRectangle();
@@ -104,17 +106,23 @@ namespace RD_Colonization.Code.Commands
             return false;
         }
 
-        private Rectangle GetPossibleTile(HashSet<Tile> neigbhouringTiles)
+        private Tile GetPossibleTile(HashSet<Tile> neigbhouringTiles)
         {
             HashSet<Tile> possibleTiles = new HashSet<Tile>();
             Random random = new Random();
+
+            if (possibleTiles.Count == 0)
+            {
+                return null;
+            }
 
             foreach(Tile tile in possibleTiles)
             {
                 if (tile.type.walkable == true)
                     possibleTiles.Add(tile);
             }
-            return possibleTiles.ElementAt(random.Next(possibleTiles.Count - 1)).CreateRectangle();
+
+            return possibleTiles.ElementAt(random.Next(0, possibleTiles.Count));
         }
     }
 }

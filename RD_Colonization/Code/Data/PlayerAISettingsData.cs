@@ -11,11 +11,10 @@ namespace RD_Colonization.Code.Data
     {
         private static Random randomizer = new Random((int)System.DateTime.Now.Ticks);
         private int aggresiveness;
-        private int landness;
         private int expansiveness;
         private int risk;
 
-        int Aggresiveness
+        public int Aggresiveness
         {
             get
             {
@@ -32,24 +31,7 @@ namespace RD_Colonization.Code.Data
             }
         }
 
-        int Landness
-        {
-            get
-            {
-                return landness;
-            }
-            set
-            {
-                if (value > 8)
-                    landness = 8;
-                else if (value < 0)
-                    landness = 0;
-                else
-                    landness = value;
-            }
-        }
-
-        int Expansiveness
+        public int Expansiveness
         {
             get
             {
@@ -66,7 +48,7 @@ namespace RD_Colonization.Code.Data
             }
         }
 
-        int Risk
+        public int Risk
         {
             get
             {
@@ -98,7 +80,6 @@ namespace RD_Colonization.Code.Data
             else
             {
                 aggresiveness = int.Parse(settings[0]);
-                landness = int.Parse(settings[1]);
                 expansiveness = int.Parse(settings[2]);
                 risk = int.Parse(settings[3]);
 
@@ -109,19 +90,25 @@ namespace RD_Colonization.Code.Data
         {
             StringBuilder newString = new StringBuilder(String.Empty);
             newString.Append(aggresiveness.ToString());
-            newString.Append(landness.ToString());
             newString.Append(expansiveness.ToString());
             newString.Append(risk.ToString());
             return newString.ToString();
         }
 
+        public bool GetGuardChance()
+        {
+            Random random = new Random();
+            return (random.Next(-8, 8) > (aggresiveness - risk));
+        }
+
+
         private void RandomizeSettings()
         {            
             aggresiveness = randomizer.Next(0, 8);
-            landness = randomizer.Next(0, 8);
             expansiveness = randomizer.Next(0, 8);
             risk = randomizer.Next(0, 8);
         }
+
 
     }
 }
