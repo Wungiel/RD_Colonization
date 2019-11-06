@@ -89,8 +89,5 @@ namespace RD_Colonization.Code.Managers
         {
             return scores.Max();
         }
-        
-        
-
     }
 }

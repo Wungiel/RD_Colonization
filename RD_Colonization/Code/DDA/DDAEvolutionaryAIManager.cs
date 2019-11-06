@@ -134,11 +134,6 @@ namespace RD_Colonization.Code.DDA
             TestData test = TestManager.Instance.usedTest;
             int startingIndex = 1;
 
-            if (test != null && test.canEvolutionUseAIUserParameter == true)
-            {
-                startingIndex = 0; ;
-            }
-
             for (int i = startingIndex; i < PlayerManager.Instance.players.Count; i++)
             {
                 PlayerManager.Instance.players[i].settingsAI.SetSettingsFromString(newValues.First().ToString());
@@ -169,11 +164,37 @@ namespace RD_Colonization.Code.DDA
             }
         }
 
-        private int GetFitness(IChromosome c) 
+        private float GetFitness(IChromosome c) 
         {
             AiSettingsChromosome chromosome = (AiSettingsChromosome)c;
 
-            return 0;
+            int aiSettings = chromosome.ToInt();
+            AiEvolutionaryAlgorithmData toDelete = null;
+            float fitness = 0;
+
+            foreach (AiEvolutionaryAlgorithmData data in settingsScoreData)
+            {
+                if (data.aiSettings == aiSettings)
+                {
+                    fitness = data.score;
+                    toDelete = data;
+                }
+            }
+
+            float maxScore = ScoreManager.Instance.GetTheHighestScoreValue();
+            float playerScore = ScoreManager.Instance.GetScore(0);
+
+            fitness = fitness / maxScore;
+            playerScore = playerScore / maxScore;
+
+            fitness = 1 - Math.Abs(playerScore - fitness);
+
+            if (toDelete != null)
+            {
+                settingsScoreData.Remove(toDelete);
+            }
+
+            return fitness;
         }
 
         private float GetHistoryFitness(IChromosome c)
