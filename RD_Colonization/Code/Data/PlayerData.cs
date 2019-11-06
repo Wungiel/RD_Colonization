@@ -16,7 +16,7 @@ namespace RD_Colonization.Code.Data
         public float cash = 0;
         public float attackBonus = 1;
         public float attackDDABonus = 1;
-        public float cashBonus = 0;
+        public float cashDDABonus = 0;
         public bool isControlledByAI = true;
         public Color playerColor;
         public bool isDefeated = false;
@@ -34,6 +34,10 @@ namespace RD_Colonization.Code.Data
             this.id = id;
             aiModules = new AIModules(this);
             TurnManager.Instance.lateTurnEvent += AddIncome;
+            if (id == 0)
+            {
+                settingsAI.SetSettingsFromString("444");
+            }
         }
 
         public void SetLivingPlayerControl()
@@ -63,12 +67,18 @@ namespace RD_Colonization.Code.Data
         {
             Random random = new Random();
             City [] cities = CityManager.Instance.GetPlayersCities(id);
+            if (cities.Count() == 0)
+            {
+                return null;
+            }
+
             return cities[random.Next(cities.Count())];
         }
 
         public void AddIncome()
         {
             cash += income;
+            cash += cashDDABonus;
             lastTurnIncome = income;
             income = 0;
         }

@@ -12,6 +12,7 @@ using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
 using Microsoft.Xna.Framework.Graphics;
 using RD_Colonization.Code.Data;
+using RD_Colonization.Code.DDA;
 using static RD_Colonization.Code.StringList;
 
 
@@ -24,6 +25,8 @@ namespace RD_Colonization.Code.Managers
         private int currentMapIndex = 0;
         private GraphicsDevice device;
         private List<HistoryData> historyPerPlayer = null;
+        private int numberOfPlaysToGenerateHistory = 10;
+        private int currentPlayIndex = 0;
 
         public void GenerateHistory(GraphicsDevice device)
         {
@@ -83,6 +86,7 @@ namespace RD_Colonization.Code.Managers
             MapManager.Instance.GenerateMap(mapNames[currentMapIndex], device);
             PlayerManager.Instance.SetUpPlayers(false);
             CreateHistoryForNewMap();
+            DDAEvolutionaryAIManager.Instance.StartEvolutionManager();
             PlayerManager.Instance.ProcessTurn();
         }
 

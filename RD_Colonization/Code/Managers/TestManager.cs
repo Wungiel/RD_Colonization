@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RD_Colonization.Code.Data;
 using static RD_Colonization.Code.StringList;
+using RD_Colonization.Code.DDA;
 
 namespace RD_Colonization.Code.Managers
 {
@@ -52,6 +53,8 @@ namespace RD_Colonization.Code.Managers
                 PlayerManager.Instance.SetUpPlayers();
                 SetUpPlayerScoreRecords();
                 EventSaverManager.Instance.StartRegistering();
+                DDAResourceManager.Instance.StartResourceManager();
+                DDAEvolutionaryAIManager.Instance.StartEvolutionManager();
                 ScreenManager.Instance.SetScreen(gameScreenString);
             }
             else
@@ -59,6 +62,8 @@ namespace RD_Colonization.Code.Managers
                 PlayerManager.Instance.SetUpPlayers(false);
                 SetUpPlayerScoreRecords();
                 EventSaverManager.Instance.StartRegistering();
+                DDAResourceManager.Instance.StartResourceManager();
+                DDAEvolutionaryAIManager.Instance.StartEvolutionManager();
                 PlayerManager.Instance.ProcessTurn();
             }
 
@@ -123,7 +128,7 @@ namespace RD_Colonization.Code.Managers
                 playersScore.Add(new SinglePlayerTurnData(player.id));
             }
 
-            TurnManager.Instance.turnEvent += GetData;
+            TurnManager.Instance.lateTurnEvent += GetData;
         }
                 
     }

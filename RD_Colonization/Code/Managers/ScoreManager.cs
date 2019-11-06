@@ -16,6 +16,7 @@ namespace RD_Colonization.Code.Managers
         public float scoreForDestroyedCity = 50;
         public float scoreForDestroyedUnit = 5;
         public Dictionary<int, ScoreData> playersScores = new Dictionary<int, ScoreData>();
+        private List<float> scores;
 
 
         public void SetUpScoreManager()
@@ -24,6 +25,14 @@ namespace RD_Colonization.Code.Managers
             {
                 playersScores.Add(player.id, new ScoreData());
             }
+
+            scores = new List<float>();
+            scores.Add(scoreForDestroyedCity);
+            scores.Add(scoreForDestroyedUnit);
+            scores.Add(scoreForDiscoveredTile);
+            scores.Add(scoreForNewCity);
+            scores.Add(scoreForNewUnit);
+
         }
 
         public void SetUpNewScoreDataFromTest(TestData testData)
@@ -75,6 +84,13 @@ namespace RD_Colonization.Code.Managers
         {
             playersScores[id].destroyedEnemyUnits++;
         }
+
+        public float GetTheHighestScoreValue()
+        {
+            return scores.Max();
+        }
         
+        
+
     }
 }

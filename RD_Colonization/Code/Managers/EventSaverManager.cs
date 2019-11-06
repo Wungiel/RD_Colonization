@@ -66,5 +66,20 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
+        public void SaveDDAOptimizationEvent(int id)
+        {
+            if (eventsByPlayer.ContainsKey(id))
+            {
+                eventsByPlayer[id] += "R";
+            }
+        }
+
+        public void SaveDDAEvolutionAIEvent(int id)
+        {
+            if (eventsByPlayer.ContainsKey(id))
+            {
+                eventsByPlayer[id] += "A";
+            }
+        }
     }
 }

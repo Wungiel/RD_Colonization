@@ -72,18 +72,7 @@ namespace RD_Colonization.Code.Data
 
         public PlayerAISettingsData(String values)
         {
-            string[] settings = values.Split(dot);
-            if (settings.Length != 4)
-            {
-                RandomizeSettings();
-            }
-            else
-            {
-                aggresiveness = int.Parse(settings[0]);
-                expansiveness = int.Parse(settings[2]);
-                risk = int.Parse(settings[3]);
-
-            }
+            ReadSettingFromString(values);
         }
 
         public String SaveSettingsIntoString()
@@ -95,12 +84,33 @@ namespace RD_Colonization.Code.Data
             return newString.ToString();
         }
 
+        public int SaveSettingsIntoInt()
+        {
+            int result = 0;
+            result += aggresiveness * 100;
+            result += expansiveness * 10;
+            result += risk * 1;
+            return result;
+        }
+
+        public void SetSettingsFromString(string values)
+        {
+            ReadSettingFromString(values);
+        }
+
+
         public bool GetGuardChance()
         {
             Random random = new Random();
             return (random.Next(-8, 8) > (aggresiveness - risk));
         }
 
+        public bool GetUnitUpgradeChance()
+        {
+            Random random = new Random();
+            int chance = aggresiveness - expansiveness;
+            return (random.Next(-8, 8) > chance);
+        }
 
         private void RandomizeSettings()
         {            
@@ -109,6 +119,21 @@ namespace RD_Colonization.Code.Data
             risk = randomizer.Next(0, 8);
         }
 
+        private void ReadSettingFromString(string values)
+        {
+            char[] settings = values.ToCharArray(); ;
+            if (settings.Length != 3)
+            {
+                RandomizeSettings();
+            }
+            else
+            {
+                aggresiveness = int.Parse(settings[0].ToString());
+                expansiveness = int.Parse(settings[1].ToString());
+                risk = int.Parse(settings[2].ToString());
+
+            }
+        }
 
     }
 }

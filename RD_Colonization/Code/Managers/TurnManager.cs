@@ -1,4 +1,5 @@
 ﻿using GeonBit.UI.Utils;
+using RD_Colonization.Code.DDA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,6 +82,8 @@ namespace RD_Colonization.Code.Managers
             UnitManager.Instance.DestroyInstance();
             TurnManager.Instance.DestroyInstance();
             EventSaverManager.Instance.DestroyInstance();
+            DDAEvolutionaryAIManager.Instance.DestroyInstance();
+            DDAResourceManager.Instance.DestroyInstance();
         }
 
         private bool CheckEndingConditions()

@@ -71,5 +71,29 @@ namespace RD_Colonization.Code
                 return array[random.Next(0, array.Length)];
             }
         }
+
+        public static List<int> GetDigits(this int number)
+        {
+            List<int> digits = new List<int>();
+
+            do
+            {
+                digits.Add(number % 10);
+                number /= 10;
+            } while (number > 0);
+
+            if (digits.Count == 1)
+            {
+                digits.Add(0);
+                digits.Add(0);
+            }
+            else if (digits.Count == 2)
+            {
+                digits.Add(0);
+            }
+            digits.Reverse();
+
+            return digits;
+        }
     }
 }

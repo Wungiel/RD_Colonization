@@ -69,7 +69,10 @@ namespace RD_Colonization.Code.Commands
             {
                 if (bestTile.GetValue() < t.GetValue())
                 {
-                    bestTile = t;
+                    if (t.riskValues.ContainsKey(playerId) == false || t.riskValues[playerId] < (PlayerManager.Instance.GetPlayerById(playerId).settingsAI.Risk / 2))
+                    {
+                        bestTile = t;
+                    }                    
                 }
             }
 

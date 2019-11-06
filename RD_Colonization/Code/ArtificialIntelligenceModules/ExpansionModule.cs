@@ -61,6 +61,18 @@ namespace RD_Colonization.Code.ArtificialIntelligenceModules
                 }
             }
 
+            if (player.attackBonus < 1 && player.settingsAI.GetUnitUpgradeChance() == true)
+            {
+                foreach (City city in citiesList)
+                {
+                    if (city.currentCommand == null)
+                    {
+                        city.currentCommand = new UpgradeUnitCommand(city);
+                        break;
+                    }
+                }
+            }
+
             foreach (Unit unit in civilianUnits)
             {
                 if (unit.currentCommand == null)

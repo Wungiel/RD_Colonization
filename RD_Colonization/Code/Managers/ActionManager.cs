@@ -149,6 +149,26 @@ namespace RD_Colonization.Code.Managers
 
         }
 
+        public bool UpgradeUnits(PlayerData player)
+        {
+            if (player.attackBonus > 1)
+            {
+                return true;
+            }
+            else
+            {
+                if (player.ModifyCashPayment(100) == true)
+                {
+                    player.attackBonus += 0.1F;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         private float GetAttackPower(Unit attackingUnit)
         {
             PlayerData unitOwner = PlayerManager.Instance.GetPlayerByUnit(attackingUnit);
