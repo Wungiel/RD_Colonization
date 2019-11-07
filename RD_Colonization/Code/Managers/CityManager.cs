@@ -69,6 +69,11 @@ namespace RD_Colonization.Code.Managers
 
         public void DestroyCity(City city)
         {
+            if (city == null)
+            {
+                return;
+            }
+
             if (currentCity == city)
             {
                 currentCity = null;

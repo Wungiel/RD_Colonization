@@ -14,7 +14,7 @@ namespace RD_Colonization.Code.ArtificialIntelligenceModules
     {
         public PlayerData player;
         private List<Unit> civilianUnits = new List<Unit>();
-        private int desirableIncome;
+        public int desirableIncome;
 
         public ExpansionModule(PlayerData player)
         {

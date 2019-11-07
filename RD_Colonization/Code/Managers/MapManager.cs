@@ -140,6 +140,11 @@ namespace RD_Colonization.Code.Managers
                 }
             }
 
+            if (safeTiles.Count == 0)
+            {
+                return null;
+            }
+
             return safeTiles[random.Next(safeTiles.Count - 1)];
         }
 

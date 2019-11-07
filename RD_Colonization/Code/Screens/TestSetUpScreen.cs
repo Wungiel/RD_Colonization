@@ -176,9 +176,9 @@ namespace RD_Colonization.Code.Screens
             descriptionParagraphs[2].Text += test.useFixedStartPoints;
             descriptionParagraphs[3].Text += test.canPlayerPlay;
             descriptionParagraphs[4].Text += test.useEvolution;
-            descriptionParagraphs[5].Text += test.canUseHistory;
-            descriptionParagraphs[6].Text += test.evolutionFrequency;
-            descriptionParagraphs[7].Text += test.canEvolutionUseAIUserParameter;
+            descriptionParagraphs[5].Text += test.canUseHistory;            
+            descriptionParagraphs[6].Text += test.canEvolutionUseAIUserParameter;
+            descriptionParagraphs[7].Text += test.evolutionFrequency;
             descriptionParagraphs[8].Text += test.useResourceFitting;
             descriptionParagraphs[9].Text += test.isMaintainingSecrecy;
             descriptionParagraphs[10].Text += test.canAffectPlayer;

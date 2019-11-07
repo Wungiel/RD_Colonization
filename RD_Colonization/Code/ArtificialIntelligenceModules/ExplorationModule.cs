@@ -16,7 +16,7 @@ namespace RD_Colonization.Code.ArtificialIntelligenceModules
         public PlayerData player;
         private List<Unit> scoutUnits = new List<Unit>();
         private int desirableScoutsCount;
-        private double discoveredRatio;
+        public double discoveredRatio;
 
         public ExplorationModule(PlayerData player)
         {

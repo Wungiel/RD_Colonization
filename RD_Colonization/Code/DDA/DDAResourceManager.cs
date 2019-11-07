@@ -151,27 +151,82 @@ namespace RD_Colonization.Code.DDA
                 {
                     //Zoptymalizuj gracza
                     OptimizeUser(normalizedPlayerScore);
+                    EventSaverManager.Instance.SaveDDAOptimizationEvent(0);
                 }
                 else if (PlayerManager.Instance.GetPlayerById(id).isDiscoveredByPlayer == true && DDAResourceManager.Instance.canOptimizeOnlyInvisiblePlayer == true)
                 {
                     //Przeciwnik komputerowy wykryty, ale nie trzeba zachowywać sekretności
                     OptimizeDiscoveredPlayerSecretly(normalizedPlayerScore);
+                    EventSaverManager.Instance.SaveDDAOptimizationEvent(id);
                 }
                 else
                 {
                     //Przeciwnik komputerowy niewykryty albo wykrycie nie ma znaczenia
                     OptimizePlayerDefault(normalizedPlayerScore);
+                    EventSaverManager.Instance.SaveDDAOptimizationEvent(id);
                 }
 
-                EventSaverManager.Instance.SaveDDAOptimizationEvent(id);
+                
             }
             
             private void OptimizePlayerDefault(float normalizedPlayerScore)
             {
+                PlayerData player = PlayerManager.Instance.GetPlayerById(id);
+
+                if (isBetterThanPlayer == true)
+                {
+                    player.cashDDABonus -= 4;
+                    CityManager.Instance.DestroyCity(player.GetRandomCity());
+                }
+                else
+                {
+
+                    if (player.cash < 0)
+                    {
+                        CancelDebt(id);
+                        AddCivilian(id);
+                    }
+                    else if (player.GetLastTurnIncome() < player.aiModules.expansion.desirableIncome)
+                    {
+                        AddCivilian(id);
+                    }
+
+                    if (player.aiModules.exploration.discoveredRatio < 0.25)
+                    {
+                        AddScout(id);
+                    }
+
+                    if (normalizedPlayerScore < 0.2)
+                    {
+                        AddScout(id);
+                        AddCivilian(id);
+                        AddSoldier(id);
+
+                    }
+
+                    AddCash(id);
+                }
+                
             }
 
             private void OptimizeUser(float normalizedPlayerScore)
             {
+                if (TestManager.Instance.usedTest.canAffectPlayer == 1)
+                {
+                    PlayerManager.Instance.GetPlayerById(0).attackDDABonus += 0.5f;
+                }
+                else if (TestManager.Instance.usedTest.canAffectPlayer == 2)
+                {
+                    PlayerManager.Instance.GetPlayerById(0).cashDDABonus += 4;
+                }
+                else
+                {
+                    if (PlayerManager.Instance.GetPlayerById(0).cash < 0)
+                    {
+                        CancelDebt(0);
+                    }
+                    AddCivilian(0);
+                }
             }
 
             private void OptimizeDiscoveredPlayerSecretly(float normalizedPlayerScore)
@@ -201,35 +256,38 @@ namespace RD_Colonization.Code.DDA
                 }
             }
 
-            private void AddCivilian()
+            private void AddCivilian(int changedPlayerId)
             {
-                Tile safeTile = MapManager.Instance.GetSafeDiscoveredTile(id);
-                UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerById(id), safeTile, civilianString);
+                Tile safeTile = MapManager.Instance.GetSafeDiscoveredTile(changedPlayerId);
+                if (safeTile != null)
+                    UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerById(changedPlayerId), safeTile, civilianString);
             }
 
-            private void AddSoldier()
+            private void AddSoldier(int changedPlayerId)
             {
-                Tile safeTile = MapManager.Instance.GetSafeDiscoveredTile(id);
-                UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerById(id), safeTile, soldierString);
+                Tile safeTile = MapManager.Instance.GetSafeDiscoveredTile(changedPlayerId);
+                if (safeTile != null)
+                    UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerById(changedPlayerId), safeTile, soldierString);
             }
 
 
-            private void AddScout()
+            private void AddScout(int changedPlayerId)
             {
-                Tile safeTile = MapManager.Instance.GetSafeDiscoveredTile(id);
-                UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerById(id), safeTile, scoutString);
+                Tile safeTile = MapManager.Instance.GetSafeDiscoveredTile(changedPlayerId);
+                if (safeTile != null)
+                    UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerById(changedPlayerId), safeTile, scoutString);
             }
 
-            private void CancelDebt()
+            private void CancelDebt(int changedPlayerId)
             {
-                PlayerData player = PlayerManager.Instance.GetPlayerById(id);
+                PlayerData player = PlayerManager.Instance.GetPlayerById(changedPlayerId);
                 player.cash = 50;
             }
 
-            private void AddCash()
+            private void AddCash(int changedPlayerId)
             {
-                PlayerData player = PlayerManager.Instance.GetPlayerById(id);
-                player.cash += 8-;
+                PlayerData player = PlayerManager.Instance.GetPlayerById(changedPlayerId);
+                player.cash += 80;
             }
 
 
