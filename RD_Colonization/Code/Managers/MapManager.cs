@@ -126,6 +126,23 @@ namespace RD_Colonization.Code.Managers
             return PlayerManager.Instance.GetPlayerById(playerId).discoveredTiles.ToArray();
         }
 
+        public Tile GetSafeDiscoveredTile(int playerId)
+        {
+            Random random = new Random();
+            Tile[] discoveredTiles = GetDiscoveredTiles(playerId);
+            List<Tile> safeTiles = new List<Tile>();
+
+            foreach(Tile tile in discoveredTiles)
+            {
+                if (tile.safetyValues.ContainsKey(playerId) == true && tile.tensionValues.ContainsKey(playerId) == false)
+                {
+                    safeTiles.Add(tile);
+                }
+            }
+
+            return safeTiles[random.Next(safeTiles.Count - 1)];
+        }
+
         public void CreateRiskMap(int playerId)
         {
             Tile [] discoveredTiles = GetDiscoveredTiles(playerId);

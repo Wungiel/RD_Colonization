@@ -37,11 +37,31 @@ namespace RD_Colonization.Code.Managers
 
         public void SetUpNewScoreDataFromTest(TestData testData)
         {
-            scoreForNewCity = testData.buildCityScore;
-            scoreForNewUnit = testData.buildUnitScore;
-            scoreForDiscoveredTile = testData.discoverTileScore;
-            scoreForDestroyedCity = testData.destroyEnemyCityScore;
-            scoreForDestroyedUnit = testData.destroyEnemyUnitScore;
+            if (testData == null)
+            {
+                return;
+            }
+
+            if (testData.buildCityScore != 0)
+            {
+                scoreForNewCity = testData.buildCityScore;
+            }
+            if (testData.buildUnitScore != 0)
+            {
+                scoreForNewUnit = testData.buildUnitScore;
+            }
+            if (testData.discoverTileScore != 0)
+            {
+                scoreForDiscoveredTile = testData.discoverTileScore;
+            }
+            if (testData.destroyEnemyCityScore != 0)
+            {
+                scoreForDestroyedCity = testData.destroyEnemyCityScore;
+            }
+            if (testData.destroyEnemyUnitScore != 0)
+            {
+                scoreForDestroyedUnit = testData.destroyEnemyUnitScore;
+            }          
         }
 
         public float CalculateScore(ScoreData scoreData)

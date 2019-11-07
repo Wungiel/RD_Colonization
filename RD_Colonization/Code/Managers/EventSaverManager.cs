@@ -81,5 +81,13 @@ namespace RD_Colonization.Code.Managers
                 eventsByPlayer[id] += "A";
             }
         }
+
+        public void SaveDiscoveredByUserEvent(int id)
+        {
+            if (eventsByPlayer.ContainsKey(id))
+            {
+                eventsByPlayer[id] += "N";
+            }
+        }
     }
 }

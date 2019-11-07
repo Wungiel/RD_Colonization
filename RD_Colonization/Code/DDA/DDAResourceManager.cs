@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RD_Colonization.Code.StringList;
 
 namespace RD_Colonization.Code.DDA
 {
@@ -20,6 +21,11 @@ namespace RD_Colonization.Code.DDA
             if (TestManager.Instance.usedTest == null || TestManager.Instance.usedTest.useResourceFitting == false)
             {
                 return;
+            }
+
+            if (TestManager.Instance.usedTest.resourceFittingFrequency != 0)
+            {
+                cooldown = TestManager.Instance.usedTest.resourceFittingFrequency;
             }
 
             List<PlayerData> players = PlayerManager.Instance.players;
@@ -116,6 +122,11 @@ namespace RD_Colonization.Code.DDA
             {
                 float normalizedPlayerScore = playerScore / maxScore;
 
+                if (PlayerManager.Instance.GetPlayerById(id).isDefeated == true)
+                {
+                    return false;
+                }
+
                 if (isPlayer == true && DDAResourceManager.Instance.canPlayerBeOptimized == false)
                 {
                     return false;
@@ -136,24 +147,19 @@ namespace RD_Colonization.Code.DDA
             {
                 float normalizedPlayerScore = playerScore / maxScore;
 
-                if (id == 0)
+                if (isBetterThanPlayer == true && TestManager.Instance.usedTest.canAffectPlayer > 0)
                 {
                     //Zoptymalizuj gracza
                     OptimizeUser(normalizedPlayerScore);
                 }
                 else if (PlayerManager.Instance.GetPlayerById(id).isDiscoveredByPlayer == true && DDAResourceManager.Instance.canOptimizeOnlyInvisiblePlayer == true)
                 {
-                    //Przeciwnik komputerowy wykryty, ale nie trzeba zachowywać czujności
-                    OptimizePlayerDefault(normalizedPlayerScore);
-                }
-                else if (PlayerManager.Instance.GetPlayerById(id).isDiscoveredByPlayer == true)
-                {
-                    //Przeciwnik komputerowy wykryty, konieczne zachowanie sekretności
+                    //Przeciwnik komputerowy wykryty, ale nie trzeba zachowywać sekretności
                     OptimizeDiscoveredPlayerSecretly(normalizedPlayerScore);
                 }
                 else
                 {
-                    //Przeciwnik komputerowy niewykryty
+                    //Przeciwnik komputerowy niewykryty albo wykrycie nie ma znaczenia
                     OptimizePlayerDefault(normalizedPlayerScore);
                 }
 
@@ -194,6 +200,39 @@ namespace RD_Colonization.Code.DDA
                     }
                 }
             }
+
+            private void AddCivilian()
+            {
+                Tile safeTile = MapManager.Instance.GetSafeDiscoveredTile(id);
+                UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerById(id), safeTile, civilianString);
+            }
+
+            private void AddSoldier()
+            {
+                Tile safeTile = MapManager.Instance.GetSafeDiscoveredTile(id);
+                UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerById(id), safeTile, soldierString);
+            }
+
+
+            private void AddScout()
+            {
+                Tile safeTile = MapManager.Instance.GetSafeDiscoveredTile(id);
+                UnitManager.Instance.AddNewUnit(PlayerManager.Instance.GetPlayerById(id), safeTile, scoutString);
+            }
+
+            private void CancelDebt()
+            {
+                PlayerData player = PlayerManager.Instance.GetPlayerById(id);
+                player.cash = 50;
+            }
+
+            private void AddCash()
+            {
+                PlayerData player = PlayerManager.Instance.GetPlayerById(id);
+                player.cash += 8-;
+            }
+
+
         }
     }
 }

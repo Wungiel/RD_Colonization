@@ -168,6 +168,7 @@ namespace RD_Colonization.Code.Managers
                         if (unit.playerId != 0 && PlayerManager.Instance.GetPlayerByUnit(unit).isDiscoveredByPlayer == false)
                         {
                             PlayerManager.Instance.GetPlayerByUnit(unit).isDiscoveredByPlayer = true;
+                            EventSaverManager.Instance.SaveDiscoveredByUserEvent(PlayerManager.Instance.GetPlayerByUnit(unit).id);
                         }
                     }
                 }

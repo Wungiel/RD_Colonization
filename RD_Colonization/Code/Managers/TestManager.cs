@@ -55,6 +55,7 @@ namespace RD_Colonization.Code.Managers
                 EventSaverManager.Instance.StartRegistering();
                 DDAResourceManager.Instance.StartResourceManager();
                 DDAEvolutionaryAIManager.Instance.StartEvolutionManager();
+                ScoreManager.Instance.SetUpNewScoreDataFromTest(usedTest);
                 ScreenManager.Instance.SetScreen(gameScreenString);
             }
             else
@@ -64,6 +65,7 @@ namespace RD_Colonization.Code.Managers
                 EventSaverManager.Instance.StartRegistering();
                 DDAResourceManager.Instance.StartResourceManager();
                 DDAEvolutionaryAIManager.Instance.StartEvolutionManager();
+                ScoreManager.Instance.SetUpNewScoreDataFromTest(usedTest);
                 PlayerManager.Instance.ProcessTurn();
             }
 

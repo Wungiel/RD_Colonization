@@ -129,8 +129,11 @@ namespace RD_Colonization.Code.Data
                 centerPoint = city.currentTile.position;
             }
 
-            centerPoint.X = centerPoint.X / cities.Length;
-            centerPoint.Y = centerPoint.Y / cities.Length;
+            if (cities.Length != 0)
+            {
+                centerPoint.X = centerPoint.X / cities.Length;
+                centerPoint.Y = centerPoint.Y / cities.Length;
+            }
 
             return centerPoint;
         }

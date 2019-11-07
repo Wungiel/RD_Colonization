@@ -18,7 +18,7 @@ namespace RD_Colonization.Code.Data
         public int evolutionFrequency;
 
         public bool useResourceFitting;
-        public bool canAffectPlayer;
+        public int canAffectPlayer;
         public bool isMaintainingSecrecy;
         public int resourceFittingFrequency;
 
