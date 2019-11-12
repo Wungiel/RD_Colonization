@@ -1,4 +1,5 @@
-﻿using RD_Colonization.Code.Data;
+﻿using RD_Colonization.Code.Commands;
+using RD_Colonization.Code.Data;
 using RD_Colonization.Code.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,22 @@ namespace RD_Colonization.Code.Managers
 {
     class ActionManager : BaseManager<ActionManager>
     {
-        public void BuildCity()
+        public void BuildCityByPlayer()
         {
-            if (UnitManager.Instance.currentUnit != null)
+            if (UnitManager.Instance.currentUnit != null && UnitManager.Instance.currentUnit.type.canBuild == true)
             {
-                BuildCity(UnitManager.Instance.currentUnit);
+                UnitManager.Instance.currentUnit.currentCommand = new BuildCityCommand(UnitManager.Instance.currentUnit);
             }            
         }
+
+        public void BuildCityByPlayer(Tile tile)
+        {
+            if (UnitManager.Instance.currentUnit != null && UnitManager.Instance.currentUnit.type.canBuild == true)
+            {
+                UnitManager.Instance.currentUnit.currentCommand = new BuildCityCommand(UnitManager.Instance.currentUnit, tile);
+            }
+        }
+
 
         public void BuildCity(Unit unit)
         {
@@ -29,16 +39,12 @@ namespace RD_Colonization.Code.Managers
             }
         }
 
-        public bool CreateUnit(string unitKey)
+        public void CreateUnitByPlayer(string unitKey)
         {
             if (CityManager.Instance.currentCity != null)
             {
-                return CreateUnit(CityManager.Instance.currentCity, unitKey);
-            }          
-            else
-            {
-                return false;
-            }
+                CityManager.Instance.currentCity.currentCommand = new BuildUnitCommand(CityManager.Instance.currentCity, unitKey);
+            }  
         }
 
         public bool CreateUnit(City city, string unitKey)

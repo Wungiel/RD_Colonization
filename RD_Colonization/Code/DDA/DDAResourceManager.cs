@@ -135,7 +135,7 @@ namespace RD_Colonization.Code.DDA
                 {
                     return true;
                 }
-                else if (Math.Abs(normalizedPlayerScore - normalizedScore) > 0.1 && (Math.Abs(score - playerScore)) > ScoreManager.Instance.GetTheHighestScoreValue())
+                else if (Math.Abs(normalizedPlayerScore - normalizedScore) > 0.05 && (Math.Abs(score - playerScore)) > 30)
                 {
                     return true;
                 }

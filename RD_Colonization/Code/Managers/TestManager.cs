@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using RD_Colonization.Code.Data;
 using static RD_Colonization.Code.StringList;
 using RD_Colonization.Code.DDA;
+using System.Diagnostics;
 
 namespace RD_Colonization.Code.Managers
 {
@@ -15,6 +16,7 @@ namespace RD_Colonization.Code.Managers
         public List<SinglePlayerTurnData> playersScore = new List<SinglePlayerTurnData>();
         public TestData usedTest = null;
         public Dictionary<int, HistoryData> history = new Dictionary<int, HistoryData>();
+        public Stopwatch watch;
 
         public List<String> GetTestFiles()
         {
@@ -60,17 +62,30 @@ namespace RD_Colonization.Code.Managers
             }
             else
             {
+                StartTimeCount();
                 PlayerManager.Instance.SetUpPlayers(false);
                 SetUpPlayerScoreRecords();
                 EventSaverManager.Instance.StartRegistering();
+                HistoryManagr.Instance.ReadHistoryData(usedTest.mapName);
                 DDAResourceManager.Instance.StartResourceManager();
                 DDAEvolutionaryAIManager.Instance.StartEvolutionManager();
                 ScoreManager.Instance.SetUpNewScoreDataFromTest(usedTest);
                 PlayerManager.Instance.ProcessTurn();
             }
-
-            
         }
+
+
+        public void StartTimeCount()
+        {
+            watch = System.Diagnostics.Stopwatch.StartNew();
+        }
+
+        public void StopTimeCount()
+        {
+            watch.Stop();
+            Debug.WriteLine(watch.ElapsedMilliseconds);
+        }
+
 
         public void GetData()
         {

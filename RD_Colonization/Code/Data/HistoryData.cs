@@ -12,6 +12,11 @@ namespace RD_Colonization.Code.Data
         public List<string> aiSettings = new List<string>();
         public List<float> scores = new List<float>();
 
+        public HistoryData()
+        {
+
+        }
+
         public HistoryData(int playerId)
         {
             this.playerId = playerId;

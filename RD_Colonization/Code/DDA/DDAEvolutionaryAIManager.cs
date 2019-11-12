@@ -127,6 +127,17 @@ namespace RD_Colonization.Code.DDA
                 settingsData.Add(PlayerManager.Instance.players[i].settingsAI.SaveSettingsIntoInt());
             }
 
+            if (test != null && test.canUseHistory == true)
+            {
+                for (int i = 0; i < HistoryManagr.Instance.historyPerPlayer.Count; i++)
+                {
+                    int turnNumber = TurnManager.Instance.TurnNumber;
+                    HistoryData history = HistoryManagr.Instance.historyPerPlayer[i];
+                    settingsScoreData.Add(new AiEvolutionaryAlgorithmData(int.Parse(history.aiSettings[turnNumber]), history.scores[turnNumber]));
+                    settingsData.Add(int.Parse(history.aiSettings[turnNumber]));
+                }
+            }
+
         }
 
         private void SetGeneratedData(List<IChromosome> newValues)

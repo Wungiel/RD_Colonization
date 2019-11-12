@@ -24,7 +24,7 @@ namespace RD_Colonization.Code.Managers
         private List<string> mapNames = new List<string>();
         private int currentMapIndex = 0;
         private GraphicsDevice device;
-        private List<HistoryData> historyPerPlayer = null;
+        public List<HistoryData> historyPerPlayer = null;
         private int numberOfPlaysToGenerateHistory = 10;
         private int currentPlayIndex = 0;
 
@@ -44,7 +44,12 @@ namespace RD_Colonization.Code.Managers
         {
             SaveDataHistoryToFile();
 
-            currentMapIndex++;
+            if (currentPlayIndex == numberOfPlaysToGenerateHistory)
+            {
+                currentMapIndex++;
+                currentPlayIndex = 0;
+            }
+
             if (mapNames.Count > currentMapIndex)
             {                
                 StartHistoryGeneratingPlay(device);
@@ -54,6 +59,27 @@ namespace RD_Colonization.Code.Managers
                 savingHistory = false;
                 currentMapIndex = 0;
                 TurnManager.Instance.turnEvent -= SaveDataToHistory;
+            }
+
+            currentPlayIndex++;
+        }
+
+        public void ReadHistoryData(string mapName)
+        {
+            if (TestManager.Instance.usedTest == null || TestManager.Instance.usedTest.canUseHistory == false)
+            {
+                return;
+            }
+
+            string mapFolderPath = System.IO.Directory.GetCurrentDirectory() + slash + mapDataFolderString;
+            string fileName = mapFolderPath + slash + mapName + hisExtension;
+            if (File.Exists(fileName) == true)
+            {
+                historyPerPlayer = new List<HistoryData>();
+                foreach (string line in File.ReadLines(fileName))
+                {
+                    historyPerPlayer.Add(JsonManager.Instance.ReadJSON<HistoryData>(line));
+                }
             }
         }
 
@@ -74,6 +100,10 @@ namespace RD_Colonization.Code.Managers
             List <String> maps = Directory.EnumerateFiles(mapFolderPath, "*", SearchOption.AllDirectories).Select(Path.GetFileName).ToList();
             for (int i = 0; i< maps.Count; i++)
             {
+                if (maps[i].Substring(maps[i].Length - 4,4) == hisExtension)
+                {
+                    continue;
+                }
                 maps[i] = maps[i].Substring(0, maps[i].Length - 4);
             }
 
@@ -104,7 +134,6 @@ namespace RD_Colonization.Code.Managers
         {
             string mapFolderPath = System.IO.Directory.GetCurrentDirectory() + slash + mapDataFolderString;
             string fileName = mapFolderPath + slash + mapNames[currentMapIndex] + hisExtension;
-            File.WriteAllText(fileName, "Results:");
             foreach (HistoryData history in historyPerPlayer)
             {
                 File.AppendAllText(fileName, JsonManager.Instance.WriteIntoJson <HistoryData>(history) + Environment.NewLine);

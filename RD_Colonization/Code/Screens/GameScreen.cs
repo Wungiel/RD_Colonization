@@ -154,24 +154,24 @@ namespace RD_Colonization
 
                 if (InputManager.Instance.IsSinglePress(Keys.Q))
                 {
-                    ActionManager.Instance.CreateUnit(civilianString);
+                    ActionManager.Instance.CreateUnitByPlayer(civilianString);
                 }
                 if (InputManager.Instance.IsSinglePress(Keys.W))
                 {
-                    ActionManager.Instance.CreateUnit(soldierString);
+                    ActionManager.Instance.CreateUnitByPlayer(soldierString);
                 }
                 if (InputManager.Instance.IsSinglePress(Keys.E))
                 {
-                    ActionManager.Instance.CreateUnit(scoutString);
+                    ActionManager.Instance.CreateUnitByPlayer(scoutString);
                 }
                 if (InputManager.Instance.IsSinglePress(Keys.R))
                 {
-                    ActionManager.Instance.CreateUnit(shipString);
+                    ActionManager.Instance.CreateUnitByPlayer(shipString);
                 }
 
                 if (InputManager.Instance.IsSinglePress(Keys.B))
                 {
-                    ActionManager.Instance.BuildCity();
+                    ActionManager.Instance.BuildCityByPlayer();
                 }
 
                 if (InputManager.Instance.IsSinglePress(Keys.Space))
@@ -197,17 +197,7 @@ namespace RD_Colonization
 
                         if (UnitManager.Instance.currentUnit != null)
                         {
-                            if (UnitManager.Instance.currentUnit.transportedUnit == null)
-                            {
-                                if (UnitManager.Instance.unitDictionary.ContainsKey(tempRectangle) && UnitManager.Instance.IsUnitOnRectangleFriendly(tempRectangle) == true)
-                                {
-                                    ActionManager.Instance.LoadUnit(UnitManager.Instance.currentUnit, UnitManager.Instance.unitDictionary[tempRectangle]);
-                                }
-                            }
-                            else if (UnitManager.Instance.unitDictionary.ContainsKey(tempRectangle) == false)
-                            {
-                                ActionManager.Instance.UnloadUnit(UnitManager.Instance.currentUnit, MapManager.Instance.mapDictionary[tempRectangle]);
-                            }
+                            ActionManager.Instance.BuildCityByPlayer(MapManager.Instance.mapDictionary[tempRectangle]);
                         }
                     }
                 }

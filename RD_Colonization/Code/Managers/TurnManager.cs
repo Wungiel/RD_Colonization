@@ -49,6 +49,7 @@ namespace RD_Colonization.Code.Managers
 
         public void EndGame()
         {
+            TestManager.Instance.StopTimeCount();
             MessageBox.MsgBoxOption acceptEndGame = new MessageBox.MsgBoxOption("Ok", Finish);
             MessageBox.MsgBoxOption[] options = { acceptEndGame };
             MessageBox.ShowMsgBox("End", "Game finished", options);
